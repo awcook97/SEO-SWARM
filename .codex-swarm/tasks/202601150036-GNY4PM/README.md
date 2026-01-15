@@ -4,7 +4,7 @@ title: "Enforce schema requirement in templates"
 status: "DONE"
 priority: "med"
 owner: "DOCS"
-depends_on: ["[\"202601150018-R48DCR\"]"]
+depends_on: []
 tags: []
 commit: { hash: "4c00f0de914dbf0033f236ced91f3e19b5cd6e8d", message: "✨ GNY4PM require schema in HighPoint HVAC template docs" }
 comments:

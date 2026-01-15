@@ -4,7 +4,7 @@ title: "Create HighPoint HVAC article templates"
 status: "DONE"
 priority: "med"
 owner: "DOCS"
-depends_on: ["[\"202601150018-R48DCR\",\"202601150019-NH3PKT\"]"]
+depends_on: []
 tags: []
 commit: { hash: "7e50d5dab4da05486dc492badf4c04a1d6e39a7b", message: "✨ T0F77E add HighPoint HVAC article templates for service-area and topical SEO" }
 comments:

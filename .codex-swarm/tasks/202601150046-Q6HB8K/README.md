@@ -4,7 +4,7 @@ title: "Add rank tracking and competitor inputs to templates"
 status: "DONE"
 priority: "med"
 owner: "DOCS"
-depends_on: ["[\"202601150018-R48DCR\"]"]
+depends_on: []
 tags: []
 commit: { hash: "64c1aafe5d3f7307032570f658ebb61de7c0a64d", message: "✨ Q6HB8K add rank tracking and competitor inputs to templates" }
 comments:

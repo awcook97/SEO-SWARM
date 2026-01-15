@@ -4,7 +4,7 @@ title: "Define HighPoint HVAC swarm roles"
 status: "DONE"
 priority: "med"
 owner: "DOCS"
-depends_on: ["[\"202601150018-R48DCR\"]"]
+depends_on: []
 tags: []
 commit: { hash: "123a250fcff2cf605e0cfee293e3da5e33e02f2d", message: "✨ NH3PKT add HighPoint HVAC swarm roles spec with handoffs and guardrails" }
 comments:

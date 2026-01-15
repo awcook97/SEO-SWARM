@@ -4,7 +4,7 @@ title: "Create HighPoint HVAC webpage templates"
 status: "DONE"
 priority: "med"
 owner: "DOCS"
-depends_on: ["[\"202601150018-R48DCR\",\"202601150019-NH3PKT\"]"]
+depends_on: []
 tags: []
 commit: { hash: "989b7d56b600e5d5db76326de8f548866b38f2b8", message: "✨ Z0P215 add HighPoint HVAC webpage templates for landing and service pages" }
 comments:
