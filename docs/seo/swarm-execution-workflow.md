@@ -28,6 +28,7 @@ This workflow is client-agnostic and defines how the swarm executes end-to-end d
 4) Review and compliance
 - Validate claims against sources.
 - Confirm NAP consistency and service areas.
+- Run internal link validation against the link map output.
 
 5) Distribution and promotion
 - Publish blog posts and landing pages.

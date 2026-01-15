@@ -1,0 +1,58 @@
+{
+  "generated_at": "2026-01-15T00:00:00+00:00",
+  "client": {
+    "name": "HighPoint HVAC",
+    "phone": "(720) 277-6586",
+    "website": "https://highpoint-hvac.com"
+  },
+  "pages": [
+    {
+      "id": "air-duct-service",
+      "type": "service-page",
+      "slug": "air-duct-services",
+      "metadata": {
+        "title_tag": "Air Duct Services | HighPoint HVAC",
+        "meta_description": "Air Duct Services with HighPoint HVAC. Call (720) 277-6586.",
+        "schema_types": ["Service", "LocalBusiness", "FAQPage"]
+      },
+      "internal_links": [
+        {"label": "Dryer Vent Services", "url": "/services/dryer-vent", "type": "related-service"},
+        {"label": "Service area", "url": "/service-areas/denver", "type": "service-area"},
+        {"label": "Maintenance plans", "url": "/maintenance-plans", "type": "maintenance"}
+      ],
+      "missing_links": []
+    },
+    {
+      "id": "landing-denver",
+      "type": "local-landing",
+      "slug": "air-duct-denver",
+      "metadata": {
+        "title_tag": "Air Duct Services in Denver | HighPoint HVAC",
+        "meta_description": "Air Duct Services in Denver with HighPoint HVAC. Call (720) 277-6586.",
+        "schema_types": ["LocalBusiness", "Service"]
+      },
+      "internal_links": [
+        {"label": "Service hub", "url": "/services", "type": "service-hub"},
+        {"label": "Contact", "url": "/contact", "type": "contact"}
+      ],
+      "missing_links": [
+        {"label": "Dryer Vent Services", "type": "related-service"}
+      ]
+    },
+    {
+      "id": "guide",
+      "type": "topical-guide",
+      "slug": "duct-cleaning-guide",
+      "metadata": {
+        "title_tag": "Air Duct Cleaning | HighPoint HVAC",
+        "meta_description": "Air Duct Cleaning guide with HighPoint HVAC. Call (720) 277-6586.",
+        "schema_types": ["Article"]
+      },
+      "internal_links": [
+        {"label": "Service page", "url": "/services/air-duct", "type": "service-page"},
+        {"label": "Contact", "url": "[CONTACT_URL]", "type": "contact"}
+      ],
+      "missing_links": []
+    }
+  ]
+}
