@@ -16,7 +16,9 @@ import re
 import subprocess
 import sys
 from collections.abc import Callable
-from datetime import UTC, datetime
+from datetime import datetime, timezone
+
+UTC = timezone.utc
 from pathlib import Path
 from typing import TYPE_CHECKING, NoReturn, Protocol, TypedDict, TypeGuard, cast
 
