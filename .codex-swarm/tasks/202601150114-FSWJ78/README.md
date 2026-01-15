@@ -1,11 +1,14 @@
 ---
 id: "202601150114-FSWJ78"
 title: "Produce HighPoint HVAC full-service content package"
-status: "TODO"
+status: "DONE"
 priority: "med"
 owner: "DOCS"
 depends_on: []
 tags: []
+commit: { hash: "7a54605a8c61f79fbd56a70d8d390553cf1fa98e", message: "✨ FSWJ78 add HighPoint HVAC full-service content package drafts" }
+comments:
+  - { author: "DOCS", body: "verified: HighPoint HVAC full-service drafts created under outputs/highpoint-hvac | details: no tests run (docs-only)." }
 doc_version: 2
 doc_updated_at: "2026-01-15T01:20:17+00:00"
 doc_updated_by: "agentctl"
