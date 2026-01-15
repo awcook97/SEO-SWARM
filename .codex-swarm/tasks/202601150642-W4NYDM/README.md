@@ -1,13 +1,15 @@
 ---
 id: "202601150642-W4NYDM"
 title: "Automate metadata and internal link map generation"
-status: "DOING"
+status: "DONE"
 priority: "med"
 owner: "CODER"
 depends_on: []
 tags: ["seo", "onpage", "automation"]
+commit: { hash: "355c34b2599928faeafb61014e7716c7f1f6674f", message: "✨ W4NYDM add metadata/internal link map generator and tests" }
 comments:
   - { author: "CODER", body: "Start: Implement metadata + internal link map generator (spec, script, tests, wiring) per approved plan." }
+  - { author: "CODER", body: "verified: ran python -m unittest tests/test_metadata_internal_link_map.py | details: generated metadata+link map script/spec wired into workflow docs." }
 doc_version: 2
 doc_updated_at: "2026-01-15T07:28:39+00:00"
 doc_updated_by: "agentctl"
