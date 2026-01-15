@@ -1,11 +1,14 @@
 ---
 id: "202601150222-Y4P9QY"
 title: "Remove client-specific references from public docs"
-status: "TODO"
+status: "DONE"
 priority: "med"
 owner: "DOCS"
 depends_on: []
 tags: []
+commit: { hash: "4ea962196eba2ba31538c84fac6742f9dabd2434", message: "✨ Y4P9QY remove client-specific references from public docs" }
+comments:
+  - { author: "DOCS", body: "verified: HighPoint HVAC references removed | details: docs made client-agnostic; client outputs removed from git; no tests run (docs-only)." }
 doc_version: 2
 doc_updated_at: "2026-01-15T02:23:40+00:00"
 doc_updated_by: "agentctl"
