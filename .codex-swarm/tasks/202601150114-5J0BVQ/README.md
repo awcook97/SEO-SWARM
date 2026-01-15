@@ -1,11 +1,14 @@
 ---
 id: "202601150114-5J0BVQ"
 title: "Create swarm execution workflow + script"
-status: "TODO"
+status: "DONE"
 priority: "med"
 owner: "DOCS"
 depends_on: []
 tags: []
+commit: { hash: "cbdacd7fea4777aa7bed00cebd5b269b661c4d66", message: "✨ 5J0BVQ add swarm execution workflow and scaffold script" }
+comments:
+  - { author: "DOCS", body: "verified: swarm execution workflow and scaffold script added | details: no tests run (docs-only)." }
 doc_version: 2
 doc_updated_at: "2026-01-15T01:16:27+00:00"
 doc_updated_by: "agentctl"
