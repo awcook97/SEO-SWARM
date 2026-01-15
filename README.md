@@ -1,4 +1,4 @@
-# Codex Swarm for Local SEO
+# SEO-SWARM
 
 This repository contains a reusable swarm workflow, templates, and measurement assets for local SEO content production.
 
