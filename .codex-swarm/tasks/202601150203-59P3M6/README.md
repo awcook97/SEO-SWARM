@@ -1,11 +1,14 @@
 ---
 id: "202601150203-59P3M6"
 title: "Add open-source license and tag release"
-status: "TODO"
+status: "DONE"
 priority: "med"
 owner: "DOCS"
 depends_on: []
 tags: []
+commit: { hash: "c044798dc3504a7e91b6931067519a480ad09ac8", message: "✨ 59P3M6 add MIT license" }
+comments:
+  - { author: "DOCS", body: "verified: MIT LICENSE added and tag v0.1.0 created | details: no tests run (docs-only)." }
 doc_version: 2
 doc_updated_at: "2026-01-15T02:06:01+00:00"
 doc_updated_by: "agentctl"
