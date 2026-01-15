@@ -1,11 +1,14 @@
 ---
 id: "202601150104-P8JHWE"
 title: "Add measurement intake and reporting templates"
-status: "TODO"
+status: "DONE"
 priority: "med"
 owner: "DOCS"
 depends_on: []
 tags: []
+commit: { hash: "8c3b21c689260bf4fc3779d0ed923d15cf9b7a7e", message: "✨ P8JHWE add measurement intake and reporting templates" }
+comments:
+  - { author: "DOCS", body: "verified: measurement intake and reporting templates created under docs/seo | details: no tests run (docs-only)." }
 doc_version: 2
 doc_updated_at: "2026-01-15T01:06:22+00:00"
 doc_updated_by: "agentctl"
