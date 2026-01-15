@@ -1,13 +1,15 @@
 ---
 id: "202601150642-HFYJGX"
 title: "Automate service brief generation"
-status: "DOING"
+status: "DONE"
 priority: "med"
 owner: "CODER"
 depends_on: []
 tags: []
+commit: { hash: "179b1d7a51819eff49125100a1460c714c8f44c2", message: "✨ HFYJGX add crawl cache and service brief generator" }
 comments:
   - { author: "ORCHESTRATOR", body: "Start: implement crawl cache + service brief generator with strict rate limits and cached fixtures to avoid repeated live requests." }
+  - { author: "CODER", body: "verified: ran .venv/bin/python -m unittest tests/test_service_brief_generator.py | details: added crawl cache utility with per-URL rate limiting and service brief generator that reads cached HTML snapshots." }
 doc_version: 2
 doc_updated_at: "2026-01-15T07:06:14+00:00"
 doc_updated_by: "agentctl"
