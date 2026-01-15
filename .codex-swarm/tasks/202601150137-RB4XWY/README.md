@@ -1,11 +1,14 @@
 ---
 id: "202601150137-RB4XWY"
 title: "Cleanup stale task dependencies"
-status: "TODO"
+status: "DONE"
 priority: "med"
 owner: "DOCS"
 depends_on: []
 tags: []
+commit: { hash: "e40cf64694c3bf3f32bd772ba1de53da1a12fd80", message: "✨ RB4XWY clear stale task dependencies" }
+comments:
+  - { author: "DOCS", body: "verified: stale dependency references cleared from completed tasks | details: no tests run (docs-only)." }
 doc_version: 2
 doc_updated_at: "2026-01-15T01:40:06+00:00"
 doc_updated_by: "agentctl"
