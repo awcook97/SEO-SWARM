@@ -1,12 +1,15 @@
 ---
 id: "202601150449-28MV5A"
 title: "Execute SEO swarm workflow for HighPoint HVAC"
-status: "DOING"
+status: "DONE"
 priority: "P1"
 owner: "ORCHESTRATOR"
 depends_on: []
 tags: ["seo", "docs", "content"]
 verify: [".venv/bin/python scripts/swarm_workflow.py --help"]
+commit: { hash: "dc16aefb0ac5183d41701bcd4e6c38b627dc5dcc", message: "📝 28MV5A fill task doc sections" }
+comments:
+  - { author: "ORCHESTRATOR", body: "verified: ran .venv/bin/python scripts/swarm_workflow.py --help | details: updated outputs/highpoint drafts with site-sourced FAQ answers and proof points; produced FAQ audit artifacts in outputs/highpoint/reports." }
 doc_version: 2
 doc_updated_at: "2026-01-15T06:29:59+00:00"
 doc_updated_by: "agentctl"
