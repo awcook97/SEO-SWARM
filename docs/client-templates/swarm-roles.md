@@ -21,6 +21,137 @@ This file defines the agent roles, responsibilities, and handoffs for a local SE
 | Review and Reputation | Guides review generation and responses. | Review inbox, owner approvals. | Response templates, outreach plan, escalation list. |
 | Local Link Builder | Pursues local partnerships and mentions. | Target list, community calendar. | Outreach plan, tracked placements. |
 
+## Role playbooks (ready-to-run)
+
+These are “fill in the blanks” briefs for running the roles above. They are written to map cleanly to specialist Codex agents (optional) while still being usable for humans.
+
+### Local SEO Strategist
+
+Mission: turn approved business inputs into a keyword→URL plan and measurable KPIs.
+
+Inputs required:
+
+- Approved NAP, hours, service areas
+- Service list + service priority order
+- Approved claims/proof points with sources
+- Measurement intake fields from `docs/seo/measurement-intake-template.md`
+
+Outputs (per cycle):
+
+- Keyword map: primary/secondary/branded keywords → target URL
+- Service-area plan: which cities get location pages this cycle
+- SERP feature targets: local pack/maps/FAQ/reviews/sitelinks
+- KPI targets + cadence (weekly/monthly)
+
+Agent profile (optional): `LOCAL_SEO_STRATEGIST` (see `.codex-swarm/agents/LOCAL_SEO_STRATEGIST.json`)
+
+### Competitor and SERP Analyst
+
+Mission: summarize SERP patterns and competitor gaps from approved exports without fabricating data.
+
+Inputs required:
+
+- Approved SERP exports/screenshots/URLs + timestamps
+- Approved competitor set (domains)
+- Keyword list + target locations
+
+Outputs (per cycle):
+
+- SERP pattern notes (local pack presence, common page types, FAQ usage)
+- Competitor gap list (services, cities, FAQs, offers) backed by sources
+- Recommended content angles (non-claims) for the next cycle
+
+Agent profile (optional): `SERP_ANALYST` (see `.codex-swarm/agents/SERP_ANALYST.json`)
+
+### GBP Optimizer
+
+Mission: keep the Google Business Profile complete, accurate, and active.
+
+Inputs required:
+
+- Approved NAP/hours/services/categories/attributes
+- Approved photos/media list
+- Approved posting cadence and offers (if any)
+
+Outputs (per cycle):
+
+- GBP update checklist (fields to update + approvals required)
+- GBP post plan (dates, city/service rotation, UTMs)
+- Risk flags (unverified claims, inconsistent NAP)
+
+Agent profile (optional): `GBP_OPTIMIZER` (see `.codex-swarm/agents/GBP_OPTIMIZER.json`)
+
+### Content Planner
+
+Mission: convert strategy + insights into a concrete set of content briefs.
+
+Inputs required:
+
+- Keyword map + target URLs
+- Service briefs + approved FAQs/proof points
+- SERP insights + feature targets
+
+Outputs (per cycle):
+
+- 1 service page brief
+- 1 city/local landing brief
+- 1 topical blog brief
+- 14/30 day social plan brief (if in scope)
+
+Agent profile (optional): `CONTENT_PLANNER_SEO` (see `.codex-swarm/agents/CONTENT_PLANNER_SEO.json`)
+
+### Copywriter
+
+Mission: draft pages and articles using templates, adding schema sections and internal links.
+
+Inputs required:
+
+- Page/article briefs
+- Approved proof points + sources
+- Approved NAP/service area list
+- Template(s): `docs/client-templates/webpage-templates.md`, `docs/client-templates/article-templates.md`
+
+Outputs (per cycle):
+
+- Drafts with placeholders clearly marked when sources are missing
+- Schema blocks included (LocalBusiness/Service/FAQPage/Article as relevant)
+
+Agent profile (optional): `COPYWRITER_SEO` (see `.codex-swarm/agents/COPYWRITER_SEO.json`)
+
+### Editor and Compliance
+
+Mission: remove risk and tighten language; ensure NAP consistency; ensure claims are source-backed.
+
+Inputs required:
+
+- Drafts + source list
+- Brand voice guidance (if any)
+- Compliance constraints (no unverified superlatives, safety claims, etc.)
+
+Outputs (per cycle):
+
+- Edited drafts
+- Risk log: any remaining placeholders, missing sources, or compliance issues
+
+Agent profile (optional): `COMPLIANCE_EDITOR` (see `.codex-swarm/agents/COMPLIANCE_EDITOR.json`)
+
+### Analytics and Reporting
+
+Mission: produce a measurement snapshot and recommendations without inventing results.
+
+Inputs required:
+
+- Approved exports: rank tracker, GA4, GSC, GBP, call tracking (as available) + timestamps
+- Keyword map + target URLs
+
+Outputs (per cycle):
+
+- Rank tracking summary + CSV link/attachment note
+- Competitor snapshot + recommended next actions
+- “What we’re doing next” plan tied to service priorities
+
+Agent profile (optional): `ANALYTICS_REPORTING` (see `.codex-swarm/agents/ANALYTICS_REPORTING.json`)
+
 ## Handoff flow
 
 1. Orchestrator sets sprint scope and acceptance criteria.

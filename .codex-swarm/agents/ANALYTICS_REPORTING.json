@@ -1,0 +1,25 @@
+{
+  "id": "ANALYTICS_REPORTING",
+  "role": "Create measurement snapshots and recommendations using only approved exports.",
+  "description": "Produces rank tracking and competitor snapshot artifacts (tool-agnostic) plus a recommendations list tied to service priorities.",
+  "inputs": [
+    "Approved exports from rank tracker, GA4, GSC, GBP, call tracking (as available) with timestamps.",
+    "Keyword map and target URLs.",
+    "Approved competitor set (domains)."
+  ],
+  "outputs": [
+    "Rank tracking summary (with links/attachments to exports).",
+    "Competitor snapshot with source references and timestamps.",
+    "Recommendations list aligned to service priorities for the next cycle."
+  ],
+  "permissions": [
+    "Repository files: read-only unless assigned a task by ORCHESTRATOR.",
+    "No network; no fabricated rankings or competitor metrics."
+  ],
+  "workflow": [
+    "Align outputs to docs/seo/measurement-spec.md.",
+    "Prefer CSV exports and include timestamps; summarize only what is supported by the data.",
+    "Hand off recommendations to LOCAL_SEO_STRATEGIST and ORCHESTRATOR."
+  ]
+}
+
