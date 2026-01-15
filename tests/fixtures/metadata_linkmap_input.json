@@ -1,0 +1,43 @@
+{
+  "client": {
+    "name": "HighPoint HVAC",
+    "phone": "(720) 277-6586",
+    "website": "https://highpoint-hvac.com"
+  },
+  "defaults": {
+    "contact_url": "/contact",
+    "service_hub_url": "/services",
+    "maintenance_url": "/maintenance-plans",
+    "service_pages": {
+      "Air Duct Services": "/services/air-duct",
+      "Dryer Vent Services": "/services/dryer-vent"
+    }
+  },
+  "pages": [
+    {
+      "id": "air-duct-service",
+      "type": "service-page",
+      "slug": "air-duct-services",
+      "service": "Air Duct Services",
+      "related_services": ["Dryer Vent Services"],
+      "service_area_links": ["/service-areas/denver"],
+      "include_faq_schema": true
+    },
+    {
+      "type": "local-landing",
+      "slug": "air-duct-denver",
+      "service": "Air Duct Services",
+      "city": "Denver",
+      "proof_point": "Same-day availability",
+      "internal_links": [
+        {"label": "Blog", "url": "/blog", "type": "supporting"}
+      ]
+    },
+    {
+      "type": "topical-guide",
+      "slug": "duct-cleaning-guide",
+      "topic": "Air Duct Cleaning",
+      "service": "Air Duct Services"
+    }
+  ]
+}

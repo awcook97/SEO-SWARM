@@ -9,3 +9,4 @@
 ## Workflow
 
 - Swarm execution workflow: @docs/seo/swarm-execution-workflow.md
+- Metadata + internal link map spec: @docs/seo/metadata-internal-link-map-spec.md
