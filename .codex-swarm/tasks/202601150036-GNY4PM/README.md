@@ -1,11 +1,14 @@
 ---
 id: "202601150036-GNY4PM"
 title: "Enforce schema requirement in templates"
-status: "TODO"
+status: "DONE"
 priority: "med"
 owner: "DOCS"
 depends_on: ["[\"202601150018-R48DCR\"]"]
 tags: []
+commit: { hash: "4c00f0de914dbf0033f236ced91f3e19b5cd6e8d", message: "✨ GNY4PM require schema in HighPoint HVAC template docs" }
+comments:
+  - { author: "DOCS", body: "verified: schema requirement marked as required in webpage and article template docs | details: no tests run (docs-only)." }
 doc_version: 2
 doc_updated_at: "2026-01-15T00:43:39+00:00"
 doc_updated_by: "agentctl"
