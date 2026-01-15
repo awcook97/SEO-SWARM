@@ -12,3 +12,4 @@ dmypy.json
 .codex-swarm/worktrees
 .codex-swarm/tasks.json
 outputs/
+downloaded_files/
