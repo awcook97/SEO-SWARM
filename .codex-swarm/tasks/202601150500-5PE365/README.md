@@ -1,12 +1,15 @@
 ---
 id: "202601150500-5PE365"
 title: "HighPoint HVAC: 14-day daily social posting pack"
-status: "TODO"
+status: "DONE"
 priority: "P1"
 owner: "ORCHESTRATOR"
 depends_on: []
 tags: ["seo", "content", "social"]
 verify: [".venv/bin/python scripts/swarm_workflow.py --help"]
+commit: { hash: "97ee306918306aaebe20c55130f47c3adc6c70d0", message: "✨ 5PE365 daily posts (14-day calendar)" }
+comments:
+  - { author: "ORCHESTRATOR", body: "verified: Produced a 14-day city-targeted daily posting pack with per-platform variants, UTMs, and a dated schedule starting 2026-01-16." }
 doc_version: 2
 doc_updated_at: "2026-01-15T05:45:44+00:00"
 doc_updated_by: "agentctl"
