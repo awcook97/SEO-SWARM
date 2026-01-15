@@ -105,6 +105,27 @@ def cache_path_for(cache_dir: Path, url: str) -> Path:
     digest = hashlib.sha256(url.encode("utf-8")).hexdigest()[:16]
     return cache_dir / f"{digest}.html"
 
+def fetch_with_retries(
+    session: requests.Session,
+    url: str,
+    headers: dict[str, str],
+    timeout: int,
+    retries: int,
+    backoff_seconds: int,
+) -> requests.Response | None:
+    for attempt in range(retries + 1):
+        try:
+            resp = session.get(url, headers=headers, timeout=timeout)
+            if resp.status_code >= 500 and attempt < retries:
+                time.sleep(backoff_seconds * (attempt + 1))
+                continue
+            return resp
+        except requests.RequestException:
+            if attempt >= retries:
+                return None
+            time.sleep(backoff_seconds * (attempt + 1))
+    return None
+
 
 def should_fetch(entry: CacheEntry | None, max_age_hours: int) -> bool:
     if entry is None:
@@ -130,6 +151,8 @@ def main() -> None:
     parser.add_argument("--timeout", type=int, default=25, help="Request timeout seconds")
     parser.add_argument("--max-age-hours", type=int, default=24, help="Re-fetch cache older than this")
     parser.add_argument("--min-interval-seconds", type=int, default=20, help="Per-URL minimum interval")
+    parser.add_argument("--retries", type=int, default=3, help="Retries for failed requests")
+    parser.add_argument("--backoff-seconds", type=int, default=5, help="Base backoff seconds between retries")
     args = parser.parse_args()
 
     base = args.base.rstrip("/")
@@ -148,8 +171,20 @@ def main() -> None:
         if not should_fetch(entry, args.max_age_hours):
             continue
         enforce_rate_limit(entry, args.min_interval_seconds)
-        resp = session.get(url, headers=headers, timeout=args.timeout)
-        resp.raise_for_status()
+        resp = fetch_with_retries(
+            session=session,
+            url=url,
+            headers=headers,
+            timeout=args.timeout,
+            retries=args.retries,
+            backoff_seconds=args.backoff_seconds,
+        )
+        if resp is None:
+            print(f"skip {url} -> request failed after retries")
+            continue
+        if resp.status_code >= 400:
+            print(f"skip {url} -> status {resp.status_code}")
+            continue
         path = cache_path_for(cache_dir, url)
         path.write_text(resp.text, encoding="utf-8")
         index[url] = CacheEntry(
