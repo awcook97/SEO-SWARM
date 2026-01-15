@@ -1,6 +1,7 @@
 # HighPoint HVAC webpage templates
 
 These templates are for local SEO landing pages and service pages. Use only approved inputs for business facts, service areas, pricing, and guarantees. Do not invent claims.
+Schema is required on every page (include the relevant structured data for the template).
 
 ## Local landing page template
 
@@ -48,7 +49,7 @@ Purpose: rank for a service in a specific city or service area page.
 
 - Title tag: [Primary Service] in [City] | HighPoint HVAC
 - Meta description: [Primary Service] in [City]. [Proof Point]. Call [Phone].
-- Schema: LocalBusiness + Service, FAQPage where appropriate.
+- Schema (required): LocalBusiness + Service, FAQPage where appropriate.
 
 ### Internal linking
 
@@ -109,7 +110,7 @@ Purpose: evergreen page for a core HVAC service (no city targeting unless needed
 
 - Title tag: [Service Name] | HighPoint HVAC
 - Meta description: [Service Name] with HighPoint HVAC. [Proof Point]. Call [Phone].
-- Schema: Service, LocalBusiness, FAQPage where appropriate.
+- Schema (required): Service, LocalBusiness, FAQPage where appropriate.
 
 ### Internal linking
 
