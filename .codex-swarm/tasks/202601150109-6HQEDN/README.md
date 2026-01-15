@@ -1,11 +1,14 @@
 ---
 id: "202601150109-6HQEDN"
 title: "Add SEO docs index"
-status: "TODO"
+status: "DONE"
 priority: "med"
 owner: "DOCS"
 depends_on: []
 tags: []
+commit: { hash: "2db00e1f4851ec2c8d340ffdd4f315566b6dab3b", message: "✨ 6HQEDN add docs/seo index for measurement assets" }
+comments:
+  - { author: "DOCS", body: "verified: docs/seo index added with links to measurement spec and templates | details: no tests run (docs-only)." }
 doc_version: 2
 doc_updated_at: "2026-01-15T01:10:34+00:00"
 doc_updated_by: "agentctl"
