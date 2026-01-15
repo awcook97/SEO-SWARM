@@ -1,11 +1,14 @@
 ---
 id: "202601150145-4NJJQA"
 title: "Publish readiness pass"
-status: "TODO"
+status: "DONE"
 priority: "med"
 owner: "DOCS"
 depends_on: []
 tags: []
+commit: { hash: "ccc85227cf0aa046f9a4e61b881103b2616e0876", message: "✨ 4NJJQA add publish readiness docs" }
+comments:
+  - { author: "DOCS", body: "verified: README and release checklist added | details: swarm workflow script help runs; no tests run (docs-only)." }
 doc_version: 2
 doc_updated_at: "2026-01-15T01:47:41+00:00"
 doc_updated_by: "agentctl"
