@@ -1,11 +1,14 @@
 ---
 id: "202601150100-54DP18"
 title: "Create reusable rank tracking + competitor analysis spec"
-status: "TODO"
+status: "DONE"
 priority: "med"
 owner: "DOCS"
 depends_on: []
 tags: []
+commit: { hash: "9f6c22196165be0dd163696b56fc97d7970a3a85", message: "✨ 54DP18 add reusable rank tracking and competitor analysis spec" }
+comments:
+  - { author: "DOCS", body: "verified: reusable measurement spec created at docs/seo/measurement-spec.md | details: no tests run (docs-only)." }
 doc_version: 2
 doc_updated_at: "2026-01-15T01:02:01+00:00"
 doc_updated_by: "agentctl"
