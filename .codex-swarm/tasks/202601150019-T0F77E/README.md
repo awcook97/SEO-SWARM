@@ -1,11 +1,14 @@
 ---
 id: "202601150019-T0F77E"
 title: "Create HighPoint HVAC article templates"
-status: "TODO"
+status: "DONE"
 priority: "med"
 owner: "DOCS"
 depends_on: ["[\"202601150018-R48DCR\",\"202601150019-NH3PKT\"]"]
 tags: []
+commit: { hash: "7e50d5dab4da05486dc492badf4c04a1d6e39a7b", message: "✨ T0F77E add HighPoint HVAC article templates for service-area and topical SEO" }
+comments:
+  - { author: "DOCS", body: "verified: service-area and topical article templates documented in docs/highpoint-hvac/article-templates.md | details: no tests run (docs-only)." }
 doc_version: 2
 doc_updated_at: "2026-01-15T00:34:52+00:00"
 doc_updated_by: "agentctl"
