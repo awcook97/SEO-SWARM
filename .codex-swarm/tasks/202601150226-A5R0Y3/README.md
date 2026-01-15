@@ -1,11 +1,14 @@
 ---
 id: "202601150226-A5R0Y3"
 title: "Update README repo name"
-status: "TODO"
+status: "DONE"
 priority: "med"
 owner: "DOCS"
 depends_on: []
 tags: []
+commit: { hash: "4abcd83da6cb9fca1305605dd4a78099e77d9b03", message: "✨ A5R0Y3 rename README title to SEO-SWARM" }
+comments:
+  - { author: "DOCS", body: "verified: README title updated to SEO-SWARM | details: no tests run (docs-only)." }
 doc_version: 2
 doc_updated_at: "2026-01-15T02:27:55+00:00"
 doc_updated_by: "agentctl"
