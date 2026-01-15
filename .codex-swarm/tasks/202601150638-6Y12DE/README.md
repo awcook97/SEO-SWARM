@@ -1,14 +1,16 @@
 ---
 id: "202601150638-6Y12DE"
 title: "Automate internal link validation"
-status: "DOING"
+status: "DONE"
 priority: "med"
 owner: "CODER"
 depends_on: []
 tags: ["seo", "onpage", "automation", "code", "backend"]
 verify: ["python -m unittest tests/test_internal_link_validator.py"]
+commit: { hash: "724dbff00f8c2ef8c449fbbee0f871837b26363e", message: "✨ 6Y12DE add internal link validator and spec" }
 comments:
   - { author: "CODER", body: "Start: define internal link validation rules, implement validator + tests, wire into docs." }
+  - { author: "CODER", body: "verified: ran python -m unittest tests/test_internal_link_validator.py | details: added validator script/spec and workflow wiring." }
 doc_version: 2
 doc_updated_at: "2026-01-15T07:36:52+00:00"
 doc_updated_by: "agentctl"
