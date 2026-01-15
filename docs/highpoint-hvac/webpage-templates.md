@@ -12,6 +12,8 @@ Purpose: rank for a service in a specific city or service area page.
 - Primary service keyword: [Primary Service]
 - City or service area: [City or Area]
 - Secondary keywords: [Secondary Keywords]
+- Rank tracking targets: [Keyword Set], [Target URL], [Tracking Frequency]
+- Competitor set: [Primary Competitors], [Notes From SERP Review]
 - Approved proof points: [Proof Points With Sources]
 - Service area list (verified): [Service Areas]
 
@@ -71,6 +73,8 @@ Purpose: evergreen page for a core HVAC service (no city targeting unless needed
 - Service name: [Service Name]
 - Primary keyword: [Primary Keyword]
 - Secondary keywords: [Secondary Keywords]
+- Rank tracking targets: [Keyword Set], [Target URL], [Tracking Frequency]
+- Competitor set: [Primary Competitors], [Notes From SERP Review]
 - Approved proof points: [Proof Points With Sources]
 - Warranty or guarantees (if verified): [Warranty Details]
 

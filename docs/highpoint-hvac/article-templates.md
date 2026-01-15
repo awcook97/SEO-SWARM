@@ -12,6 +12,8 @@ Purpose: target a specific city or service area with a localized service article
 - Primary service keyword: [Primary Service]
 - City or area: [City or Area]
 - Secondary keywords: [Secondary Keywords]
+- Rank tracking targets: [Keyword Set], [Target URL], [Tracking Frequency]
+- Competitor set: [Primary Competitors], [Notes From SERP Review]
 - Approved proof points: [Proof Points With Sources]
 - Service area list (verified): [Service Areas]
 - Internal links: [Service Page], [Contact Page], [Related Services]
@@ -56,6 +58,8 @@ Purpose: evergreen educational content for HVAC topics (maintenance, troubleshoo
 - Topic: [Topic]
 - Primary keyword: [Primary Keyword]
 - Secondary keywords: [Secondary Keywords]
+- Rank tracking targets: [Keyword Set], [Target URL], [Tracking Frequency]
+- Competitor set: [Primary Competitors], [Notes From SERP Review]
 - Approved sources: [Sources]
 - Internal links: [Relevant Service Page], [Contact Page]
 
