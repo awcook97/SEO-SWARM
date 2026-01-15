@@ -20,8 +20,8 @@ This workflow is client-agnostic and defines how the swarm executes end-to-end d
 - Establish rank tracking cadence and competitor set.
 
 3) Content production
-- Use page templates: @docs/highpoint-hvac/webpage-templates.md (or client equivalents).
-- Use article templates: @docs/highpoint-hvac/article-templates.md (or client equivalents).
+- Use page templates: @docs/client-templates/webpage-templates.md (or client equivalents).
+- Use article templates: @docs/client-templates/article-templates.md (or client equivalents).
 - Enforce schema on every page (required).
 
 4) Review and compliance

@@ -4,9 +4,9 @@ This repository contains a reusable swarm workflow, templates, and measurement a
 
 ## What is included
 
-- Swarm roles and guardrails: @docs/highpoint-hvac/swarm-roles.md
-- Webpage templates: @docs/highpoint-hvac/webpage-templates.md
-- Article templates: @docs/highpoint-hvac/article-templates.md
+- Swarm roles and guardrails: @docs/client-templates/swarm-roles.md
+- Webpage templates: @docs/client-templates/webpage-templates.md
+- Article templates: @docs/client-templates/article-templates.md
 - Measurement spec: @docs/seo/measurement-spec.md
 - Measurement intake + reporting templates:
   - @docs/seo/measurement-intake-template.md
@@ -17,7 +17,7 @@ This repository contains a reusable swarm workflow, templates, and measurement a
 ## Usage
 
 1) Collect approved inputs using @docs/seo/measurement-intake-template.md.
-2) Produce content using the templates under @docs/highpoint-hvac/.
+2) Produce content using the templates under @docs/client-templates/.
 3) Use @scripts/swarm_workflow.py to scaffold a client output folder.
 
 Example:

@@ -1,6 +1,6 @@
-# HighPoint HVAC local SEO swarm roles
+# Local SEO swarm roles (client-agnostic)
 
-This file defines the agent roles, responsibilities, and handoffs for a local SEO swarm supporting HighPoint HVAC. All facts about the business or market must come from approved inputs (owner notes, CRM, GBP, GA4/GSC, call logs, or verified citations). Do not invent external facts.
+This file defines the agent roles, responsibilities, and handoffs for a local SEO swarm supporting a single client. All facts about the business or market must come from approved inputs (owner notes, CRM, GBP, GA4/GSC, call logs, or verified citations). Do not invent external facts.
 
 ## Role roster
 

@@ -1,4 +1,4 @@
-# HighPoint HVAC article templates
+# Client article templates (local SEO)
 
 These templates support local SEO content such as service-area landing articles and topical HVAC guides. Use only approved inputs for business facts, service areas, pricing, and guarantees.
 Schema is required on every page (include the relevant structured data for the template).
@@ -34,7 +34,7 @@ Purpose: target a specific city or service area with a localized service article
 4) Common issues in [City or Area]
 - 5 to 7 symptom bullets tied to the service.
 
-5) Why HighPoint HVAC
+5) Why [Client Name]
 - 3 to 5 proof points with sources.
 
 6) FAQs
@@ -45,7 +45,7 @@ Purpose: target a specific city or service area with a localized service article
 
 ### Metadata and schema
 
-- Title tag: [Primary Service] in [City] | HighPoint HVAC
+- Title tag: [Primary Service] in [City] | [Client Name]
 - Meta description: [Primary Service] in [City]. [Proof Point]. Call [Phone].
 - Schema (required): LocalBusiness + Service, FAQPage if FAQs included.
 
@@ -89,8 +89,8 @@ Purpose: evergreen educational content for HVAC topics (maintenance, troubleshoo
 
 ### Metadata and schema
 
-- Title tag: [Topic] | HighPoint HVAC
-- Meta description: [Topic] guide with tips from HighPoint HVAC. Call [Phone].
+- Title tag: [Topic] | [Client Name]
+- Meta description: [Topic] guide with tips from [Client Name]. Call [Phone].
 - Schema (required): Article, FAQPage if FAQs included.
 
 ## Compliance notes
