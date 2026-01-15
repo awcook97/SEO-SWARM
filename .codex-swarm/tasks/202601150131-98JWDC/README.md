@@ -1,11 +1,14 @@
 ---
 id: "202601150131-98JWDC"
 title: "Ignore client outputs in git"
-status: "TODO"
+status: "DONE"
 priority: "med"
 owner: "DOCS"
 depends_on: []
 tags: []
+commit: { hash: "eafdaca377a599506facf15b4740fc367dd068c0", message: "✨ 98JWDC ignore client outputs" }
+comments:
+  - { author: "DOCS", body: "verified: outputs/ added to .gitignore to exclude client artifacts | details: no tests run (docs-only)." }
 doc_version: 2
 doc_updated_at: "2026-01-15T01:32:28+00:00"
 doc_updated_by: "agentctl"
