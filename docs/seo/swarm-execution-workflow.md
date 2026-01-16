@@ -23,6 +23,7 @@ This workflow is client-agnostic and defines how the swarm executes end-to-end d
 - Use page templates: @docs/client-templates/webpage-templates.md (or client equivalents).
 - Use article templates: @docs/client-templates/article-templates.md (or client equivalents).
 - Enforce schema on every page (required).
+- Generate content briefs from cached site pages (outputs/<client>/reports/service-briefs/).
 - Generate metadata + internal link map (outputs/<client>/reports/metadata-internal-link-map.*).
 
 4) Review and compliance
@@ -47,6 +48,7 @@ This workflow is client-agnostic and defines how the swarm executes end-to-end d
 - 1 topical article/blog post.
 - 5 to 10 social posts.
 - 1 email to subscribers.
+- Content briefs from cached site pages.
 - Metadata + internal link map report.
 - Rank tracking report and competitor snapshot.
 
