@@ -19,6 +19,7 @@ This repository contains a reusable swarm workflow, templates, and measurement a
 1) Review the swarm roles and guardrails: @docs/client-templates/swarm-roles.md.
 2) Use @scripts/swarm_workflow.py to scaffold a new client folder.
 3) Populate `outputs/<client>/inputs.md` with approved inputs.
+   - Template: @docs/seo/inputs-template.md
 4) Run the core automation scripts (see below) and draft content from the templates.
 
 Example scaffold:
@@ -32,6 +33,7 @@ python scripts/swarm_workflow.py --client "Example HVAC" --slug example-hvac
 1) Create the client folder:
    - `python scripts/swarm_workflow.py --client "Client Name" --slug client-slug`
 2) Fill in `outputs/<client>/inputs.md` with approved facts (NAP, services, hours, proof points).
+   - Template: @docs/seo/inputs-template.md
 3) Capture measurement inputs:
    - Use @docs/seo/measurement-intake-template.md
    - Optional generator: `python scripts/measurement_intake_generator.py --client-slug client-slug --scaffold`
@@ -42,7 +44,7 @@ python scripts/swarm_workflow.py --client "Example HVAC" --slug example-hvac
 ## Swarm workflow (recommended order)
 
 1) **Intake + validation**
-   - Approved inputs in `outputs/<client>/inputs.md`
+   - Approved inputs in `outputs/<client>/inputs.md` (see @docs/seo/inputs-template.md)
    - Measurement intake per @docs/seo/measurement-intake-template.md
 2) **Strategy + mapping**
    - Keyword map + KPI targets:

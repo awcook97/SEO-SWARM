@@ -1,13 +1,15 @@
 ---
 id: "202601161908-017MWA"
 title: "Generate inputs.md from JSON-LD schema"
-status: "DOING"
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
 tags: []
+commit: { hash: "517cec87568b9d036ab084258a76071c2be0c961", message: "✨ 017MWA add schema-to-inputs scaffold" }
 comments:
   - { author: "CODER", body: "Start: add schema-to-inputs scaffold script for inputs.md." }
+  - { author: "CODER", body: "verified: added schema-to-inputs scaffold script with tests and docs." }
 doc_version: 2
 doc_updated_at: "2026-01-16T19:08:14+00:00"
 doc_updated_by: "agentctl"
@@ -34,3 +36,4 @@ Add a JSON-LD to inputs.md scaffold script with basic field extraction.
 ## Rollback Plan
 
 - Revert `scripts/inputs_from_schema.py`, tests, and docs.
+

@@ -20,6 +20,8 @@
 - Local link outreach log: @docs/seo/local-link-outreach.md
 - Review response templates: @docs/seo/review-response-templates.md
 - Measurement intake generation: @docs/seo/measurement-intake-generation.md
+- Inputs template: @docs/seo/inputs-template.md
+- Inputs from schema: @docs/seo/inputs-from-schema.md
 
 ## Briefs
 

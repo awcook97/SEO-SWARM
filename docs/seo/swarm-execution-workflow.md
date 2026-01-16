@@ -8,6 +8,7 @@ This workflow is client-agnostic and defines how the swarm executes end-to-end d
 - Service list and priorities.
 - Proof points with sources.
 - Measurement inputs per @docs/seo/measurement-spec.md.
+- Use the inputs template: @docs/seo/inputs-template.md.
 
 ## Workflow stages
 
