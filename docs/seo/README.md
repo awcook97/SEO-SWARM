@@ -12,6 +12,7 @@
 - Metadata + internal link map spec: @docs/seo/metadata-internal-link-map-spec.md
 - Internal link validation spec: @docs/seo/internal-link-validation-spec.md
 - GBP update checklist generator: @docs/seo/gbp-update-checklist.md
+- Content brief workflow: @docs/seo/content-brief-workflow.md
 
 ## Briefs
 

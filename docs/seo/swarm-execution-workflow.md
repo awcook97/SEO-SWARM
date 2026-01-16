@@ -24,6 +24,7 @@ This workflow is client-agnostic and defines how the swarm executes end-to-end d
 - Use article templates: @docs/client-templates/article-templates.md (or client equivalents).
 - Enforce schema on every page (required).
 - Generate content briefs from cached site pages (outputs/<client>/reports/service-briefs/).
+- Use the content brief workflow: @docs/seo/content-brief-workflow.md.
 - Generate metadata + internal link map (outputs/<client>/reports/metadata-internal-link-map.*).
 
 4) Review and compliance
