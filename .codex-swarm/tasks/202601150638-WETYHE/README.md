@@ -1,11 +1,14 @@
 ---
 id: "202601150638-WETYHE"
 title: "Automate draft compliance lint"
-status: "TODO"
+status: "DONE"
 priority: "med"
 owner: "CODER"
 depends_on: []
 tags: []
+commit: { hash: "17a1ddf806df2d5827b36608ed391b1a6943e917", message: "✨ WETYHE add draft compliance lint" }
+comments:
+  - { author: "CODER", body: "verified: added draft compliance lint and ran unittest suite." }
 doc_version: 2
 doc_updated_at: "2026-01-15T06:38:44+00:00"
 doc_updated_by: "agentctl"
@@ -33,3 +36,4 @@ Add a draft compliance lint script to flag placeholders and risky claims.
 ## Rollback Plan
 
 - Revert the lint script, docs, and tests.
+
