@@ -19,6 +19,7 @@
 - Citation update log: @docs/seo/citation-update-log.md
 - Local link outreach log: @docs/seo/local-link-outreach.md
 - Review response templates: @docs/seo/review-response-templates.md
+- Measurement intake generation: @docs/seo/measurement-intake-generation.md
 
 ## Briefs
 
