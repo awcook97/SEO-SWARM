@@ -19,7 +19,8 @@ description: "Track progress across the remaining off-page and metrics automatio
 
 - `202601150642-FX538R` citation update log scaffold ✅ done.
 - `202601150642-P8NKM1` local link outreach log ✅ done.
-- Next up: `202601150642-TG431S` (review response templates), then the metrics tasks.
+- `202601150642-TG431S` review response templates ✅ done.
+- Next up: metrics automations (`202601150638-E7R3X5`, `202601150638-HSN5BY`, `202601150638-P2QAD6`, `202601150642-BG7Y1B`).
 
 ## Plan
 
