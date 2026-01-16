@@ -45,6 +45,24 @@ Outputs (per cycle):
 
 Agent profile (optional): `LOCAL_SEO_STRATEGIST` (see `.codex-swarm/agents/LOCAL_SEO_STRATEGIST.json`)
 
+### Service Researcher
+
+Mission: gather service-specific details and proof points from approved inputs only.
+
+Inputs required:
+
+- Owner notes, technician notes, or approved service documentation
+- Approved FAQ list (if available)
+- Approved proof points with sources
+
+Outputs (per cycle):
+
+- Service briefs (per primary service): benefits, process, limitations
+- FAQs with answers tied to approved sources
+- Proof points list with citations and missing-source flags
+
+Agent profile (optional): `SERVICE_RESEARCHER` (see `.codex-swarm/agents/SERVICE_RESEARCHER.json`)
+
 ### Competitor and SERP Analyst
 
 Mission: summarize SERP patterns and competitor gaps from approved exports without fabricating data.
@@ -80,6 +98,24 @@ Outputs (per cycle):
 - Risk flags (unverified claims, inconsistent NAP)
 
 Agent profile (optional): `GBP_OPTIMIZER` (see `.codex-swarm/agents/GBP_OPTIMIZER.json`)
+
+### On-Page SEO Specialist
+
+Mission: define on-page structure, metadata, and internal link targets using approved inputs.
+
+Inputs required:
+
+- Keyword map + target URLs
+- Service briefs + approved FAQs
+- Site architecture and internal link inventory (if available)
+
+Outputs (per cycle):
+
+- Page outlines with H1/H2/H3 structure
+- Title/meta drafts + schema recommendations
+- Internal link map (source → target) with anchor guidance
+
+Agent profile (optional): `ON_PAGE_SEO_SPECIALIST` (see `.codex-swarm/agents/ON_PAGE_SEO_SPECIALIST.json`)
 
 ### Content Planner
 
@@ -135,6 +171,42 @@ Outputs (per cycle):
 
 Agent profile (optional): `COMPLIANCE_EDITOR` (see `.codex-swarm/agents/COMPLIANCE_EDITOR.json`)
 
+### Technical SEO Auditor
+
+Mission: surface technical risks from approved crawl/export data only.
+
+Inputs required:
+
+- Crawl exports and/or sitemap exports
+- Core Web Vitals or performance summaries
+- Known constraints (platform, hosting, CMS)
+
+Outputs (per cycle):
+
+- Audit summary with prioritized fixes
+- Regression checklist for future releases
+- “Do not change” guardrails (critical URLs, templates)
+
+Agent profile (optional): `TECHNICAL_SEO_AUDITOR` (see `.codex-swarm/agents/TECHNICAL_SEO_AUDITOR.json`)
+
+### Citation Manager
+
+Mission: keep NAP consistency and track citation updates.
+
+Inputs required:
+
+- Approved NAP source of truth
+- Citation audit list (if available)
+- Approved updates/approvals from the owner
+
+Outputs (per cycle):
+
+- Citation cleanup/update plan
+- Change log with dates and platforms
+- Follow-up checklist for unresolved listings
+
+Agent profile (optional): `CITATION_MANAGER` (see `.codex-swarm/agents/CITATION_MANAGER.json`)
+
 ### Analytics and Reporting
 
 Mission: produce a measurement snapshot and recommendations without inventing results.
@@ -151,6 +223,42 @@ Outputs (per cycle):
 - “What we’re doing next” plan tied to service priorities
 
 Agent profile (optional): `ANALYTICS_REPORTING` (see `.codex-swarm/agents/ANALYTICS_REPORTING.json`)
+
+### Review and Reputation
+
+Mission: manage review responses and reputation workflows without inventing claims.
+
+Inputs required:
+
+- Review inbox/exports
+- Approved response guidelines
+- Escalation rules and owner approvals
+
+Outputs (per cycle):
+
+- Response templates by review type
+- Escalation list and owner response queue
+- Weekly response summary (counts only)
+
+Agent profile (optional): `REVIEW_REPUTATION` (see `.codex-swarm/agents/REVIEW_REPUTATION.json`)
+
+### Local Link Builder
+
+Mission: build local partnership outreach plans using approved targets only.
+
+Inputs required:
+
+- Approved target list (organizations, events, partners)
+- Brand guidelines and outreach constraints
+- Approved value propositions (no unverified claims)
+
+Outputs (per cycle):
+
+- Outreach plan with contact targets
+- Tracking log template (status, date, outcome)
+- Suggested collateral needs (assets, bios, photos)
+
+Agent profile (optional): `LOCAL_LINK_BUILDER` (see `.codex-swarm/agents/LOCAL_LINK_BUILDER.json`)
 
 ## Handoff flow
 
