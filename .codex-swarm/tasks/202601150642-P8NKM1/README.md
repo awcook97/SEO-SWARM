@@ -1,13 +1,15 @@
 ---
 id: "202601150642-P8NKM1"
 title: "Automate local link outreach log"
-status: "DOING"
+status: "DONE"
 priority: "med"
 owner: "CODER"
 depends_on: []
 tags: []
+commit: { hash: "9a89f15676751f087d6f848ffbd9c8c3e0f76ffb", message: "✨ P8NKM1 add local link outreach log" }
 comments:
   - { author: "CODER", body: "Start: automate local link outreach log generator with target + status tracking." }
+  - { author: "CODER", body: "verified: added local link outreach log with docs and unit tests." }
 doc_version: 2
 doc_updated_at: "2026-01-15T06:42:35+00:00"
 doc_updated_by: "agentctl"
@@ -34,3 +36,4 @@ Generate a local link outreach log report capturing organization, contact, statu
 ## Rollback Plan
 
 - Revert the local link outreach script, docs, and tests.
+
