@@ -1,16 +1,28 @@
-import tempfile
 import unittest
 from pathlib import Path
-
-import sys
-
-sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 from scripts import inputs_from_schema
 
 
 class InputsFromSchemaTests(unittest.TestCase):
-    def test_parse_schema(self):
+    def test_parse_schema_from_graph(self):
+        data = {
+            "@context": "https://schema.org",
+            "@graph": [
+                {"@type": "WebPage", "name": "Example Page"},
+                {
+                    "@type": "Organization",
+                    "name": "Clearly Amazing",
+                    "url": "https://example.com",
+                    "sameAs": ["https://www.facebook.com/example/"],
+                },
+            ],
+        }
+        profile = inputs_from_schema.parse_schema(data)
+        self.assertEqual(profile.name, "Clearly Amazing")
+        self.assertIn("facebook", profile.same_as[0])
+
+    def test_parse_schema_basic(self):
         data = {
             "name": "Guilded Plumbing",
             "url": "https://example.com",
@@ -38,6 +50,13 @@ class InputsFromSchemaTests(unittest.TestCase):
             description="Test desc",
             address={"line1": "123 Main", "city": "Town", "region": "TX", "postal": "77001", "country": "US"},
             geo={"lat": "1.0", "lng": "2.0"},
+            same_as=[],
+            hours=[],
+            areas_served=[],
+            services=[],
+            price_range="$$",
+            payment_forms=["Visa"],
+            keywords=["test"],
         )
         content = inputs_from_schema.render_inputs(profile)
         self.assertIn("Approved business facts", content)
