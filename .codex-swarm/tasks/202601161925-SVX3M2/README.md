@@ -1,13 +1,15 @@
 ---
 id: "202601161925-SVX3M2"
 title: "Improve schema-to-inputs extraction"
-status: "DOING"
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
 tags: []
+commit: { hash: "bb2fdf90a81adf355c4c1b6c2b6aa65bda960d2f", message: "✨ SVX3M2 improve schema-to-inputs extraction" }
 comments:
   - { author: "CODER", body: "Start: improve schema-to-inputs extraction for @graph and richer fields." }
+  - { author: "CODER", body: "verified: improved schema-to-inputs extraction with @graph support and richer fields." }
 doc_version: 2
 doc_updated_at: "2026-01-16T19:25:49+00:00"
 doc_updated_by: "agentctl"
@@ -34,3 +36,4 @@ Enhance the schema-to-inputs scaffold to parse @graph nodes and richer business 
 ## Rollback Plan
 
 - Revert updates to `scripts/inputs_from_schema.py` and related tests.
+
