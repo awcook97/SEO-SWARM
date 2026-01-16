@@ -39,11 +39,19 @@ class ServiceBrief:
     title: str
     meta_description: str
     h1: str
+    canonical_url: str
+    og_title: str
+    og_description: str
+    og_image: str
+    twitter_title: str
+    twitter_description: str
+    twitter_image: str
     headings: list[str]
     value_props: list[str]
     proof_points: list[str]
     pricing_mentions: list[str]
     ctas: list[str]
+    cta_links: list[str]
     internal_links: list[str]
     schema_types: list[str]
     faqs: list[tuple[str, str]]
@@ -67,6 +75,49 @@ def extract_meta(soup: BeautifulSoup) -> tuple[str, str]:
     if desc_tag and desc_tag.get("content"):
         meta_desc = desc_tag["content"].strip()
     return title, meta_desc
+
+
+def extract_canonical(soup: BeautifulSoup) -> str:
+    link = soup.find("link", rel="canonical")
+    if link and link.get("href"):
+        return link["href"].strip()
+    return ""
+
+
+def extract_open_graph(soup: BeautifulSoup) -> tuple[str, str, str]:
+    og_title = ""
+    og_desc = ""
+    og_image = ""
+    for tag in soup.find_all("meta"):
+        prop = tag.get("property")
+        content = tag.get("content", "").strip()
+        if not prop or not content:
+            continue
+        if prop == "og:title":
+            og_title = content
+        elif prop == "og:description":
+            og_desc = content
+        elif prop == "og:image":
+            og_image = content
+    return og_title, og_desc, og_image
+
+
+def extract_twitter(soup: BeautifulSoup) -> tuple[str, str, str]:
+    tw_title = ""
+    tw_desc = ""
+    tw_image = ""
+    for tag in soup.find_all("meta"):
+        name = tag.get("name")
+        content = tag.get("content", "").strip()
+        if not name or not content:
+            continue
+        if name == "twitter:title":
+            tw_title = content
+        elif name == "twitter:description":
+            tw_desc = content
+        elif name == "twitter:image":
+            tw_image = content
+    return tw_title, tw_desc, tw_image
 
 
 def extract_value_props(soup: BeautifulSoup) -> list[str]:
@@ -129,6 +180,25 @@ def extract_ctas(soup: BeautifulSoup) -> list[str]:
         if len(ctas) >= 6:
             break
     return ctas
+
+
+def extract_cta_links(soup: BeautifulSoup, base_url: str) -> list[str]:
+    links: list[str] = []
+    for el in soup.find_all(["a", "button"]):
+        text = " ".join(el.stripped_strings)
+        if not text or not CTA_RE.search(text):
+            continue
+        href = ""
+        if el.name == "a":
+            href = el.get("href", "").strip()
+        if href:
+            full = urljoin(base_url, href)
+            links.append(f"{text} -> {full}")
+        else:
+            links.append(f"{text} -> [no link]")
+        if len(links) >= 8:
+            break
+    return links
 
 
 def extract_internal_links(soup: BeautifulSoup, base_url: str) -> list[str]:
@@ -227,6 +297,9 @@ def extract_faqs(soup: BeautifulSoup) -> list[tuple[str, str]]:
 def parse_html(html: str, url: str) -> ServiceBrief:
     soup = BeautifulSoup(html, "html.parser")
     title, meta_desc = extract_meta(soup)
+    canonical_url = extract_canonical(soup)
+    og_title, og_desc, og_image = extract_open_graph(soup)
+    tw_title, tw_desc, tw_image = extract_twitter(soup)
     h1 = ""
     h1_tag = soup.find("h1")
     if h1_tag:
@@ -238,11 +311,19 @@ def parse_html(html: str, url: str) -> ServiceBrief:
         title=title,
         meta_description=meta_desc,
         h1=h1,
+        canonical_url=canonical_url,
+        og_title=og_title,
+        og_description=og_desc,
+        og_image=og_image,
+        twitter_title=tw_title,
+        twitter_description=tw_desc,
+        twitter_image=tw_image,
         headings=extract_headings(soup),
         value_props=extract_value_props(soup),
         proof_points=extract_proof_points(soup),
         pricing_mentions=pricing,
         ctas=extract_ctas(soup),
+        cta_links=extract_cta_links(soup, url),
         internal_links=extract_internal_links(soup, url),
         schema_types=extract_schema_types(soup),
         faqs=extract_faqs(soup),
@@ -264,6 +345,20 @@ def render_brief(brief: ServiceBrief) -> str:
         lines.append(f"- Page title: {brief.title}")
     if brief.meta_description:
         lines.append(f"- Meta description: {brief.meta_description}")
+    if brief.canonical_url:
+        lines.append(f"- Canonical: {brief.canonical_url}")
+    if brief.og_title:
+        lines.append(f"- Open Graph title: {brief.og_title}")
+    if brief.og_description:
+        lines.append(f"- Open Graph description: {brief.og_description}")
+    if brief.og_image:
+        lines.append(f"- Open Graph image: {brief.og_image}")
+    if brief.twitter_title:
+        lines.append(f"- Twitter title: {brief.twitter_title}")
+    if brief.twitter_description:
+        lines.append(f"- Twitter description: {brief.twitter_description}")
+    if brief.twitter_image:
+        lines.append(f"- Twitter image: {brief.twitter_image}")
     if brief.h1:
         lines.append(f"- H1: {brief.h1}")
     if brief.pricing_mentions:
@@ -293,6 +388,12 @@ def render_brief(brief: ServiceBrief) -> str:
         lines.append(f"- {cta}")
     if not brief.ctas:
         lines.append("- [No CTA text detected]")
+    lines.append("")
+    lines.append("### CTA links (extracted)")
+    for link in brief.cta_links:
+        lines.append(f"- {link}")
+    if not brief.cta_links:
+        lines.append("- [No CTA links detected]")
     lines.append("")
     lines.append("## Internal links (sampled)")
     for link in brief.internal_links:
