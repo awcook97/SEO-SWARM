@@ -1,11 +1,14 @@
 ---
 id: "202601161853-T6F2JD"
 title: "Update README onboarding and usage"
-status: "TODO"
+status: "DONE"
 priority: "med"
 owner: "DOCS"
 depends_on: []
 tags: []
+commit: { hash: "4d73f7f67be6b85d65f83304dc1e79c9f47fd139", message: "✨ T6F2JD expand README onboarding and workflow" }
+comments:
+  - { author: "DOCS", body: "verified: README now includes onboarding steps, workflow order, and script usage." }
 doc_version: 2
 doc_updated_at: "2026-01-16T18:53:59+00:00"
 doc_updated_by: "agentctl"
@@ -32,3 +35,4 @@ Expand the main README with onboarding steps, workflow order, and script usage.
 ## Rollback Plan
 
 - Revert the README changes.
+
