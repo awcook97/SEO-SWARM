@@ -1,13 +1,15 @@
 ---
 id: "202601150638-HJ1QRA"
 title: "Generate GBP update checklist"
-status: "DOING"
+status: "DONE"
 priority: "med"
 owner: "CODER"
 depends_on: []
 tags: []
+commit: { hash: "fccb504645775f743e41d9ed0e9e063c97bb1d3d", message: "✨ HJ1QRA add GBP update checklist generator" }
 comments:
   - { author: "CODER", body: "Start: implement GBP update checklist generator with docs-aligned inputs." }
+  - { author: "CODER", body: "verified: added GBP update checklist generator and ran unittest suite." }
 doc_version: 2
 doc_updated_at: "2026-01-15T06:38:57+00:00"
 doc_updated_by: "agentctl"
@@ -35,3 +37,4 @@ Generate a GBP update checklist and posting plan from approved input data.
 ## Rollback Plan
 
 - Revert the GBP checklist generator script, docs, and tests.
+
