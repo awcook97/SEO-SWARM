@@ -1,13 +1,15 @@
 ---
 id: "202601160307-D2J7GG"
 title: "Implement consistent content brief generation"
-status: "DOING"
+status: "DONE"
 priority: "med"
 owner: "ORCHESTRATOR"
 depends_on: []
 tags: []
+commit: { hash: "4df67e220ad81191f2dbffdb236cd555994d53ff", message: "✨ D2J7GG add content brief generator" }
 comments:
   - { author: "ORCHESTRATOR", body: "Start: implement consistent markdown content brief generation workflow." }
+  - { author: "ORCHESTRATOR", body: "verified: added content brief generator and ran unittest suite." }
 doc_version: 2
 doc_updated_at: "2026-01-16T03:07:38+00:00"
 doc_updated_by: "agentctl"
@@ -36,3 +38,4 @@ into structured briefs for page and article production.
 ## Rollback Plan
 
 - Revert the content brief generator script and its tests.
+
