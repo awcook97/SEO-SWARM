@@ -6,9 +6,10 @@ priority: "med"
 owner: "DOCS"
 depends_on: []
 tags: []
-commit: { hash: "20b0ef0e96471c8f725b2bfc97bb8f4bc7e2c6e3", message: "✨ DY6Z96 add role playbooks and agent profiles: expand swarm-roles playbooks; add new agent JSON profiles; document task scope" }
+commit: { hash: "1511bcf848971450d2c204cedcc40267cd64c938", message: "✨ DY6Z96 add role playbooks and agent profiles" }
 comments:
   - { author: "DOCS", body: "verified: Added playbooks for remaining swarm roles and created matching agent profiles with approved-input guardrails and outputs for each role." }
+  - { author: "DOCS", body: "verified: synced cloud-generated role playbooks and agent profiles to tracked commit." }
 doc_version: 2
 doc_updated_at: "2026-01-16T05:39:39+00:00"
 doc_updated_by: "agentctl"
