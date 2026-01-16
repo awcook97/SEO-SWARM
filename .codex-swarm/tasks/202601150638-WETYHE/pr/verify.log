@@ -1,0 +1,5 @@
+command: python3 -m unittest discover -s tests
+result: OK
+summary:
+- 14 tests run
+- 0 failures

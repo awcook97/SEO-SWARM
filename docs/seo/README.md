@@ -13,6 +13,7 @@
 - Internal link validation spec: @docs/seo/internal-link-validation-spec.md
 - GBP update checklist generator: @docs/seo/gbp-update-checklist.md
 - Content brief workflow: @docs/seo/content-brief-workflow.md
+- Draft compliance lint: @docs/seo/draft-compliance-lint.md
 
 ## Briefs
 
