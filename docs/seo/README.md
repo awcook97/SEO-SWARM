@@ -15,6 +15,7 @@
 - Content brief workflow: @docs/seo/content-brief-workflow.md
 - Draft compliance lint: @docs/seo/draft-compliance-lint.md
 - Keyword map + KPI targets: @docs/seo/keyword-map-kpi.md
+- Technical SEO audit scaffold: @docs/seo/technical-seo-audit-scaffold.md
 
 ## Briefs
 
