@@ -1,13 +1,15 @@
 ---
 id: "202601161958-DFC3CY"
 title: "Add user-agent option to crawl cache"
-status: "DOING"
+status: "DONE"
 priority: "med"
 owner: "CODER"
 depends_on: []
 tags: []
+commit: { hash: "16a86289d140ba853d8bd07ec0afe61b44700ec8", message: "✨ DFC3CY add user-agent option to crawl cache" }
 comments:
   - { author: "CODER", body: "Start: add user-agent flag and reuse headers in crawl_cache requests." }
+  - { author: "CODER", body: "verified: crawl_cache now accepts a user-agent flag and uses headers during discovery." }
 doc_version: 2
 doc_updated_at: "2026-01-16T19:58:23+00:00"
 doc_updated_by: "agentctl"
@@ -34,3 +36,4 @@ Add a configurable User-Agent flag and use headers during sitemap/home discovery
 ## Rollback Plan
 
 - Revert the crawl_cache changes.
+
