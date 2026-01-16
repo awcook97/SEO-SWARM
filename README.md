@@ -14,17 +14,83 @@ This repository contains a reusable swarm workflow, templates, and measurement a
 - Swarm execution workflow: @docs/seo/swarm-execution-workflow.md
 - Scaffold script: @scripts/swarm_workflow.py
 
-## Usage
+## Quick start
 
-1) Collect approved inputs using @docs/seo/measurement-intake-template.md.
-2) Produce content using the templates under @docs/client-templates/.
-3) Use @scripts/swarm_workflow.py to scaffold a client output folder.
+1) Review the swarm roles and guardrails: @docs/client-templates/swarm-roles.md.
+2) Use @scripts/swarm_workflow.py to scaffold a new client folder.
+3) Populate `outputs/<client>/inputs.md` with approved inputs.
+4) Run the core automation scripts (see below) and draft content from the templates.
 
-Example:
+Example scaffold:
 
 ```bash
 python scripts/swarm_workflow.py --client "Example HVAC" --slug example-hvac
 ```
+
+## Onboard a new client (end-to-end)
+
+1) Create the client folder:
+   - `python scripts/swarm_workflow.py --client "Client Name" --slug client-slug`
+2) Fill in `outputs/<client>/inputs.md` with approved facts (NAP, services, hours, proof points).
+3) Capture measurement inputs:
+   - Use @docs/seo/measurement-intake-template.md
+   - Optional generator: `python scripts/measurement_intake_generator.py --client-slug client-slug --scaffold`
+4) Run a crawl cache if needed (see @scripts/service_brief_generator.py requirements).
+5) Generate service briefs and supporting reports.
+6) Produce content briefs and draft pages/articles using templates.
+
+## Swarm workflow (recommended order)
+
+1) **Intake + validation**
+   - Approved inputs in `outputs/<client>/inputs.md`
+   - Measurement intake per @docs/seo/measurement-intake-template.md
+2) **Strategy + mapping**
+   - Keyword map + KPI targets:
+     `python scripts/keyword_map_kpi.py --client-slug client-slug --scaffold`
+3) **Content production**
+   - Generate service briefs:
+     `python scripts/service_brief_generator.py --client-slug client-slug`
+   - Summarize briefs:
+     `python scripts/brief_summary_report.py --client-slug client-slug`
+   - Generate content briefs:
+     `python scripts/content_brief_generator.py --client-slug client-slug --scaffold`
+4) **On-page + metadata**
+   - Metadata + internal link map:
+     `python scripts/metadata_internal_link_map.py --client-slug client-slug`
+   - Internal link validation:
+     `python scripts/internal_link_validator.py --client-slug client-slug`
+5) **Compliance**
+   - Draft compliance lint:
+     `python scripts/draft_compliance_lint.py --client-slug client-slug`
+6) **Local asset updates**
+   - GBP update checklist:
+     `python scripts/gbp_update_checklist.py --client-slug client-slug`
+   - Citation update log:
+     `python scripts/citation_update_log.py --client-slug client-slug --scaffold`
+   - Local link outreach log:
+     `python scripts/local_link_outreach.py --client-slug client-slug --scaffold`
+   - Review response templates:
+     `python scripts/review_response_templates.py --client-slug client-slug --scaffold`
+7) **Technical audit**
+   - `python scripts/technical_seo_audit_scaffold.py --client-slug client-slug`
+
+## Automation scripts (outputs)
+
+All scripts write under `outputs/<client>/reports/` unless noted.
+
+- Service briefs: `service_brief_generator.py` -> `service-briefs/*.md`
+- Brief summary: `brief_summary_report.py` -> `service-briefs-summary.md/.json`
+- Content briefs: `content_brief_generator.py` -> `content-briefs/*.md` + `content-briefs.json`
+- Metadata + internal link map: `metadata_internal_link_map.py` -> `metadata-internal-link-map.md/.json`
+- Internal link validation: `internal_link_validator.py` -> report in `reports/`
+- Measurement intake: `measurement_intake_generator.py` -> `measurement-intake.md/.json`
+- Keyword map + KPI: `keyword_map_kpi.py` -> `keyword-map-kpi.md/.json`
+- Draft compliance lint: `draft_compliance_lint.py` -> `draft-compliance-lint.md/.json`
+- GBP checklist: `gbp_update_checklist.py` -> `gbp-update-checklist.md/.json`
+- Citation log: `citation_update_log.py` -> `citation-update-log.md/.json`
+- Local link outreach log: `local_link_outreach.py` -> `local-link-outreach.md/.json`
+- Review response templates: `review_response_templates.py` -> `review-response-templates.md/.json`
+- Technical SEO audit scaffold: `technical_seo_audit_scaffold.py` -> `technical-seo-audit.md/.json`
 
 ## Notes
 
