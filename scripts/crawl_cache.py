@@ -17,7 +17,6 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
-
 import requests
 from bs4 import BeautifulSoup
 
@@ -37,14 +36,19 @@ def normalize_url(url: str) -> str:
     return parsed._replace(fragment="").geturl()
 
 
-def discover_urls(base: str, timeout: int) -> list[str]:
+def discover_urls(
+    session: requests.Session,
+    base: str,
+    timeout: int,
+    headers: dict[str, str],
+) -> list[str]:
     candidates = ["/sitemap.xml", "/sitemap_index.xml"]
     urls: set[str] = set()
 
     for path in candidates:
         url = urljoin(base, path)
         try:
-            resp = requests.get(url, timeout=timeout)
+            resp = session.get(url, headers=headers, timeout=timeout)
             if resp.status_code != 200:
                 continue
             soup = BeautifulSoup(resp.text, "xml")
@@ -52,7 +56,7 @@ def discover_urls(base: str, timeout: int) -> list[str]:
                 for loc in soup.find_all("loc"):
                     sub_url = loc.get_text(strip=True)
                     try:
-                        sub_resp = requests.get(sub_url, timeout=timeout)
+                        sub_resp = session.get(sub_url, headers=headers, timeout=timeout)
                         if sub_resp.status_code == 200:
                             subsoup = BeautifulSoup(sub_resp.text, "xml")
                             for subloc in subsoup.find_all("loc"):
@@ -66,7 +70,7 @@ def discover_urls(base: str, timeout: int) -> list[str]:
             continue
 
     if not urls:
-        resp = requests.get(base, timeout=timeout)
+        resp = session.get(base, headers=headers, timeout=timeout)
         resp.raise_for_status()
         soup = BeautifulSoup(resp.text, "html.parser")
         for a in soup.select("a[href]"):
@@ -153,6 +157,12 @@ def main() -> None:
     parser.add_argument("--min-interval-seconds", type=int, default=20, help="Per-URL minimum interval")
     parser.add_argument("--retries", type=int, default=3, help="Retries for failed requests")
     parser.add_argument("--backoff-seconds", type=int, default=5, help="Base backoff seconds between retries")
+    parser.add_argument(
+        "--user-agent",
+        default="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",
+        help="User-Agent string for requests",
+    )
     args = parser.parse_args()
 
     base = args.base.rstrip("/")
@@ -162,9 +172,23 @@ def main() -> None:
     index_path = cache_dir / "index.json"
     index = load_index(index_path)
 
-    urls = discover_urls(base, args.timeout)
     session = requests.Session()
-    headers = {"User-Agent": "Mozilla/5.0"}
+    headers = {
+        "User-Agent": args.user_agent,
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br, zstd",
+        "Cache-Control": "max-age=0",
+        "Priority": "u=0, i",
+        "sec-ch-ua": '"Chromium";v="143", "Not A(Brand";v="24"',
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": '"Linux"',
+        "sec-fetch-dest": "document",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-site": "same-origin",
+        "sec-fetch-user": "?1",
+    }
+    urls = discover_urls(session, base, args.timeout, headers)
 
     for url in urls:
         entry = index.get(url)
