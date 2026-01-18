@@ -1,0 +1,44 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://example.com/#website",
+      "url": "https://example.com/",
+      "name": "[Business Name]"
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://example.com/#organization",
+      "name": "[Business Name]",
+      "url": "https://example.com/"
+    },
+    {
+      "@type": "LocalBusiness",
+      "@id": "https://example.com/#localbusiness",
+      "name": "[Business Name]",
+      "url": "https://example.com/",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "[Street Address]",
+        "addressLocality": "[City]",
+        "addressRegion": "[State]",
+        "postalCode": "[Postal Code]",
+        "addressCountry": "[Country]"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://example.com/example#webpage",
+      "url": "https://example.com/example/",
+      "name": "[Page Title]",
+      "description": "[Meta Description]",
+      "isPartOf": {
+        "@id": "https://example.com/#website"
+      },
+      "about": {
+        "@id": "https://example.com/#localbusiness"
+      }
+    }
+  ]
+}

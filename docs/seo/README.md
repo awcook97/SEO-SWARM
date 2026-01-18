@@ -23,6 +23,7 @@
 - Inputs template: @docs/seo/inputs-template.md
 - Inputs from schema: @docs/seo/inputs-from-schema.md
 - Cache schema generator: @docs/seo/cache-schema-generator.md
+- Schema approval workflow: @docs/seo/schema-approval-workflow.md
 
 ## Briefs
 

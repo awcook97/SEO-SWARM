@@ -24,6 +24,7 @@ This workflow is client-agnostic and defines how the swarm executes end-to-end d
 - Use page templates: @docs/client-templates/webpage-templates.md (or client equivalents).
 - Use article templates: @docs/client-templates/article-templates.md (or client equivalents).
 - Enforce schema on every page (required).
+- Validate JSON-LD against schema.org snapshot: @docs/seo/schema-approval-workflow.md.
 - Generate content briefs from cached site pages (outputs/<client>/reports/service-briefs/).
 - Use the content brief workflow: @docs/seo/content-brief-workflow.md.
 - Generate metadata + internal link map (outputs/<client>/reports/metadata-internal-link-map.*).

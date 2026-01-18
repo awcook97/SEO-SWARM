@@ -11,6 +11,11 @@ page, visible content parity, and required fields where available).
 - Approved inputs via `outputs/<client>/reports/gbp-update-checklist.json` (preferred)
   or `outputs/<client>/inputs.md` (fallback) to hydrate Organization/LocalBusiness.
 
+## Validation requirement
+
+The generator output is a draft. Before approval, validate each JSON-LD script
+against schema.org using @docs/seo/schema-approval-workflow.md.
+
 ## Command
 
 ```bash
