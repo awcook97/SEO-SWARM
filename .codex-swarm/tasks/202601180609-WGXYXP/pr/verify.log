@@ -1,0 +1,25 @@
+[2026-01-18T06:09:34+00:00] sha=f5fae8c604027f98499b18b77ec074937296f598 $ python3 -m pytest
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-8.4.2, pluggy-1.6.0
+rootdir: /home/andrew/projects/codex-swarm
+plugins: typeguard-4.3.0, anyio-4.4.0
+collected 29 items
+
+tests/test_citation_update_log.py ..                                     [  6%]
+tests/test_content_brief_generator.py ..                                 [ 13%]
+tests/test_draft_compliance_lint.py ...                                  [ 24%]
+tests/test_gbp_update_checklist.py ..                                    [ 31%]
+tests/test_inputs_from_schema.py ....                                    [ 44%]
+tests/test_internal_link_validator.py ...                                [ 55%]
+tests/test_keyword_map_kpi.py ..                                         [ 62%]
+tests/test_local_link_outreach.py ..                                     [ 68%]
+tests/test_measurement_intake_generator.py ..                            [ 75%]
+tests/test_metadata_internal_link_map.py ...                             [ 86%]
+tests/test_review_response_templates.py ..                               [ 93%]
+tests/test_service_brief_generator.py .                                  [ 96%]
+tests/test_technical_seo_audit_scaffold.py .                             [100%]
+
+============================== 29 passed in 0.84s ==============================
+
+[2026-01-18T06:09:36+00:00] ✅ verified_sha=f5fae8c604027f98499b18b77ec074937296f598
+

@@ -22,6 +22,7 @@
 - Measurement intake generation: @docs/seo/measurement-intake-generation.md
 - Inputs template: @docs/seo/inputs-template.md
 - Inputs from schema: @docs/seo/inputs-from-schema.md
+- Cache schema generator: @docs/seo/cache-schema-generator.md
 
 ## Briefs
 
