@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -19,11 +20,14 @@ from bs4 import BeautifulSoup
 
 
 FAQ_QUESTION_RE = re.compile(r"\?$|^(how|what|when|where|why|do|does|is|can|should|will|are)\b", re.I)
+INVALID_CHARREF_RE = re.compile(r"&#(?!\d+;|x[0-9a-fA-F]+;)")
+PHONEISH_RE = re.compile(r"^\+?[\d\-\.\s\(\)]+$")
 TIME_RANGE_RE = re.compile(
     r"(?P<start>\d{1,2})(?::(?P<start_min>\d{2}))?\s*(?P<start_ampm>AM|PM)\s*[-–—]\s*"
     r"(?P<end>\d{1,2})(?::(?P<end_min>\d{2}))?\s*(?P<end_ampm>AM|PM)",
     re.I,
 )
+HTML_EXTENSIONS = {".html", ".htm", ".php", ""}
 
 
 @dataclass
@@ -86,6 +90,19 @@ def clean_value(value: str) -> str:
 
 def split_list(value: str) -> list[str]:
     return [item.strip() for item in value.split(",") if item.strip()]
+
+
+def sanitize_html(markup: str) -> str:
+    return INVALID_CHARREF_RE.sub("&amp;#", markup)
+
+
+def read_html(path: Path, url: str) -> str | None:
+    raw = path.read_bytes()
+    if b"\x00" in raw:
+        print(f"skip non-text content (null bytes): {url} -> {path}", file=sys.stderr)
+        return None
+    text = raw.decode("utf-8", errors="replace")
+    return sanitize_html(text)
 
 
 def normalize_site_url(url: str) -> str:
@@ -345,6 +362,19 @@ def normalize_title(text: str) -> str:
     return " ".join(text.split()).strip()
 
 
+def is_title_candidate(value: str) -> bool:
+    cleaned = normalize_title(value)
+    if not cleaned:
+        return False
+    if cleaned.lower().startswith("tel:"):
+        return False
+    if PHONEISH_RE.fullmatch(cleaned):
+        return False
+    if not any(ch.isalpha() for ch in cleaned):
+        return False
+    return len(cleaned) >= 3
+
+
 def dedupe(values: list[str]) -> list[str]:
     seen: set[str] = set()
     out: list[str] = []
@@ -525,6 +555,7 @@ def choose_titles(signals: PageSignals) -> tuple[str, list[str]]:
             signals.twitter_title,
         ]
     )
+    candidates = [value for value in candidates if is_title_candidate(value)]
     if not candidates:
         fallback = urlparse(signals.url).path.strip("/") or "Homepage"
         return fallback.replace("-", " ").title(), []
@@ -562,7 +593,7 @@ def generate_schema(signals: PageSignals, registry: EntityRegistry) -> dict[str,
     website["@id"] = website_id
     website["url"] = site_url
     site_alternates = dedupe(
-        [primary_title] if site_name and primary_title and site_name != primary_title else []
+        [signals.site_name] if signals.site_name and signals.site_name != website.get("name") else []
     )
     website["alternateName"] = site_alternates if site_alternates else None
     graph.append(website)
@@ -673,6 +704,14 @@ def render_script(schema: dict[str, Any]) -> str:
     return f'<script type="application/ld+json">\\n{payload}\\n</script>\\n'
 
 
+def should_skip_url(url: str) -> bool:
+    parsed = urlparse(url)
+    suffix = Path(parsed.path).suffix.lower()
+    if suffix and suffix not in HTML_EXTENSIONS:
+        return True
+    return False
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate JSON-LD schema scripts from cache.")
     parser.add_argument("--client-slug", required=True, help="Client slug under outputs/")
@@ -703,10 +742,19 @@ def main() -> None:
     site_url = normalize_site_url(seed_url)
     registry = build_entity_registry(site_url, inputs)
     for url, path in cache.items():
+        if should_skip_url(url):
+            print(f"skip non-html url: {url}", file=sys.stderr)
+            continue
         if not path.exists():
             continue
-        html = path.read_text(encoding="utf-8")
-        signals = parse_page(html, url)
+        html = read_html(path, url)
+        if not html:
+            continue
+        try:
+            signals = parse_page(html, url)
+        except Exception as exc:
+            print(f"skip malformed html: {url} -> {path} ({exc})", file=sys.stderr)
+            continue
         schema = generate_schema(signals, registry)
         out_path = output_path_for(signals.canonical_url or url, out_dir)
         out_path.parent.mkdir(parents=True, exist_ok=True)
