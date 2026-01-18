@@ -74,6 +74,7 @@ class EntityRegistry:
     website: dict[str, Any]
     organization: dict[str, Any] | None
     local_business: dict[str, Any] | None
+    services: list[dict[str, str]] = field(default_factory=list)
 
 
 def load_cache(index_path: Path) -> dict[str, Path]:
@@ -295,6 +296,7 @@ def build_entity_registry(site_url: str, inputs: ApprovedInputs | None) -> Entit
         }
 
     local_business = None
+    services: list[dict[str, str]] = []
     if org_name:
         address = inputs.address if inputs else {}
         postal_address = None
@@ -310,7 +312,6 @@ def build_entity_registry(site_url: str, inputs: ApprovedInputs | None) -> Entit
         areas = (
             [{"@type": "Place", "name": area} for area in inputs.service_areas] if inputs else []
         )
-        services = []
         if inputs:
             for svc in inputs.services:
                 name = svc.get("name") or ""
@@ -318,13 +319,12 @@ def build_entity_registry(site_url: str, inputs: ApprovedInputs | None) -> Entit
                     continue
                 services.append(
                     {
-                        "@type": "Service",
                         "name": name,
-                        "description": svc.get("description") or None,
+                        "description": svc.get("description") or "",
                     }
                 )
         local_business = {
-            "@type": "LocalBusiness",
+            "@type": ["HVACBusiness", "LocalBusiness"],
             "@id": local_id,
             "name": org_name,
             "url": site_url or None,
@@ -334,7 +334,6 @@ def build_entity_registry(site_url: str, inputs: ApprovedInputs | None) -> Entit
             "address": postal_address,
             "areaServed": areas if areas else None,
             "openingHoursSpecification": parse_opening_hours(inputs.hours) if inputs else None,
-            "serviceOffered": services if services else None,
             "sameAs": list(inputs.social.values()) if inputs and inputs.social else None,
             "description": (inputs.long_description if inputs and inputs.long_description else None),
             "parentOrganization": {"@id": org_id} if organization else None,
@@ -344,6 +343,7 @@ def build_entity_registry(site_url: str, inputs: ApprovedInputs | None) -> Entit
         website=website,
         organization=organization,
         local_business=local_business,
+        services=services,
     )
 
 
@@ -373,6 +373,12 @@ def is_title_candidate(value: str) -> bool:
     if not any(ch.isalpha() for ch in cleaned):
         return False
     return len(cleaned) >= 3
+
+
+def slugify(value: str) -> str:
+    slug = "".join(ch.lower() if ch.isalnum() else "-" for ch in value)
+    slug = "-".join(part for part in slug.split("-") if part)
+    return slug
 
 
 def dedupe(values: list[str]) -> list[str]:
@@ -546,6 +552,41 @@ def ensure_absolute(url: str, base_url: str) -> str:
     return urljoin(base_url, url)
 
 
+def match_service_for_url(page_url: str, services: list[dict[str, str]]) -> dict[str, str] | None:
+    path = urlparse(page_url).path.strip("/").lower()
+    if path.endswith(".html"):
+        path = path[:-5]
+    best = None
+    best_len = 0
+    for svc in services:
+        slug = slugify(svc.get("name", ""))
+        if not slug:
+            continue
+        if slug in path and len(slug) > best_len:
+            best = svc
+            best_len = len(slug)
+    return best
+
+
+def build_offers(services: list[dict[str, str]]) -> list[dict[str, Any]]:
+    offers: list[dict[str, Any]] = []
+    for svc in services:
+        name = svc.get("name") or ""
+        if not name:
+            continue
+        offers.append(
+            {
+                "@type": "Offer",
+                "itemOffered": {
+                    "@type": "Service",
+                    "name": name,
+                    "description": svc.get("description") or None,
+                },
+            }
+        )
+    return offers
+
+
 def choose_titles(signals: PageSignals) -> tuple[str, list[str]]:
     candidates = dedupe(
         [
@@ -608,6 +649,16 @@ def generate_schema(signals: PageSignals, registry: EntityRegistry) -> dict[str,
         local_business = dict(registry.local_business)
         local_business["@id"] = local_business_id
         local_business["url"] = site_url
+        if registry.services:
+            path = urlparse(page_url).path.strip("/").lower()
+            if path.endswith(".html"):
+                path = path[:-5]
+            is_home = path in {"", "index", "home", "home-new"}
+            matched = match_service_for_url(page_url, registry.services)
+            if matched:
+                local_business["makesOffer"] = build_offers([matched])
+            elif is_home:
+                local_business["makesOffer"] = build_offers(registry.services)
         graph.append(local_business)
 
     if image_url:
