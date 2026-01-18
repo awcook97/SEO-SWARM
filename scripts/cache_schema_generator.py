@@ -701,7 +701,7 @@ def output_path_for(url: str, out_dir: Path) -> Path:
 
 def render_script(schema: dict[str, Any]) -> str:
     payload = json.dumps(schema, ensure_ascii=False, indent=2)
-    return f'<script type="application/ld+json">\\n{payload}\\n</script>\\n'
+    return f'<script type="application/ld+json">\n{payload}\n</script>\n'
 
 
 def should_skip_url(url: str) -> bool:
