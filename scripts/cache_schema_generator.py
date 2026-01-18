@@ -326,7 +326,7 @@ def save_geo_cache(path: Path, cache: dict[str, dict[str, Any]]) -> None:
 def geocode_address(address: str) -> dict[str, Any] | None:
     if not Nominatim:
         return None
-    geocoder = Nominatim(user_agent="codex-schema-generator")
+    geocoder = Nominatim(user_agent="codex-schema-generator", timeout=10)
     location = geocoder.geocode(address)
     if not location:
         return None
@@ -345,19 +345,60 @@ def resolve_geo(
 ) -> dict[str, Any] | None:
     if not inputs:
         return None
-    address_text = format_address_line(inputs.address)
+    address = inputs.address
+    if not address:
+        return None
+    address_text = format_address_line(address)
     if not address_text:
         return None
+    variants = [address_text]
+    if address.get("Line 2"):
+        line2 = address.get("Line 2")
+        address_no_line2 = ", ".join(
+            part
+            for part in [
+                address.get("Line 1", ""),
+                address.get("City", ""),
+                address.get("State", ""),
+                address.get("Postal code", ""),
+                address.get("Country", ""),
+            ]
+            if part
+        )
+        if address_no_line2 and address_no_line2 not in variants:
+            variants.append(address_no_line2)
+        if line2:
+            address_with_unit = address_no_line2.replace(address.get("Line 1", ""), f"{address.get('Line 1', '')} Unit {line2}")
+            if address_with_unit and address_with_unit not in variants:
+                variants.append(address_with_unit)
+    city_state = ", ".join(
+        part
+        for part in [
+            address.get("City", ""),
+            address.get("State", ""),
+            address.get("Postal code", ""),
+            address.get("Country", ""),
+        ]
+        if part
+    )
+    if city_state and city_state not in variants:
+        variants.append(city_state)
+
     cache = load_geo_cache(cache_path)
-    if address_text in cache:
-        return cache[address_text]
+    for variant in variants:
+        if variant in cache:
+            return cache[variant]
     if not enable_geocode:
         return None
-    geo = geocode_address(address_text)
-    if geo:
-        cache[address_text] = geo
-        save_geo_cache(cache_path, cache)
-    return geo
+    for variant in variants:
+        geo = geocode_address(variant)
+        if geo:
+            cache[variant] = geo
+            cache[address_text] = geo
+            save_geo_cache(cache_path, cache)
+            return geo
+        print(f"geocode failed for: {variant}", file=sys.stderr)
+    return None
 
 
 def build_entity_registry(
