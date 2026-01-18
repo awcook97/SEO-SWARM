@@ -18,6 +18,11 @@ from urllib.parse import urljoin, urlparse
 
 from bs4 import BeautifulSoup
 
+try:
+    from geopy.geocoders import Nominatim
+except ImportError:  # optional dependency
+    Nominatim = None
+
 
 FAQ_QUESTION_RE = re.compile(r"\?$|^(how|what|when|where|why|do|does|is|can|should|will|are)\b", re.I)
 INVALID_CHARREF_RE = re.compile(r"&#(?!\d+;|x[0-9a-fA-F]+;)")
@@ -75,6 +80,8 @@ class EntityRegistry:
     organization: dict[str, Any] | None
     local_business: dict[str, Any] | None
     services: list[dict[str, str]] = field(default_factory=list)
+    logo_url: str = ""
+    geo: dict[str, Any] | None = None
 
 
 def load_cache(index_path: Path) -> dict[str, Path]:
@@ -104,6 +111,32 @@ def read_html(path: Path, url: str) -> str | None:
         return None
     text = raw.decode("utf-8", errors="replace")
     return sanitize_html(text)
+
+
+def extract_logo_url(soup: BeautifulSoup, base_url: str, business_name: str) -> str:
+    candidates: list[tuple[int, str]] = []
+    business_name = business_name.lower()
+    for img in soup.find_all("img"):
+        src = img.get("src") or img.get("data-src") or img.get("data-lazy-src")
+        if not src:
+            continue
+        alt = " ".join(img.get("alt", "").split()).lower()
+        classes = " ".join(img.get("class", [])).lower()
+        ident = " ".join([alt, classes, (img.get("id") or "").lower()])
+        score = 0
+        if "logo" in ident or "logo" in src.lower():
+            score += 2
+        if business_name and business_name in alt:
+            score += 2
+        if score:
+            candidates.append((score, src))
+    if candidates:
+        candidates.sort(key=lambda item: item[0], reverse=True)
+        return ensure_absolute(candidates[0][1], base_url)
+    meta_logo = soup.find("meta", property="og:logo")
+    if meta_logo and meta_logo.get("content"):
+        return ensure_absolute(meta_logo["content"], base_url)
+    return ""
 
 
 def normalize_site_url(url: str) -> str:
@@ -265,7 +298,74 @@ def format_street_address(address: dict[str, str]) -> str:
     return ", ".join([part for part in [line1, line2] if part])
 
 
-def build_entity_registry(site_url: str, inputs: ApprovedInputs | None) -> EntityRegistry:
+def format_address_line(address: dict[str, str]) -> str:
+    parts = [
+        format_street_address(address),
+        address.get("City", ""),
+        address.get("State", ""),
+        address.get("Postal code", ""),
+        address.get("Country", ""),
+    ]
+    return ", ".join([part for part in parts if part])
+
+
+def load_geo_cache(path: Path) -> dict[str, dict[str, Any]]:
+    if not path.exists():
+        return {}
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+
+
+def save_geo_cache(path: Path, cache: dict[str, dict[str, Any]]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(cache, indent=2), encoding="utf-8")
+
+
+def geocode_address(address: str) -> dict[str, Any] | None:
+    if not Nominatim:
+        return None
+    geocoder = Nominatim(user_agent="codex-schema-generator")
+    location = geocoder.geocode(address)
+    if not location:
+        return None
+    try:
+        lat = float(location.latitude)
+        lon = float(location.longitude)
+    except (TypeError, ValueError):
+        return None
+    return {"@type": "GeoCoordinates", "latitude": lat, "longitude": lon}
+
+
+def resolve_geo(
+    inputs: ApprovedInputs | None,
+    cache_path: Path,
+    enable_geocode: bool,
+) -> dict[str, Any] | None:
+    if not inputs:
+        return None
+    address_text = format_address_line(inputs.address)
+    if not address_text:
+        return None
+    cache = load_geo_cache(cache_path)
+    if address_text in cache:
+        return cache[address_text]
+    if not enable_geocode:
+        return None
+    geo = geocode_address(address_text)
+    if geo:
+        cache[address_text] = geo
+        save_geo_cache(cache_path, cache)
+    return geo
+
+
+def build_entity_registry(
+    site_url: str,
+    inputs: ApprovedInputs | None,
+    logo_url: str,
+    geo: dict[str, Any] | None,
+) -> EntityRegistry:
     website_id = f"{site_url}#website" if site_url else "#website"
     org_id = f"{site_url}#organization" if site_url else "#organization"
     local_id = f"{site_url}#localbusiness" if site_url else "#localbusiness"
@@ -283,23 +383,11 @@ def build_entity_registry(site_url: str, inputs: ApprovedInputs | None) -> Entit
     }
 
     organization = None
-    if org_name:
-        organization = {
-            "@type": "Organization",
-            "@id": org_id,
-            "name": org_name,
-            "url": site_url or None,
-            "telephone": inputs.phone if inputs and inputs.phone else None,
-            "email": inputs.email if inputs and inputs.email else None,
-            "description": (inputs.long_description if inputs and inputs.long_description else None),
-            "sameAs": list(inputs.social.values()) if inputs and inputs.social else None,
-        }
-
     local_business = None
     services: list[dict[str, str]] = []
+    postal_address = None
     if org_name:
         address = inputs.address if inputs else {}
-        postal_address = None
         if address:
             postal_address = {
                 "@type": "PostalAddress",
@@ -309,6 +397,18 @@ def build_entity_registry(site_url: str, inputs: ApprovedInputs | None) -> Entit
                 "postalCode": address.get("Postal code"),
                 "addressCountry": address.get("Country"),
             }
+        organization = {
+            "@type": "Organization",
+            "@id": org_id,
+            "name": org_name,
+            "url": site_url or None,
+            "telephone": inputs.phone if inputs and inputs.phone else None,
+            "email": inputs.email if inputs and inputs.email else None,
+            "description": (inputs.long_description if inputs and inputs.long_description else None),
+            "sameAs": list(inputs.social.values()) if inputs and inputs.social else None,
+            "address": postal_address,
+            "image": logo_url or None,
+        }
         areas = (
             [{"@type": "Place", "name": area} for area in inputs.service_areas] if inputs else []
         )
@@ -334,9 +434,11 @@ def build_entity_registry(site_url: str, inputs: ApprovedInputs | None) -> Entit
             "address": postal_address,
             "areaServed": areas if areas else None,
             "openingHoursSpecification": parse_opening_hours(inputs.hours) if inputs else None,
+            "geo": geo,
             "sameAs": list(inputs.social.values()) if inputs and inputs.social else None,
             "description": (inputs.long_description if inputs and inputs.long_description else None),
             "parentOrganization": {"@id": org_id} if organization else None,
+            "image": logo_url or None,
         }
 
     return EntityRegistry(
@@ -344,6 +446,8 @@ def build_entity_registry(site_url: str, inputs: ApprovedInputs | None) -> Entit
         organization=organization,
         local_business=local_business,
         services=services,
+        logo_url=logo_url,
+        geo=geo,
     )
 
 
@@ -770,6 +874,11 @@ def main() -> None:
         "--output-dir",
         help="Optional output directory (default: outputs/<client>/gen-schema/website-tree)",
     )
+    parser.add_argument(
+        "--geocode",
+        action="store_true",
+        help="Enable geopy geocoding for LocalBusiness geo coordinates.",
+    )
     args = parser.parse_args()
 
     client_dir = Path("outputs") / args.client_slug
@@ -791,7 +900,24 @@ def main() -> None:
     if not seed_url and cache:
         seed_url = next(iter(cache.keys()))
     site_url = normalize_site_url(seed_url)
-    registry = build_entity_registry(site_url, inputs)
+    homepage_url = site_url or seed_url
+    homepage_path = None
+    if homepage_url:
+        homepage_path = cache.get(homepage_url)
+        if not homepage_path and homepage_url.endswith("/"):
+            homepage_path = cache.get(homepage_url.rstrip("/"))
+    logo_url = ""
+    if homepage_path and homepage_path.exists():
+        html = read_html(homepage_path, homepage_url)
+        if html:
+            soup = BeautifulSoup(html, "html.parser")
+            logo_url = extract_logo_url(soup, homepage_url, inputs.business_name if inputs else "")
+    geo = resolve_geo(
+        inputs,
+        client_dir / "reports" / "geocoded.json",
+        enable_geocode=bool(args.geocode),
+    )
+    registry = build_entity_registry(site_url, inputs, logo_url, geo)
     for url, path in cache.items():
         if should_skip_url(url):
             print(f"skip non-html url: {url}", file=sys.stderr)
