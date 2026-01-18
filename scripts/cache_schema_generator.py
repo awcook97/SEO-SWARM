@@ -10,7 +10,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 from urllib.parse import urljoin, urlparse
@@ -19,6 +19,11 @@ from bs4 import BeautifulSoup
 
 
 FAQ_QUESTION_RE = re.compile(r"\?$|^(how|what|when|where|why|do|does|is|can|should|will|are)\b", re.I)
+TIME_RANGE_RE = re.compile(
+    r"(?P<start>\d{1,2})(?::(?P<start_min>\d{2}))?\s*(?P<start_ampm>AM|PM)\s*[-–—]\s*"
+    r"(?P<end>\d{1,2})(?::(?P<end_min>\d{2}))?\s*(?P<end_ampm>AM|PM)",
+    re.I,
+)
 
 
 @dataclass
@@ -42,9 +47,298 @@ class PageSignals:
     faqs: list[tuple[str, str]]
 
 
+@dataclass
+class ApprovedInputs:
+    business_name: str = ""
+    website: str = ""
+    phone: str = ""
+    email: str = ""
+    address: dict[str, str] = field(default_factory=dict)
+    hours: dict[str, str] = field(default_factory=dict)
+    service_areas: list[str] = field(default_factory=list)
+    short_description: str = ""
+    long_description: str = ""
+    keywords: list[str] = field(default_factory=list)
+    price_range: str = ""
+    payment_forms: list[str] = field(default_factory=list)
+    social: dict[str, str] = field(default_factory=dict)
+    services: list[dict[str, str]] = field(default_factory=list)
+
+
+@dataclass
+class EntityRegistry:
+    website: dict[str, Any]
+    organization: dict[str, Any] | None
+    local_business: dict[str, Any] | None
+
+
 def load_cache(index_path: Path) -> dict[str, Path]:
     data = json.loads(index_path.read_text(encoding="utf-8"))
     return {url: Path(meta["path"]) for url, meta in data.items()}
+
+
+def clean_value(value: str) -> str:
+    cleaned = value.strip()
+    if cleaned.startswith("[") and cleaned.endswith("]"):
+        return ""
+    return cleaned
+
+
+def split_list(value: str) -> list[str]:
+    return [item.strip() for item in value.split(",") if item.strip()]
+
+
+def normalize_site_url(url: str) -> str:
+    if not url:
+        return ""
+    if not re.match(r"^https?://", url, re.I):
+        url = f"https://{url}"
+    parsed = urlparse(url)
+    if not parsed.netloc:
+        return url
+    return f"{parsed.scheme}://{parsed.netloc}/"
+
+
+def parse_inputs_md(inputs_path: Path) -> ApprovedInputs | None:
+    if not inputs_path.exists():
+        return None
+    inputs = ApprovedInputs()
+    current_block = ""
+    in_services = False
+    for raw in inputs_path.read_text(encoding="utf-8").splitlines():
+        line = raw.rstrip()
+        if not line:
+            continue
+        if line.startswith("## "):
+            current_block = ""
+            in_services = "Approved service list" in line
+            continue
+        if line.startswith("- Address:"):
+            current_block = "address"
+            continue
+        if line.startswith("- Hours:"):
+            current_block = "hours"
+            continue
+        if line.startswith("- Areas served"):
+            current_block = "service_areas"
+            continue
+        if line.startswith("- Social:"):
+            current_block = "social"
+            continue
+        if line.startswith("- Business name:"):
+            inputs.business_name = clean_value(line.split(":", 1)[1])
+        elif line.startswith("- Website:"):
+            inputs.website = clean_value(line.split(":", 1)[1])
+        elif line.startswith("- Phone:"):
+            inputs.phone = clean_value(line.split(":", 1)[1])
+        elif line.startswith("- Email:"):
+            inputs.email = clean_value(line.split(":", 1)[1])
+        elif line.startswith("- Short description:"):
+            inputs.short_description = clean_value(line.split(":", 1)[1])
+        elif line.startswith("- Long description:"):
+            inputs.long_description = clean_value(line.split(":", 1)[1])
+        elif line.startswith("- Keywords"):
+            raw_value = clean_value(line.split(":", 1)[1])
+            inputs.keywords = [item for item in split_list(raw_value) if item]
+        elif line.startswith("- Price range:"):
+            inputs.price_range = clean_value(line.split(":", 1)[1])
+        elif line.startswith("- Payment forms:"):
+            raw_value = clean_value(line.split(":", 1)[1])
+            inputs.payment_forms = [item for item in split_list(raw_value) if item]
+        elif line.startswith("  - ") and current_block in {"address", "hours", "service_areas", "social"}:
+            entry = line[4:]
+            if current_block == "service_areas":
+                value = clean_value(entry)
+                if value:
+                    inputs.service_areas.append(value)
+            else:
+                if ":" not in entry:
+                    continue
+                key, value = entry.split(":", 1)
+                value = clean_value(value)
+                if not value:
+                    continue
+                if current_block == "address":
+                    inputs.address[key.strip()] = value
+                elif current_block == "hours":
+                    inputs.hours[key.strip()] = value
+                elif current_block == "social":
+                    inputs.social[key.strip()] = value
+        elif in_services and line.startswith("- "):
+            entry = line[2:]
+            if ":" not in entry:
+                continue
+            name, desc = entry.split(":", 1)
+            name = clean_value(name)
+            desc = clean_value(desc)
+            if name:
+                inputs.services.append({"name": name, "description": desc})
+    return inputs
+
+
+def load_gbp_inputs(base_dir: Path) -> ApprovedInputs | None:
+    report_path = base_dir / "reports" / "gbp-update-checklist.json"
+    if not report_path.exists():
+        return None
+    data = json.loads(report_path.read_text(encoding="utf-8"))
+    raw_inputs = data.get("inputs", {})
+    inputs = ApprovedInputs()
+    inputs.business_name = clean_value(str(raw_inputs.get("business_name", "")))
+    inputs.website = clean_value(str(raw_inputs.get("website", "")))
+    inputs.phone = clean_value(str(raw_inputs.get("phone", "")))
+    inputs.email = clean_value(str(raw_inputs.get("email", "")))
+    inputs.address = {k: clean_value(str(v)) for k, v in raw_inputs.get("address", {}).items() if clean_value(str(v))}
+    inputs.hours = {k: clean_value(str(v)) for k, v in raw_inputs.get("hours", {}).items() if clean_value(str(v))}
+    inputs.service_areas = [clean_value(str(v)) for v in raw_inputs.get("service_areas", []) if clean_value(str(v))]
+    inputs.short_description = clean_value(str(raw_inputs.get("short_description", "")))
+    inputs.long_description = clean_value(str(raw_inputs.get("long_description", "")))
+    inputs.keywords = [clean_value(str(v)) for v in raw_inputs.get("keywords", []) if clean_value(str(v))]
+    inputs.price_range = clean_value(str(raw_inputs.get("price_range", "")))
+    inputs.payment_forms = [clean_value(str(v)) for v in raw_inputs.get("payment_forms", []) if clean_value(str(v))]
+    inputs.social = {k: clean_value(str(v)) for k, v in raw_inputs.get("social", {}).items() if clean_value(str(v))}
+    inputs.services = [
+        {"name": clean_value(str(svc.get("name", ""))), "description": clean_value(str(svc.get("description", "")))}
+        for svc in raw_inputs.get("services", [])
+        if clean_value(str(svc.get("name", "")))
+    ]
+    return inputs
+
+
+def load_inputs(base_dir: Path) -> ApprovedInputs | None:
+    return load_gbp_inputs(base_dir) or parse_inputs_md(base_dir / "inputs.md")
+
+
+def to_24_hour(hour: int, minute: int, ampm: str) -> str:
+    ampm = ampm.lower()
+    hour = hour % 12
+    if ampm == "pm":
+        hour += 12
+    return f"{hour:02d}:{minute:02d}"
+
+
+def parse_opening_hours(hours: dict[str, str]) -> list[dict[str, Any]]:
+    specs: list[dict[str, Any]] = []
+    for day, value in hours.items():
+        if not value or value.lower().startswith("closed"):
+            continue
+        match = TIME_RANGE_RE.search(value)
+        if not match:
+            continue
+        start = int(match.group("start"))
+        start_min = int(match.group("start_min") or 0)
+        end = int(match.group("end"))
+        end_min = int(match.group("end_min") or 0)
+        opens = to_24_hour(start, start_min, match.group("start_ampm"))
+        closes = to_24_hour(end, end_min, match.group("end_ampm"))
+        specs.append(
+            {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": day,
+                "opens": opens,
+                "closes": closes,
+            }
+        )
+    return specs
+
+
+def format_street_address(address: dict[str, str]) -> str:
+    line1 = address.get("Line 1", "")
+    line2 = address.get("Line 2", "")
+    return ", ".join([part for part in [line1, line2] if part])
+
+
+def build_entity_registry(site_url: str, inputs: ApprovedInputs | None) -> EntityRegistry:
+    website_id = f"{site_url}#website" if site_url else "#website"
+    org_id = f"{site_url}#organization" if site_url else "#organization"
+    local_id = f"{site_url}#localbusiness" if site_url else "#localbusiness"
+
+    org_name = inputs.business_name if inputs else ""
+    website_name = org_name
+
+    website: dict[str, Any] = {
+        "@type": "WebSite",
+        "@id": website_id,
+        "url": site_url or None,
+        "name": website_name or None,
+        "description": (inputs.short_description if inputs and inputs.short_description else None),
+        "publisher": {"@id": org_id} if org_name else None,
+    }
+
+    organization = None
+    if org_name:
+        organization = {
+            "@type": "Organization",
+            "@id": org_id,
+            "name": org_name,
+            "url": site_url or None,
+            "telephone": inputs.phone if inputs and inputs.phone else None,
+            "email": inputs.email if inputs and inputs.email else None,
+            "description": (inputs.long_description if inputs and inputs.long_description else None),
+            "sameAs": list(inputs.social.values()) if inputs and inputs.social else None,
+        }
+
+    local_business = None
+    if org_name:
+        address = inputs.address if inputs else {}
+        postal_address = None
+        if address:
+            postal_address = {
+                "@type": "PostalAddress",
+                "streetAddress": format_street_address(address),
+                "addressLocality": address.get("City"),
+                "addressRegion": address.get("State"),
+                "postalCode": address.get("Postal code"),
+                "addressCountry": address.get("Country"),
+            }
+        areas = (
+            [{"@type": "Place", "name": area} for area in inputs.service_areas] if inputs else []
+        )
+        services = []
+        if inputs:
+            for svc in inputs.services:
+                name = svc.get("name") or ""
+                if not name:
+                    continue
+                services.append(
+                    {
+                        "@type": "Service",
+                        "name": name,
+                        "description": svc.get("description") or None,
+                    }
+                )
+        local_business = {
+            "@type": "LocalBusiness",
+            "@id": local_id,
+            "name": org_name,
+            "url": site_url or None,
+            "telephone": inputs.phone if inputs and inputs.phone else None,
+            "priceRange": inputs.price_range if inputs and inputs.price_range else None,
+            "paymentAccepted": inputs.payment_forms if inputs and inputs.payment_forms else None,
+            "address": postal_address,
+            "areaServed": areas if areas else None,
+            "openingHoursSpecification": parse_opening_hours(inputs.hours) if inputs else None,
+            "serviceOffered": services if services else None,
+            "sameAs": list(inputs.social.values()) if inputs and inputs.social else None,
+            "description": (inputs.long_description if inputs and inputs.long_description else None),
+            "parentOrganization": {"@id": org_id} if organization else None,
+        }
+
+    return EntityRegistry(
+        website=website,
+        organization=organization,
+        local_business=local_business,
+    )
+
+
+def hydrate_registry_names(registry: EntityRegistry, fallback_name: str) -> None:
+    if not fallback_name:
+        return
+    if not registry.website.get("name"):
+        registry.website["name"] = fallback_name
+    if registry.organization and not registry.organization.get("name"):
+        registry.organization["name"] = fallback_name
+    if registry.local_business and not registry.local_business.get("name"):
+        registry.local_business["name"] = fallback_name
 
 
 def normalize_title(text: str) -> str:
@@ -239,15 +533,20 @@ def choose_titles(signals: PageSignals) -> tuple[str, list[str]]:
     return primary, alternates
 
 
-def generate_schema(signals: PageSignals) -> dict[str, Any]:
+def generate_schema(signals: PageSignals, registry: EntityRegistry) -> dict[str, Any]:
     raw_url = signals.canonical_url or signals.url
     parsed = urlparse(raw_url)
     page_url = parsed._replace(query="", fragment="").geturl()
-    site_url = f"{parsed.scheme}://{parsed.netloc}/"
+    site_url = registry.website.get("url") or f"{parsed.scheme}://{parsed.netloc}/"
     page_id = page_url.rstrip("/") or page_url
     webpage_id = f"{page_id}#webpage"
-    website_id = f"{site_url}#website"
-    org_id = f"{site_url}#organization"
+    website_id = registry.website.get("@id") or f"{site_url}#website"
+    org_id = None
+    if registry.organization:
+        org_id = registry.organization.get("@id")
+    local_business_id = None
+    if registry.local_business:
+        local_business_id = registry.local_business.get("@id")
     primary_title, alternate_titles = choose_titles(signals)
     description = signals.meta_description or signals.og_description or signals.twitter_description
     image_url = ensure_absolute(signals.og_image or signals.twitter_image, page_url)
@@ -258,27 +557,27 @@ def generate_schema(signals: PageSignals) -> dict[str, Any]:
     graph: list[dict[str, Any]] = []
 
     site_name = signals.site_name or primary_title
+    hydrate_registry_names(registry, site_name)
+    website = dict(registry.website)
+    website["@id"] = website_id
+    website["url"] = site_url
     site_alternates = dedupe(
-        [primary_title] if signals.site_name and primary_title != signals.site_name else []
+        [primary_title] if site_name and primary_title and site_name != primary_title else []
     )
-
-    website = {
-        "@type": "WebSite",
-        "@id": website_id,
-        "url": site_url,
-        "name": site_name,
-        "alternateName": site_alternates if site_alternates else None,
-    }
+    website["alternateName"] = site_alternates if site_alternates else None
     graph.append(website)
 
-    if site_name:
-        organization = {
-            "@type": "Organization",
-            "@id": org_id,
-            "name": site_name,
-            "url": site_url,
-        }
+    if registry.organization:
+        organization = dict(registry.organization)
+        organization["@id"] = org_id
+        organization["url"] = site_url
         graph.append(organization)
+
+    if registry.local_business:
+        local_business = dict(registry.local_business)
+        local_business["@id"] = local_business_id
+        local_business["url"] = site_url
+        graph.append(local_business)
 
     if image_url:
         graph.append(
@@ -308,6 +607,7 @@ def generate_schema(signals: PageSignals) -> dict[str, Any]:
         "description": description,
         "inLanguage": signals.lang or None,
         "isPartOf": {"@id": website_id},
+        "about": {"@id": local_business_id} if local_business_id else None,
         "primaryImageOfPage": {"@id": image_id} if image_id else None,
         "breadcrumb": {"@id": breadcrumb_id},
         "datePublished": signals.published_time or None,
@@ -326,7 +626,7 @@ def generate_schema(signals: PageSignals) -> dict[str, Any]:
                 "datePublished": signals.published_time or None,
                 "dateModified": signals.modified_time or None,
                 "mainEntityOfPage": {"@id": webpage_id},
-                "publisher": {"@id": org_id},
+                "publisher": {"@id": org_id} if org_id else ({"@id": local_business_id} if local_business_id else None),
                 "image": {"@id": image_id} if image_id else None,
             }
         )
@@ -382,7 +682,8 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    cache_dir = Path("outputs") / args.client_slug / "reports" / "site-cache"
+    client_dir = Path("outputs") / args.client_slug
+    cache_dir = client_dir / "reports" / "site-cache"
     index_path = cache_dir / "index.json"
     if not index_path.exists():
         raise SystemExit(f"Cache index not found: {index_path}")
@@ -395,12 +696,18 @@ def main() -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
 
     cache = load_cache(index_path)
+    inputs = load_inputs(client_dir)
+    seed_url = inputs.website if inputs else ""
+    if not seed_url and cache:
+        seed_url = next(iter(cache.keys()))
+    site_url = normalize_site_url(seed_url)
+    registry = build_entity_registry(site_url, inputs)
     for url, path in cache.items():
         if not path.exists():
             continue
         html = path.read_text(encoding="utf-8")
         signals = parse_page(html, url)
-        schema = generate_schema(signals)
+        schema = generate_schema(signals, registry)
         out_path = output_path_for(signals.canonical_url or url, out_dir)
         out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(render_script(schema), encoding="utf-8")
