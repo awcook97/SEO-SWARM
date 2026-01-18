@@ -450,9 +450,7 @@ def build_entity_registry(
             "address": postal_address,
             "image": logo_url or None,
         }
-        areas = (
-            [{"@type": "Place", "name": area} for area in inputs.service_areas] if inputs else []
-        )
+        areas = [area for area in inputs.service_areas if area] if inputs else []
         if inputs:
             for svc in inputs.services:
                 name = svc.get("name") or ""
