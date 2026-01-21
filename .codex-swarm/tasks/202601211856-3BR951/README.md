@@ -1,11 +1,15 @@
 ---
 id: "202601211856-3BR951"
 title: "Automate GSC data export ingest"
-status: "TODO"
+status: "DONE"
 priority: "med"
 owner: "CODER"
 depends_on: ["202601211855-FAJDQP"]
 tags: ["automation", "gsc"]
+commit: { hash: "5d669bf4739caf687d99edb4378793da091f2652", message: "🧩 202601211856-3BR951 integrate task/202601211856-3BR951/gsc" }
+comments:
+  - { author: "INTEGRATOR", body: "verified: Integrated via squash | details: verify=skipped(no commands); pr=.codex-swarm/tasks/202601211856-3BR951/pr." }
+  - { author: "INTEGRATOR", body: "verified: Integrated GSC export ingest." }
 doc_version: 2
 doc_updated_at: "2026-01-21T22:52:35+00:00"
 doc_updated_by: "agentctl"
