@@ -107,3 +107,7 @@ All scripts write under `outputs/<client>/reports/` unless noted.
 
 - Client outputs are intentionally ignored from git (`outputs/` in `.gitignore`).
 - Replace all placeholders with approved inputs before publishing.
+
+## Environment
+
+- Copy `.env.example` to `.env` and set `DATAFORSEO_LOGIN`, `DATAFORSEO_PASSWORD`, `DATAFORSEO_ENDPOINT` for SERP fetch automation.
