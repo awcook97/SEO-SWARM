@@ -1,0 +1,12 @@
+{
+  "task_id": "202601211856-Q0HXVH",
+  "task_title": "Automate SERP data fetch (DataForSEO)",
+  "branch": "task/202601211856-Q0HXVH/dataforseo",
+  "base_branch": "main",
+  "author": "CODER",
+  "created_at": "2026-01-21T19:27:23+00:00",
+  "updated_at": "2026-01-21T19:29:47+00:00",
+  "head_sha": "cff87ba20e1777e1c29ef84d966d53272aca846a",
+  "merge_strategy": "squash",
+  "status": "OPEN"
+}

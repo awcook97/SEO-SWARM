@@ -7,11 +7,10 @@ owner: "CODER"
 depends_on: ["202601211855-FAJDQP"]
 tags: ["automation", "serp"]
 doc_version: 2
-doc_updated_at: "2026-01-21T18:57:29+00:00"
+doc_updated_at: "2026-01-21T19:29:47+00:00"
 doc_updated_by: "agentctl"
 description: "Create a DataForSEO-backed SERP fetcher to generate serp-insights-input.json and competitor-snapshot-input.json."
 ---
-
 # 202601211856-Q0HXVH: Automate SERP data fetch (DataForSEO)
 
 ## Summary
@@ -45,6 +44,6 @@ description: "Create a DataForSEO-backed SERP fetcher to generate serp-insights-
 ## Changes Summary (auto)
 
 <!-- BEGIN AUTO SUMMARY -->
-- (no file changes)
+- `scripts/serp_dataforseo_fetch.py`
 <!-- END AUTO SUMMARY -->
 
