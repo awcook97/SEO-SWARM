@@ -1,11 +1,14 @@
 ---
 id: "202601211855-FAJDQP"
 title: "External data automation (tracking task)"
-status: "TODO"
+status: "DONE"
 priority: "P1"
 owner: "ORCHESTRATOR"
 depends_on: []
 tags: ["workflow", "automation"]
+commit: { hash: "d032a4a37a401aaec59573306ea924476f3e5e5f", message: "Merge branch 'task/202601211855-FAJDQP/external-data'" }
+comments:
+  - { author: "INTEGRATOR", body: "verified: Close tracking task to unblock dependent automation tasks." }
 doc_version: 2
 doc_updated_at: "2026-01-21T18:59:01+00:00"
 doc_updated_by: "agentctl"
@@ -56,3 +59,4 @@ description: "Track automation work for scripts that require external data input
 - `.codex-swarm/tasks/202601211857-E10WHP/README.md`
 - `.codex-swarm/tasks/202601211857-R0Z49Q/README.md`
 <!-- END AUTO SUMMARY -->
+
