@@ -1,0 +1,12 @@
+{
+  "task_id": "202601161816-XFDC3A",
+  "task_title": "Coordinate remaining off-page + metrics automations",
+  "branch": "task/202601161816-XFDC3A/xfdc3a",
+  "base_branch": "main",
+  "author": "ORCHESTRATOR",
+  "created_at": "2026-01-21T17:42:48+00:00",
+  "updated_at": "2026-01-21T18:08:30+00:00",
+  "head_sha": "8b3b3e4818cddf519c06bc55626cbf3a3c8930a7",
+  "merge_strategy": "squash",
+  "status": "OPEN"
+}
