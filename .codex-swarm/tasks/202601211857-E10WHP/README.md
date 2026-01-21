@@ -1,11 +1,15 @@
 ---
 id: "202601211857-E10WHP"
 title: "Automate crawl capture ingest"
-status: "TODO"
+status: "DONE"
 priority: "med"
 owner: "CODER"
 depends_on: ["202601211855-FAJDQP"]
 tags: ["automation", "crawl"]
+commit: { hash: "c631f0a74e89d7fdce13455804a80fcb25b1feef", message: "🧩 202601211857-E10WHP integrate task/202601211857-E10WHP/crawl" }
+comments:
+  - { author: "INTEGRATOR", body: "verified: Integrated via squash | details: verify=skipped(no commands); pr=.codex-swarm/tasks/202601211857-E10WHP/pr." }
+  - { author: "INTEGRATOR", body: "verified: Integrated crawl export ingest." }
 doc_version: 2
 doc_updated_at: "2026-01-21T22:58:06+00:00"
 doc_updated_by: "agentctl"
