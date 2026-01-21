@@ -1,0 +1,7 @@
+ .codex-swarm/tasks/202601150642-34TXH1/README.md   |  44 +++++-
+ .../tasks/202601150642-34TXH1/pr/diffstat.txt      |   1 +
+ .../tasks/202601150642-34TXH1/pr/meta.json         |  12 ++
+ .../tasks/202601150642-34TXH1/pr/review.md         |  21 +++
+ .../tasks/202601150642-34TXH1/pr/verify.log        |   2 +
+ scripts/compliance_risk_log.py                     | 153 +++++++++++++++++++++
+ 6 files changed, 232 insertions(+), 1 deletion(-)
