@@ -1,11 +1,14 @@
 ---
 id: "202601211727-39HENR"
 title: "Enable branch_pr workflow mode"
-status: "TODO"
+status: "DONE"
 priority: "P1"
 owner: "ORCHESTRATOR"
 depends_on: []
 tags: ["workflow", "config"]
+commit: { hash: "4a6c51f711988672c673a88f2af02a98506dda91", message: "🧩 202601211727-39HENR integrate task/202601211727-39HENR/config" }
+comments:
+  - { author: "INTEGRATOR", body: "verified: workflow_mode is set to branch_pr in .codex-swarm/config.json | details: config show confirms branch_pr for parallel work." }
 doc_version: 2
 doc_updated_at: "2026-01-21T17:34:33+00:00"
 doc_updated_by: "agentctl"
@@ -48,3 +51,4 @@ description: "Switch workflow_mode to branch_pr to allow parallel task execution
 - `.codex-swarm/config.json`
 - `.codex-swarm/tasks/202601211727-39HENR/README.md`
 <!-- END AUTO SUMMARY -->
+
