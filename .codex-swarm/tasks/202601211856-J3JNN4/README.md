@@ -1,11 +1,15 @@
 ---
 id: "202601211856-J3JNN4"
 title: "Automate GA4 data export ingest"
-status: "TODO"
+status: "DONE"
 priority: "med"
 owner: "CODER"
 depends_on: ["202601211855-FAJDQP"]
 tags: ["automation", "ga4"]
+commit: { hash: "7db8cdc4ddab627f0f7deb63954d2ee9ee5d00b1", message: "🧩 202601211856-J3JNN4 integrate task/202601211856-J3JNN4/ga4" }
+comments:
+  - { author: "INTEGRATOR", body: "verified: Integrated via squash | details: verify=skipped(no commands); pr=.codex-swarm/tasks/202601211856-J3JNN4/pr." }
+  - { author: "INTEGRATOR", body: "verified: Integrated GA4 export ingest." }
 doc_version: 2
 doc_updated_at: "2026-01-21T22:54:08+00:00"
 doc_updated_by: "agentctl"
