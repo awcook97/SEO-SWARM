@@ -1,11 +1,15 @@
 ---
 id: "202601211856-H9BJKM"
 title: "Automate rank tracker ingest"
-status: "TODO"
+status: "DONE"
 priority: "med"
 owner: "CODER"
 depends_on: ["202601211855-FAJDQP"]
 tags: ["automation", "rank"]
+commit: { hash: "4b1a4cd8d105a5bd009d5d0269d61145481f2c51", message: "🧩 202601211856-H9BJKM integrate task/202601211856-H9BJKM/rank" }
+comments:
+  - { author: "INTEGRATOR", body: "verified: Integrated via squash | details: verify=skipped(no commands); pr=.codex-swarm/tasks/202601211856-H9BJKM/pr." }
+  - { author: "INTEGRATOR", body: "verified: Integrated rank tracker export ingest." }
 doc_version: 2
 doc_updated_at: "2026-01-21T22:53:22+00:00"
 doc_updated_by: "agentctl"
