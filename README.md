@@ -102,6 +102,7 @@ All scripts write under `outputs/<client>/reports/` unless noted.
 - GSC export ingest: `gsc_export_ingest.py` -> `gsc-export.json` + `gsc-summary.json` (optional)
 - Review export ingest: `review_export_ingest.py` -> `review-templates-input.json`
 - Technical SEO audit scaffold: `technical_seo_audit_scaffold.py` -> `technical-seo-audit.md/.json`
+- Crawl export ingest: `crawl_export_ingest.py` -> `crawl-export.json` + `crawl-summary.json` (optional)
 
 ## Notes
 
