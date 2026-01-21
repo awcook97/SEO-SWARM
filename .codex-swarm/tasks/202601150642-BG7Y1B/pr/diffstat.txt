@@ -1,0 +1,7 @@
+ .codex-swarm/tasks/202601150642-BG7Y1B/README.md   |  44 ++++++-
+ .../tasks/202601150642-BG7Y1B/pr/diffstat.txt      |   1 +
+ .../tasks/202601150642-BG7Y1B/pr/meta.json         |  12 ++
+ .../tasks/202601150642-BG7Y1B/pr/review.md         |  21 ++++
+ .../tasks/202601150642-BG7Y1B/pr/verify.log        |   2 +
+ scripts/serp_insights_summary.py                   | 126 +++++++++++++++++++++
+ 6 files changed, 205 insertions(+), 1 deletion(-)

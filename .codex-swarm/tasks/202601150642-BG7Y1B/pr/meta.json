@@ -1,0 +1,12 @@
+{
+  "task_id": "202601150642-BG7Y1B",
+  "task_title": "Automate SERP insights summary",
+  "branch": "task/202601150642-BG7Y1B/bg7y1b",
+  "base_branch": "main",
+  "author": "ORCHESTRATOR",
+  "created_at": "2026-01-21T17:42:46+00:00",
+  "updated_at": "2026-01-21T18:06:27+00:00",
+  "head_sha": "ae8ea179c5c2b4d6309ae98a02b6d2f962826938",
+  "merge_strategy": "squash",
+  "status": "OPEN"
+}
