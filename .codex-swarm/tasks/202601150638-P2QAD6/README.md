@@ -1,13 +1,15 @@
 ---
 id: "202601150638-P2QAD6"
 title: "Automate rank tracking report builder"
-status: "DOING"
+status: "DONE"
 priority: "med"
 owner: "CODER"
 depends_on: []
 tags: []
+commit: { hash: "3c9d44729232662cb5040b0e7550bb7782a585b0", message: "🧩 202601150638-P2QAD6 integrate task/202601150638-P2QAD6/p2qad6" }
 comments:
   - { author: "CODER", body: "Start: build rank tracking report script from CSV exports per measurement template." }
+  - { author: "INTEGRATOR", body: "verified: integrated rank tracking report builder | details: py_compile passed for scripts/rank_tracking_report_builder.py." }
 doc_version: 2
 doc_updated_at: "2026-01-21T18:04:44+00:00"
 doc_updated_by: "agentctl"
@@ -57,3 +59,4 @@ description: "Create a script that ingests rank tracker exports (CSV) and output
 - `.codex-swarm/tasks/202601150638-P2QAD6/pr/verify.log`
 - `scripts/rank_tracking_report_builder.py`
 <!-- END AUTO SUMMARY -->
+
