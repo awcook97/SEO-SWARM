@@ -1,11 +1,15 @@
 ---
 id: "202601211857-DCW9PK"
 title: "Add .env + DataForSEO credentials"
-status: "TODO"
+status: "DONE"
 priority: "P1"
 owner: "CODER"
 depends_on: ["202601211855-FAJDQP"]
 tags: ["config", "automation"]
+commit: { hash: "514d8ea5c9e61e3ccfc83a482f9b665a623913c6", message: "🧩 202601211857-DCW9PK integrate task/202601211857-DCW9PK/env" }
+comments:
+  - { author: "INTEGRATOR", body: "verified: Integrated via squash | details: verify=skipped(no commands); pr=.codex-swarm/tasks/202601211857-DCW9PK/pr." }
+  - { author: "INTEGRATOR", body: "verified: Integrated DataForSEO env example." }
 doc_version: 2
 doc_updated_at: "2026-01-21T22:57:13+00:00"
 doc_updated_by: "agentctl"
