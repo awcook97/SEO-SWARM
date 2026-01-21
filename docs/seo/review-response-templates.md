@@ -7,6 +7,7 @@ Provide templated responses for reviews, covering both positive feedback and iss
 ## Inputs
 
 - `outputs/<client>/reports/review-templates-input.json`
+- Review export (CSV/JSON) via `scripts/review_export_ingest.py`
 
 ## Command
 
@@ -15,6 +16,12 @@ python scripts/review_response_templates.py --client-slug <client>
 ```
 
 Scaffold an input file with `--scaffold`, then fill in actual reviews and issue flags.
+
+To generate the input from an export:
+
+```bash
+python scripts/review_export_ingest.py --client-slug <client> --input path/to/reviews.csv
+```
 
 ## Outputs
 

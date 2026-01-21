@@ -73,6 +73,8 @@ python scripts/swarm_workflow.py --client "Example HVAC" --slug example-hvac
      `python scripts/local_link_outreach.py --client-slug client-slug --scaffold`
    - Review response templates:
      `python scripts/review_response_templates.py --client-slug client-slug --scaffold`
+   - Review export ingest:
+     `python scripts/review_export_ingest.py --client-slug client-slug --input path/to/reviews.csv`
 7) **Technical audit**
    - `python scripts/technical_seo_audit_scaffold.py --client-slug client-slug`
 
@@ -92,6 +94,7 @@ All scripts write under `outputs/<client>/reports/` unless noted.
 - Citation log: `citation_update_log.py` -> `citation-update-log.md/.json`
 - Local link outreach log: `local_link_outreach.py` -> `local-link-outreach.md/.json`
 - Review response templates: `review_response_templates.py` -> `review-response-templates.md/.json`
+- Review export ingest: `review_export_ingest.py` -> `review-templates-input.json`
 - Technical SEO audit scaffold: `technical_seo_audit_scaffold.py` -> `technical-seo-audit.md/.json`
 
 ## Notes
