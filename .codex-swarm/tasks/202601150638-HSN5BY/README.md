@@ -1,13 +1,15 @@
 ---
 id: "202601150638-HSN5BY"
 title: "Automate competitor snapshot builder"
-status: "DOING"
+status: "DONE"
 priority: "med"
 owner: "CODER"
 depends_on: []
 tags: []
+commit: { hash: "3ca82965bc422a3e9227b9048959648e860d2fdb", message: "🧩 202601150638-HSN5BY integrate task/202601150638-HSN5BY/hsn5by" }
 comments:
   - { author: "CODER", body: "Start: build competitor snapshot builder script aligned to measurement spec outputs." }
+  - { author: "INTEGRATOR", body: "verified: integrated competitor snapshot builder | details: py_compile passed for scripts/competitor_snapshot_builder.py." }
 doc_version: 2
 doc_updated_at: "2026-01-21T18:03:51+00:00"
 doc_updated_by: "agentctl"
@@ -57,3 +59,4 @@ description: "Create a script to parse SERP exports/screenshots or structured in
 - `.codex-swarm/tasks/202601150638-HSN5BY/pr/verify.log`
 - `scripts/competitor_snapshot_builder.py`
 <!-- END AUTO SUMMARY -->
+
