@@ -1,13 +1,15 @@
 ---
 id: "202601161816-XFDC3A"
 title: "Coordinate remaining off-page + metrics automations"
-status: "DOING"
+status: "DONE"
 priority: "med"
 owner: "ORCHESTRATOR"
 depends_on: []
 tags: []
+commit: { hash: "cb86b49e6e3b625172f029cd7622329cdeb9e5de", message: "🧩 202601161816-XFDC3A integrate task/202601161816-XFDC3A/xfdc3a" }
 comments:
   - { author: "ORCHESTRATOR", body: "Start: coordinate off-page + metrics automation tasks and track completion status." }
+  - { author: "INTEGRATOR", body: "verified: coordinated parallel task starts and updated orchestration notes | details: status list reflects active automations." }
 doc_version: 2
 doc_updated_at: "2026-01-21T18:08:30+00:00"
 doc_updated_by: "agentctl"
@@ -54,3 +56,4 @@ description: "Track progress across the remaining off-page and metrics automatio
 - `.codex-swarm/tasks/202601161816-XFDC3A/pr/review.md`
 - `.codex-swarm/tasks/202601161816-XFDC3A/pr/verify.log`
 <!-- END AUTO SUMMARY -->
+
