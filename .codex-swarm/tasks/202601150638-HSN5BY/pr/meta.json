@@ -1,0 +1,12 @@
+{
+  "task_id": "202601150638-HSN5BY",
+  "task_title": "Automate competitor snapshot builder",
+  "branch": "task/202601150638-HSN5BY/hsn5by",
+  "base_branch": "main",
+  "author": "ORCHESTRATOR",
+  "created_at": "2026-01-21T17:42:43+00:00",
+  "updated_at": "2026-01-21T18:03:51+00:00",
+  "head_sha": "0c42d2aea7be54a249ad26255e837b5102ee9d8b",
+  "merge_strategy": "squash",
+  "status": "OPEN"
+}

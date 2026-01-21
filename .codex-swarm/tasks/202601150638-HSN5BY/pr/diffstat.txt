@@ -1,0 +1,7 @@
+ .codex-swarm/tasks/202601150638-HSN5BY/README.md   |  44 +++++-
+ .../tasks/202601150638-HSN5BY/pr/diffstat.txt      |   1 +
+ .../tasks/202601150638-HSN5BY/pr/meta.json         |  12 ++
+ .../tasks/202601150638-HSN5BY/pr/review.md         |  21 +++
+ .../tasks/202601150638-HSN5BY/pr/verify.log        |   2 +
+ scripts/competitor_snapshot_builder.py             | 150 +++++++++++++++++++++
+ 6 files changed, 229 insertions(+), 1 deletion(-)
