@@ -1,19 +1,20 @@
 ---
 id: "202601180914-7D0M68"
 title: "Simplify areaServed to string list"
-status: "DOING"
+status: "DONE"
 priority: "P1"
 owner: "ORCHESTRATOR"
 depends_on: []
 tags: ["schema", "seo", "automation"]
+commit: { hash: "625a84eeab9b3cd2e5f26df59017801dc8ae3598", message: "📝 7D0M68 docs: verify areaServed string list output" }
 comments:
   - { author: "ORCHESTRATOR", body: "Start: confirm cache schema generator emits areaServed as a list of strings (no Place objects) for LocalBusiness." }
+  - { author: "ORCHESTRATOR", body: "verified: generator output now emits LocalBusiness.areaServed as a list of strings (confirmed on a fresh run to /tmp/schema-smoke-7d0m68 for clearlyamazing)." }
 doc_version: 2
 doc_updated_at: "2026-01-21T16:57:56+00:00"
 doc_updated_by: "agentctl"
 description: "Emit areaServed as list of strings instead of Place objects in cache schema generator."
 ---
-
 # 202601180914-7D0M68: Simplify areaServed to string list
 
 ## Summary
@@ -50,3 +51,4 @@ description: "Emit areaServed as list of strings instead of Place objects in cac
 <!-- BEGIN AUTO SUMMARY -->
 - (no file changes)
 <!-- END AUTO SUMMARY -->
+
