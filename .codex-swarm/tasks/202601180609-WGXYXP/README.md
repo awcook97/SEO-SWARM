@@ -1,21 +1,20 @@
 ---
 id: "202601180609-WGXYXP"
 title: "Review Search Appearance best practices + single JSON-LD per page"
-status: "DONE"
+status: "DOING"
 priority: "P1"
 owner: "ORCHESTRATOR"
 depends_on: []
 tags: ["seo", "schema", "docs"]
 verify: ["python3 -m pytest"]
-commit: { hash: "bb3e9906705ad21a1729482a2b23f1ca4e6583f8", message: "📝 WGXYXP docs: confirm single JSON-LD per page + pytest" }
 comments:
   - { author: "ORCHESTRATOR", body: "Start: confirm one JSON-LD script per page and align docs to Google Search appearance best practices; run python3 -m pytest as declared verify." }
-  - { author: "ORCHESTRATOR", body: "verified: generator output is one JSON-LD script per generated page and docs reflect parity guidance | details: ran python3 -m pytest and all 29 tests passed." }
 doc_version: 2
 doc_updated_at: "2026-01-21T17:03:50+00:00"
 doc_updated_by: "agentctl"
 description: "Inspect Google Search Appearance docs for best practices and ensure outputs use one JSON-LD script per page; run verification."
 ---
+
 # 202601180609-WGXYXP: Review Search Appearance best practices + single JSON-LD per page
 
 ## Summary
@@ -54,4 +53,3 @@ description: "Inspect Google Search Appearance docs for best practices and ensur
 <!-- BEGIN AUTO SUMMARY -->
 - (no file changes)
 <!-- END AUTO SUMMARY -->
-
