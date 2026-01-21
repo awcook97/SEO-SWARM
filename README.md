@@ -94,6 +94,7 @@ All scripts write under `outputs/<client>/reports/` unless noted.
 - Citation log: `citation_update_log.py` -> `citation-update-log.md/.json`
 - Local link outreach log: `local_link_outreach.py` -> `local-link-outreach.md/.json`
 - Review response templates: `review_response_templates.py` -> `review-response-templates.md/.json`
+- GSC export ingest: `gsc_export_ingest.py` -> `gsc-export.json` + `gsc-summary.json` (optional)
 - Review export ingest: `review_export_ingest.py` -> `review-templates-input.json`
 - Technical SEO audit scaffold: `technical_seo_audit_scaffold.py` -> `technical-seo-audit.md/.json`
 
