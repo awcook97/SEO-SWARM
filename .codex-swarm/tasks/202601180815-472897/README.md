@@ -1,20 +1,19 @@
 ---
 id: "202601180815-472897"
 title: "Add logo image + geocoding to schema entities"
-status: "DONE"
+status: "DOING"
 priority: "P1"
 owner: "ORCHESTRATOR"
 depends_on: []
 tags: ["schema", "seo", "automation"]
-commit: { hash: "c6f2b33d73580c7e14de2abcd0cc85c35825d193", message: "📝 472897 docs: verify logo image + geo enrichment" }
 comments:
   - { author: "ORCHESTRATOR", body: "Start: confirm Organization/LocalBusiness include address + logo image and geo coordinates are hydrated via cached geocode (with optional geopy lookup)." }
-  - { author: "ORCHESTRATOR", body: "verified: generator enriches Organization/LocalBusiness with address and logo image | details: LocalBusiness.geo is hydrated from outputs/<client>/reports/geocoded.json (confirmed on a fresh highpoint-hvac run to /tmp/schema-smoke-472897)." }
 doc_version: 2
 doc_updated_at: "2026-01-21T17:01:53+00:00"
 doc_updated_by: "agentctl"
 description: "Add Organization address, add logo image to Organization/LocalBusiness, and enrich LocalBusiness geo using geopy with caching."
 ---
+
 # 202601180815-472897: Add logo image + geocoding to schema entities
 
 ## Summary
@@ -53,4 +52,3 @@ description: "Add Organization address, add logo image to Organization/LocalBusi
 <!-- BEGIN AUTO SUMMARY -->
 - (no file changes)
 <!-- END AUTO SUMMARY -->
-
