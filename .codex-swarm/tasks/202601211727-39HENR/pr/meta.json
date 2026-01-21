@@ -1,0 +1,12 @@
+{
+  "task_id": "202601211727-39HENR",
+  "task_title": "Enable branch_pr workflow mode",
+  "branch": "task/202601211727-39HENR/config",
+  "base_branch": "main",
+  "author": "ORCHESTRATOR",
+  "created_at": "2026-01-21T17:34:33+00:00",
+  "updated_at": "2026-01-21T17:34:33+00:00",
+  "head_sha": "3822dc9cf017bf9c73a1d60c379cd3b9f78235f8",
+  "merge_strategy": "squash",
+  "status": "OPEN"
+}
