@@ -1,11 +1,15 @@
 ---
 id: "202601211856-SQD57T"
 title: "Automate GBP export ingest"
-status: "TODO"
+status: "DONE"
 priority: "med"
 owner: "CODER"
 depends_on: ["202601211855-FAJDQP"]
 tags: ["automation", "gbp"]
+commit: { hash: "3591cac59fa7b63b1c0339d05b96d12b1ca93f6d", message: "🧩 202601211856-SQD57T integrate task/202601211856-SQD57T/gbp" }
+comments:
+  - { author: "INTEGRATOR", body: "verified: Integrated via squash | details: verify=skipped(no commands); pr=.codex-swarm/tasks/202601211856-SQD57T/pr." }
+  - { author: "INTEGRATOR", body: "verified: Integrated GBP export ingest." }
 doc_version: 2
 doc_updated_at: "2026-01-21T22:55:39+00:00"
 doc_updated_by: "agentctl"
