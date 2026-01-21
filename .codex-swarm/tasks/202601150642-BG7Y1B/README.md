@@ -1,13 +1,15 @@
 ---
 id: "202601150642-BG7Y1B"
 title: "Automate SERP insights summary"
-status: "DOING"
+status: "DONE"
 priority: "med"
 owner: "CODER"
 depends_on: []
 tags: []
+commit: { hash: "f902129a2b754d63c95b8fdb768dd0cde080a9e9", message: "🧩 202601150642-BG7Y1B integrate task/202601150642-BG7Y1B/bg7y1b" }
 comments:
   - { author: "CODER", body: "Start: implement SERP insights summary tool based on approved exports with no fabrication." }
+  - { author: "INTEGRATOR", body: "verified: integrated SERP insights summary generator | details: py_compile passed for scripts/serp_insights_summary.py." }
 doc_version: 2
 doc_updated_at: "2026-01-21T18:06:27+00:00"
 doc_updated_by: "agentctl"
@@ -57,3 +59,4 @@ description: "Create a tool to summarize SERP patterns and competitor gaps from 
 - `.codex-swarm/tasks/202601150642-BG7Y1B/pr/verify.log`
 - `scripts/serp_insights_summary.py`
 <!-- END AUTO SUMMARY -->
+
