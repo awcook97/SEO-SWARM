@@ -1,20 +1,19 @@
 ---
 id: "202601180753-2MBGAS"
 title: "Refine schema types + per-service offers"
-status: "DONE"
+status: "DOING"
 priority: "P1"
 owner: "ORCHESTRATOR"
 depends_on: []
 tags: ["schema", "seo", "automation"]
-commit: { hash: "4d2ab79c5b0dcb6a26f5756f525cdb15b3461105", message: "📝 2MBGAS docs: verify HVACBusiness + per-service makesOffer" }
 comments:
   - { author: "ORCHESTRATOR", body: "Start: confirm generator uses HVACBusiness + makesOffer and limits offers to the matching service page (all offers only on homepage)." }
-  - { author: "ORCHESTRATOR", body: "verified: generator emits LocalBusiness as [HVACBusiness, LocalBusiness] and uses makesOffer | details: on a highpoint-hvac run, homepage included 12 offers and air-duct-services page included only the matching service offer." }
 doc_version: 2
 doc_updated_at: "2026-01-21T17:00:24+00:00"
 doc_updated_by: "agentctl"
 description: "Switch LocalBusiness to HVACBusiness, replace serviceOffered with makesOffer, and limit offers to matching service pages."
 ---
+
 # 202601180753-2MBGAS: Refine schema types + per-service offers
 
 ## Summary
@@ -53,4 +52,3 @@ description: "Switch LocalBusiness to HVACBusiness, replace serviceOffered with 
 <!-- BEGIN AUTO SUMMARY -->
 - (no file changes)
 <!-- END AUTO SUMMARY -->
-
