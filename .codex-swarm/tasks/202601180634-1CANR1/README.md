@@ -1,19 +1,20 @@
 ---
 id: "202601180634-1CANR1"
 title: "Harden cache schema generator against bad HTML"
-status: "DOING"
+status: "DONE"
 priority: "P1"
 owner: "ORCHESTRATOR"
 depends_on: []
 tags: ["seo", "schema", "automation"]
+commit: { hash: "50f2fefea911b0a11861391e8fda7bb315bbcaf5", message: "📝 1CANR1 docs: capture bad-HTML hardening and smoke run" }
 comments:
   - { author: "ORCHESTRATOR", body: "Start: confirm cache schema generator tolerates malformed/non-UTF8 cache HTML and logs skips without crashing generation." }
+  - { author: "ORCHESTRATOR", body: "verified: generator skips/logs non-text or malformed cache files instead of crashing | details: smoke run completed via scripts/cache_schema_generator.py --client-slug clearlyamazing --output-dir /tmp/schema-smoke-1canr1." }
 doc_version: 2
 doc_updated_at: "2026-01-21T16:53:15+00:00"
 doc_updated_by: "agentctl"
 description: "Inspect generated outputs for errors and update cache_schema_generator.py to tolerate non-UTF8/garbled cache files, logging skips; rerun generator for clearlyamazing."
 ---
-
 # 202601180634-1CANR1: Harden cache schema generator against bad HTML
 
 ## Summary
@@ -51,3 +52,4 @@ description: "Inspect generated outputs for errors and update cache_schema_gener
 <!-- BEGIN AUTO SUMMARY -->
 - (no file changes)
 <!-- END AUTO SUMMARY -->
+
