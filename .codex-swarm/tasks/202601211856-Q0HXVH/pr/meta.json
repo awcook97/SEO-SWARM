@@ -5,8 +5,12 @@
   "base_branch": "main",
   "author": "CODER",
   "created_at": "2026-01-21T19:27:23+00:00",
-  "updated_at": "2026-01-21T23:03:53+00:00",
+  "updated_at": "2026-01-21T23:32:33+00:00",
   "head_sha": "7d6118c4d053ec3f91282cb81f8072b3276478c1",
   "merge_strategy": "squash",
-  "status": "OPEN"
+  "status": "CLOSED",
+  "merged_at": "2026-01-21T23:32:33+00:00",
+  "merge_commit": "a75697fa921088fc7fc1089137f6d55d1ec4f09c",
+  "closed_at": "2026-01-21T23:32:33+00:00",
+  "close_commit": "a75697fa921088fc7fc1089137f6d55d1ec4f09c"
 }

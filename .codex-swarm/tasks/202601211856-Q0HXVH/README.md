@@ -1,11 +1,15 @@
 ---
 id: "202601211856-Q0HXVH"
 title: "Automate SERP data fetch (DataForSEO)"
-status: "TODO"
+status: "DONE"
 priority: "P1"
 owner: "CODER"
 depends_on: ["202601211855-FAJDQP"]
 tags: ["automation", "serp"]
+commit: { hash: "a75697fa921088fc7fc1089137f6d55d1ec4f09c", message: "🧩 202601211856-Q0HXVH integrate task/202601211856-Q0HXVH/serp" }
+comments:
+  - { author: "INTEGRATOR", body: "verified: Integrated via squash | details: verify=skipped(no commands); pr=.codex-swarm/tasks/202601211856-Q0HXVH/pr." }
+  - { author: "INTEGRATOR", body: "verified: Integrated DataForSEO SERP fetch updates." }
 doc_version: 2
 doc_updated_at: "2026-01-21T23:03:53+00:00"
 doc_updated_by: "agentctl"
