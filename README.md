@@ -94,6 +94,7 @@ All scripts write under `outputs/<client>/reports/` unless noted.
 - Rank tracker export ingest: `rank_tracker_export_ingest.py` -> `rank-tracker-export.csv/.json`
 - Draft compliance lint: `draft_compliance_lint.py` -> `draft-compliance-lint.md/.json`
 - GBP checklist: `gbp_update_checklist.py` -> `gbp-update-checklist.md/.json`
+- GBP export ingest: `gbp_export_ingest.py` -> `gbp-export.json` + `gbp-summary.json` (optional)
 - Citation log: `citation_update_log.py` -> `citation-update-log.md/.json`
 - Local link outreach log: `local_link_outreach.py` -> `local-link-outreach.md/.json`
 - Review response templates: `review_response_templates.py` -> `review-response-templates.md/.json`
