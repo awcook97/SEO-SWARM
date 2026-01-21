@@ -45,6 +45,20 @@ def read_input(path: Path) -> dict[str, Any]:
         raise SystemExit(f"Invalid JSON in {path}: {exc}") from exc
 
 
+def scaffold_input(path: Path) -> None:
+    payload = {
+        "client": {"name": "Client Name", "period": "2026-01", "prepared_by": "Analyst Name"},
+        "keywords": ["service keyword", "city keyword"],
+        "location_name": "United States",
+        "language_name": "English",
+        "device": "desktop",
+        "depth": 10,
+        "feature_targets": ["Local Pack", "FAQ"],
+        "recommended_angles": ["Service comparison", "Pricing transparency"],
+    }
+    path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+
 def build_tasks(payload: dict[str, Any]) -> list[dict[str, Any]]:
     keywords = payload.get("keywords") or []
     if not keywords:
@@ -177,6 +191,7 @@ def main() -> None:
         default=None,
         help="DataForSEO endpoint URL (overrides DATAFORSEO_ENDPOINT env var)",
     )
+    parser.add_argument("--scaffold", action="store_true", help="Create a scaffold input file if missing.")
     parser.add_argument(
         "--env",
         default=str(DEFAULT_ENV_PATH),
@@ -200,6 +215,13 @@ def main() -> None:
     report_dir.mkdir(parents=True, exist_ok=True)
 
     input_path = Path(args.input) if args.input else report_dir / "serp-fetch-input.json"
+    if not input_path.exists():
+        if args.scaffold:
+            scaffold_input(input_path)
+            print(f"wrote scaffold input to {input_path}")
+            return
+        raise SystemExit(f"Input file not found: {input_path}. Use --scaffold to create one.")
+
     payload = read_input(input_path)
     tasks = build_tasks(payload)
     response = call_api(endpoint, login, password, tasks)
