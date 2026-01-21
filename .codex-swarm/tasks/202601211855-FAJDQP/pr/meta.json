@@ -1,0 +1,12 @@
+{
+  "task_id": "202601211855-FAJDQP",
+  "task_title": "External data automation (tracking task)",
+  "branch": "task/202601211855-FAJDQP/external-data",
+  "base_branch": "main",
+  "author": "ORCHESTRATOR",
+  "created_at": "2026-01-21T18:59:01+00:00",
+  "updated_at": "2026-01-21T18:59:01+00:00",
+  "head_sha": "2a71d19ebc15cc0ba0cd4c9969fe6d7c39d610ca",
+  "merge_strategy": "squash",
+  "status": "OPEN"
+}
