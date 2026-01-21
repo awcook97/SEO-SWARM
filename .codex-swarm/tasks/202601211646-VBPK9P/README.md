@@ -1,24 +1,22 @@
 ---
 id: "202601211646-VBPK9P"
 title: "Execute all schema-tagged tasks"
-status: "DOING"
+status: "TODO"
 priority: "P1"
 owner: "ORCHESTRATOR"
 depends_on: []
 tags: ["schema", "orchestration"]
-comments:
-  - { author: "ORCHESTRATOR", body: "Start: close the schema-tagged backlog and record verification results across tasks (schema validator spotcheck + pytest)." }
 doc_version: 2
 doc_updated_at: "2026-01-21T16:47:17+00:00"
 doc_updated_by: "agentctl"
 description: "Tracking task for executing the current backlog of tasks tagged 'schema' in direct workflow. Planned execution order: 202601180735-Y4CG1A (schemaorg reference/workflow), 202601180617-99GCXY (reuse inputs/entity tracking), 202601180634-1CANR1 (harden generator), 202601180654-K00W5C (Clearly Amazing service areas + newline output), 202601180919-K0MTNR (compact JSON-LD), 202601180914-7D0M68 (areaServed strings), 202601180753-2MBGAS (types + per-service offers), 202601180815-472897 (logo/address + geocoding), 202601180828-4Y3AP2 (geocode fallback/logging), 202601180609-WGXYXP (single JSON-LD per page + Search Appearance docs + pytest)."
 ---
+
 # 202601211646-VBPK9P: Execute all schema-tagged tasks
 
 ## Summary
 
 - Execute the current `schema`-tagged backlog end-to-end (code, docs, data), using per-task commits and `agentctl` finish metadata.
-- Status: all `schema`-tagged tasks in scope are now marked `DONE`.
 
 ## Context
 
@@ -45,8 +43,7 @@ description: "Tracking task for executing the current backlog of tasks tagged 's
 
 ## Notes
 
-- Completed tasks: 202601180735-Y4CG1A, 202601180617-99GCXY, 202601180634-1CANR1, 202601180654-K00W5C, 202601180919-K0MTNR, 202601180914-7D0M68, 202601180753-2MBGAS, 202601180815-472897, 202601180828-4Y3AP2, 202601180609-WGXYXP.
-- Verification highlights: schema validator spotcheck passed (`scripts/schema_org_validator.py` on a generated page) and `python3 -m pytest` passed (29 tests).
+- Execute tasks in the order recorded in the task description unless new dependencies are discovered.
 
 ## Changes Summary (auto)
 
