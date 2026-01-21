@@ -96,6 +96,7 @@ All scripts write under `outputs/<client>/reports/` unless noted.
 - GBP checklist: `gbp_update_checklist.py` -> `gbp-update-checklist.md/.json`
 - GBP export ingest: `gbp_export_ingest.py` -> `gbp-export.json` + `gbp-summary.json` (optional)
 - Citation log: `citation_update_log.py` -> `citation-update-log.md/.json`
+- Citation audit ingest: `citation_audit_ingest.py` -> `citation-log-input.json`
 - Local link outreach log: `local_link_outreach.py` -> `local-link-outreach.md/.json`
 - Review response templates: `review_response_templates.py` -> `review-response-templates.md/.json`
 - GSC export ingest: `gsc_export_ingest.py` -> `gsc-export.json` + `gsc-summary.json` (optional)
