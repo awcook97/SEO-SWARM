@@ -1,11 +1,15 @@
 ---
 id: "202601211857-R0Z49Q"
 title: "Automate metadata linkmap inputs"
-status: "TODO"
+status: "DONE"
 priority: "med"
 owner: "CODER"
 depends_on: ["202601211855-FAJDQP"]
 tags: ["automation", "metadata"]
+commit: { hash: "870526ddc6af0eeb2085b64fa9c1d6884c718ea5", message: "🧩 202601211857-R0Z49Q integrate task/202601211857-R0Z49Q/metadata" }
+comments:
+  - { author: "INTEGRATOR", body: "verified: Integrated via squash | details: verify=skipped(no commands); pr=.codex-swarm/tasks/202601211857-R0Z49Q/pr." }
+  - { author: "INTEGRATOR", body: "verified: Integrated metadata linkmap ingest." }
 doc_version: 2
 doc_updated_at: "2026-01-21T22:58:51+00:00"
 doc_updated_by: "agentctl"
