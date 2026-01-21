@@ -1,15 +1,13 @@
 ---
 id: "202601211646-VBPK9P"
 title: "Execute all schema-tagged tasks"
-status: "DONE"
+status: "DOING"
 priority: "P1"
 owner: "ORCHESTRATOR"
 depends_on: []
 tags: ["schema", "orchestration"]
-commit: { hash: "6126a46a1dd1eb7d24cc34abcad19d39d78980e9", message: "📝 VBPK9P docs: record schema backlog completion and verification" }
 comments:
   - { author: "ORCHESTRATOR", body: "Start: close the schema-tagged backlog and record verification results across tasks (schema validator spotcheck + pytest)." }
-  - { author: "ORCHESTRATOR", body: "verified: all tasks previously tagged schema are now DONE | details: ran schema validator spotcheck and ran python3 -m pytest (29 passed) to confirm baseline stays green." }
 doc_version: 2
 doc_updated_at: "2026-01-21T16:47:17+00:00"
 doc_updated_by: "agentctl"
@@ -55,4 +53,3 @@ description: "Tracking task for executing the current backlog of tasks tagged 's
 <!-- BEGIN AUTO SUMMARY -->
 - (no file changes)
 <!-- END AUTO SUMMARY -->
-
