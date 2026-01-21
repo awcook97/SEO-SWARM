@@ -1,13 +1,15 @@
 ---
 id: "202601150642-34TXH1"
 title: "Automate compliance risk log"
-status: "DOING"
+status: "DONE"
 priority: "med"
 owner: "CODER"
 depends_on: []
 tags: []
+commit: { hash: "aa756ac3a8da11aff199ab7a369d00d608f3066b", message: "🧩 202601150642-34TXH1 integrate task/202601150642-34TXH1/34txh1" }
 comments:
   - { author: "CODER", body: "Start: implement compliance risk log tool for drafts using swarm role guidelines." }
+  - { author: "INTEGRATOR", body: "verified: integrated compliance risk log generator | details: py_compile passed for scripts/compliance_risk_log.py." }
 doc_version: 2
 doc_updated_at: "2026-01-21T18:05:36+00:00"
 doc_updated_by: "agentctl"
@@ -57,3 +59,4 @@ description: "Create a tool that compiles a risk log for drafts: missing sources
 - `.codex-swarm/tasks/202601150642-34TXH1/pr/verify.log`
 - `scripts/compliance_risk_log.py`
 <!-- END AUTO SUMMARY -->
+
