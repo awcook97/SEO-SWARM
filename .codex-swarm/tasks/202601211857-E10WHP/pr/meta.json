@@ -1,0 +1,12 @@
+{
+  "task_id": "202601211857-E10WHP",
+  "task_title": "Automate crawl capture ingest",
+  "branch": "task/202601211857-E10WHP/crawl",
+  "base_branch": "main",
+  "author": "CODER",
+  "created_at": "2026-01-21T22:47:09+00:00",
+  "updated_at": "2026-01-21T22:47:09+00:00",
+  "head_sha": "99417a0f39e8d255ceafa6466aaa287f7ce86609",
+  "merge_strategy": "squash",
+  "status": "OPEN"
+}

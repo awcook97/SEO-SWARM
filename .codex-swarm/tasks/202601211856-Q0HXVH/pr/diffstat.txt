@@ -1,2 +1,7 @@
- scripts/serp_dataforseo_fetch.py | 225 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 225 insertions(+)
+ .codex-swarm/tasks/202601211856-Q0HXVH/README.md   | 14 ++++---
+ .../tasks/202601211856-Q0HXVH/pr/diffstat.txt      |  6 ++-
+ .../tasks/202601211856-Q0HXVH/pr/meta.json         |  6 +--
+ README.md                                          |  1 +
+ scripts/serp_dataforseo_fetch.py                   | 22 +++++++++++
+ tests/test_serp_dataforseo_fetch.py                | 46 ++++++++++++++++++++++
+ 6 files changed, 84 insertions(+), 11 deletions(-)

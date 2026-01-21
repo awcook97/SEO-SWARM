@@ -1,0 +1,12 @@
+{
+  "task_id": "202601211857-R0Z49Q",
+  "task_title": "Automate metadata linkmap inputs",
+  "branch": "task/202601211857-R0Z49Q/metadata",
+  "base_branch": "main",
+  "author": "CODER",
+  "created_at": "2026-01-21T22:47:12+00:00",
+  "updated_at": "2026-01-21T22:47:12+00:00",
+  "head_sha": "668328af575df17a9c15e6d9bf5e8df262805be8",
+  "merge_strategy": "squash",
+  "status": "OPEN"
+}

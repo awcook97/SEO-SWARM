@@ -1,0 +1,12 @@
+{
+  "task_id": "202601211857-DCW9PK",
+  "task_title": "Add .env + DataForSEO credentials",
+  "branch": "task/202601211857-DCW9PK/env",
+  "base_branch": "main",
+  "author": "CODER",
+  "created_at": "2026-01-21T22:47:07+00:00",
+  "updated_at": "2026-01-21T22:47:07+00:00",
+  "head_sha": "c43f20df587c08e747eeb5de6bdd512548f5e3b3",
+  "merge_strategy": "squash",
+  "status": "OPEN"
+}
