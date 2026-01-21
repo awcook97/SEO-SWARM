@@ -1,0 +1,7 @@
+ .codex-swarm/tasks/202601150638-P2QAD6/README.md   |  44 ++++-
+ .../tasks/202601150638-P2QAD6/pr/diffstat.txt      |   1 +
+ .../tasks/202601150638-P2QAD6/pr/meta.json         |  12 ++
+ .../tasks/202601150638-P2QAD6/pr/review.md         |  21 ++
+ .../tasks/202601150638-P2QAD6/pr/verify.log        |   2 +
+ scripts/rank_tracking_report_builder.py            | 218 +++++++++++++++++++++
+ 6 files changed, 297 insertions(+), 1 deletion(-)
