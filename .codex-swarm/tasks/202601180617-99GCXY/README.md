@@ -1,20 +1,19 @@
 ---
 id: "202601180617-99GCXY"
 title: "Reuse inputs + track entities in cache schema generator"
-status: "DONE"
+status: "DOING"
 priority: "P1"
 owner: "ORCHESTRATOR"
 depends_on: []
 tags: ["seo", "schema", "automation"]
-commit: { hash: "fa6d49edbf41fafe03aac3b98b969cac152659c3", message: "📝 99GCXY docs: record input reuse and shared entity registry" }
 comments:
   - { author: "ORCHESTRATOR", body: "Start: confirm cache schema generator reuses approved inputs and maintains a shared entity registry across pages for consistent IDs." }
-  - { author: "ORCHESTRATOR", body: "verified: cache schema generator prefers GBP checklist inputs and reuses a shared entity registry so IDs stay consistent across pages | details: py_compile of scripts/cache_schema_generator.py passed." }
 doc_version: 2
 doc_updated_at: "2026-01-21T16:52:28+00:00"
 doc_updated_by: "agentctl"
 description: "Update cache_schema_generator.py to load existing inputs/extracted reports and track larger entities through generation."
 ---
+
 # 202601180617-99GCXY: Reuse inputs + track entities in cache schema generator
 
 ## Summary
@@ -53,4 +52,3 @@ description: "Update cache_schema_generator.py to load existing inputs/extracted
 <!-- BEGIN AUTO SUMMARY -->
 - (no file changes)
 <!-- END AUTO SUMMARY -->
-
