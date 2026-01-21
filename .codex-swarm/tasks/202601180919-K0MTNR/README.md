@@ -1,20 +1,19 @@
 ---
 id: "202601180919-K0MTNR"
 title: "Compact JSON-LD output"
-status: "DONE"
+status: "DOING"
 priority: "P1"
 owner: "ORCHESTRATOR"
 depends_on: []
 tags: ["schema", "seo", "automation"]
-commit: { hash: "dcb0df00bfbf425d0d9d827be59406604fa5a668", message: "📝 K0MTNR docs: document compact JSON-LD render_script" }
 comments:
   - { author: "ORCHESTRATOR", body: "Start: confirm cache schema generator emits compact JSON-LD payloads (no pretty-printing) inside the single script tag." }
-  - { author: "ORCHESTRATOR", body: "verified: render_script uses json.dumps(..., separators=(,, :)) with no indent so JSON-LD payloads are compact while keeping script block newlines." }
 doc_version: 2
 doc_updated_at: "2026-01-21T16:57:07+00:00"
 doc_updated_by: "agentctl"
 description: "Emit JSON-LD without pretty printing for output scripts."
 ---
+
 # 202601180919-K0MTNR: Compact JSON-LD output
 
 ## Summary
@@ -50,4 +49,3 @@ description: "Emit JSON-LD without pretty printing for output scripts."
 <!-- BEGIN AUTO SUMMARY -->
 - (no file changes)
 <!-- END AUTO SUMMARY -->
-
