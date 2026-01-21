@@ -1,19 +1,20 @@
 ---
 id: "202601180654-K00W5C"
 title: "Fix Clearly Amazing service areas + JSON-LD newline output"
-status: "DOING"
+status: "DONE"
 priority: "P1"
 owner: "ORCHESTRATOR"
 depends_on: []
 tags: ["seo", "schema", "data"]
+commit: { hash: "1f4b145bc8d0cb934b6cc057d379a6617eac822e", message: "📝 K00W5C docs: record clearlyamazing service areas + newline output checks" }
 comments:
   - { author: "ORCHESTRATOR", body: "Start: confirm Clearly Amazing service area list matches cached /locations/ navigation and generator emits JSON-LD with real newlines." }
+  - { author: "ORCHESTRATOR", body: "verified: Clearly Amazing service_areas match cached /locations/ navigation labels, and generated JSON-LD HTML contains real newline characters around the script payload." }
 doc_version: 2
 doc_updated_at: "2026-01-21T16:56:05+00:00"
 doc_updated_by: "agentctl"
 description: "Identify real Clearly Amazing locations from cached site data, update inputs.md and gbp-update-checklist.json, and emit real newlines in cache_schema_generator."
 ---
-
 # 202601180654-K00W5C: Fix Clearly Amazing service areas + JSON-LD newline output
 
 ## Summary
@@ -53,3 +54,4 @@ description: "Identify real Clearly Amazing locations from cached site data, upd
 <!-- BEGIN AUTO SUMMARY -->
 - (no file changes)
 <!-- END AUTO SUMMARY -->
+
