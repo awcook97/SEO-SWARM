@@ -89,6 +89,7 @@ All scripts write under `outputs/<client>/reports/` unless noted.
 - Internal link validation: `internal_link_validator.py` -> report in `reports/`
 - Measurement intake: `measurement_intake_generator.py` -> `measurement-intake.md/.json`
 - Keyword map + KPI: `keyword_map_kpi.py` -> `keyword-map-kpi.md/.json`
+- GA4 export ingest: `ga4_export_ingest.py` -> `ga4-export.json` + `ga4-summary.json` (optional)
 - Rank tracker export ingest: `rank_tracker_export_ingest.py` -> `rank-tracker-export.csv/.json`
 - Draft compliance lint: `draft_compliance_lint.py` -> `draft-compliance-lint.md/.json`
 - GBP checklist: `gbp_update_checklist.py` -> `gbp-update-checklist.md/.json`
