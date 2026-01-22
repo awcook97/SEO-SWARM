@@ -1,0 +1,4 @@
+ .codex-swarm/tasks/202601180609-WGXYXP/README.md | 22 +++++++++++++++++++++-
+ docs/seo/cache-schema-generator.md               |  6 ++++++
+ docs/seo/schema-approval-workflow.md             |  8 ++++++++
+ 3 files changed, 35 insertions(+), 1 deletion(-)
