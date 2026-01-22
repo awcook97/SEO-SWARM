@@ -136,7 +136,7 @@ def scaffold_csv(path: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Convert review exports into input JSON.")
-    parser.add_argument("--client-slug", required=True, help="Client slug under outputs/")
+    parser.add_argument("--client-slug", required=True, help="Client slug under data/outputs/")
     parser.add_argument("--input", required=True, help="Path to review export (CSV or JSON).")
     parser.add_argument("--format", choices=("csv", "json"), default=None, help="Override input format.")
     parser.add_argument("--client-name", default=None, help="Client display name override.")
@@ -144,7 +144,7 @@ def main() -> None:
     parser.add_argument(
         "--output",
         default=None,
-        help="Output JSON path (default: outputs/<client>/reports/review-templates-input.json).",
+        help="Output JSON path (default: data/outputs/<client>/reports/review-templates-input.json).",
     )
     parser.add_argument(
         "--scaffold-csv",
@@ -160,7 +160,7 @@ def main() -> None:
         print(f"wrote scaffold CSV to {input_path}")
         return
 
-    output_dir = Path("outputs") / args.client_slug / "reports"
+    output_dir = Path("data") / "outputs" / args.client_slug / "reports"
     output_dir.mkdir(parents=True, exist_ok=True)
     output_path = Path(args.output) if args.output else output_dir / "review-templates-input.json"
 

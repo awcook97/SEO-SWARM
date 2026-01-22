@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Generate JSON-LD schema scripts from cached HTML pages.
 
-Reads outputs/<client>/reports/site-cache/index.json and writes one JSON-LD
-<script> tag per page under outputs/<client>/gen-schema/website-tree/.
+Reads data/outputs/<client>/reports/site-cache/index.json and writes one JSON-LD
+<script> tag per page under data/outputs/<client>/gen-schema/website-tree/.
 """
 
 from __future__ import annotations
@@ -1053,10 +1053,10 @@ def should_skip_url(url: str) -> bool:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate JSON-LD schema scripts from cache.")
-    parser.add_argument("--client-slug", required=True, help="Client slug under outputs/")
+    parser.add_argument("--client-slug", required=True, help="Client slug under data/outputs/")
     parser.add_argument(
         "--output-dir",
-        help="Optional output directory (default: outputs/<client>/gen-schema/website-tree)",
+        help="Optional output directory (default: data/outputs/<client>/gen-schema/website-tree)",
     )
     parser.add_argument(
         "--geocode",
@@ -1065,7 +1065,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--schemaorg",
-        default="downloaded_files/schemaorg-current-https.jsonld",
+        default="data/downloads/schemaorg-current-https.jsonld",
         help="Schema.org snapshot path for validation.",
     )
     parser.add_argument(
@@ -1075,7 +1075,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    client_dir = Path("outputs") / args.client_slug
+    client_dir = Path("data") / "outputs" / args.client_slug
     cache_dir = client_dir / "reports" / "site-cache"
     index_path = cache_dir / "index.json"
     if not index_path.exists():
@@ -1084,7 +1084,7 @@ def main() -> None:
     out_dir = (
         Path(args.output_dir)
         if args.output_dir
-        else Path("outputs") / args.client_slug / "gen-schema" / "website-tree"
+        else Path("data") / "outputs" / args.client_slug / "gen-schema" / "website-tree"
     )
     out_dir.mkdir(parents=True, exist_ok=True)
 

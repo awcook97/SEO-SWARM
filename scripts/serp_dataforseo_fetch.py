@@ -180,11 +180,11 @@ def build_competitor_snapshot_input(payload: dict[str, Any], items: list[dict[st
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Fetch SERP data from DataForSEO and build inputs.")
-    parser.add_argument("--client-slug", required=True, help="Client slug under outputs/")
+    parser.add_argument("--client-slug", required=True, help="Client slug under data/outputs/")
     parser.add_argument(
         "--input",
         default=None,
-        help="Input JSON path (default: outputs/<client>/reports/serp-fetch-input.json)",
+        help="Input JSON path (default: data/outputs/<client>/reports/serp-fetch-input.json)",
     )
     parser.add_argument(
         "--endpoint",
@@ -210,7 +210,7 @@ def main() -> None:
     if not endpoint:
         raise SystemExit("DataForSEO endpoint missing. Set DATAFORSEO_ENDPOINT or pass --endpoint.")
 
-    base_dir = Path("outputs") / args.client_slug
+    base_dir = Path("data") / "outputs" / args.client_slug
     report_dir = base_dir / "reports"
     report_dir.mkdir(parents=True, exist_ok=True)
 

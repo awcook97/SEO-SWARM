@@ -6,7 +6,7 @@ Create a keyword-to-URL map and define KPI targets for reporting cadence.
 
 ## Inputs
 
-- `outputs/<client>/reports/keyword-map-input.json`
+- `data/outputs/<client>/reports/keyword-map-input.json`
 
 ## Command
 
@@ -22,8 +22,8 @@ python scripts/keyword_map_kpi.py --client-slug <client> --scaffold
 
 ## Outputs
 
-- `outputs/<client>/reports/keyword-map-kpi.md`
-- `outputs/<client>/reports/keyword-map-kpi.json`
+- `data/outputs/<client>/reports/keyword-map-kpi.md`
+- `data/outputs/<client>/reports/keyword-map-kpi.json`
 
 ## Notes
 

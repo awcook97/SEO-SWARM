@@ -57,15 +57,15 @@ def render_markdown(client_slug: str) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate technical SEO audit scaffold.")
-    parser.add_argument("--client-slug", required=True, help="Client slug under outputs/")
+    parser.add_argument("--client-slug", required=True, help="Client slug under data/outputs/")
     parser.add_argument(
         "--output",
         default=None,
-        help="Optional output markdown path (default: outputs/<client>/reports/technical-seo-audit.md)",
+        help="Optional output markdown path (default: data/outputs/<client>/reports/technical-seo-audit.md)",
     )
     args = parser.parse_args()
 
-    base_dir = Path("outputs") / args.client_slug
+    base_dir = Path("data") / "outputs" / args.client_slug
     report_dir = base_dir / "reports"
     report_dir.mkdir(parents=True, exist_ok=True)
 

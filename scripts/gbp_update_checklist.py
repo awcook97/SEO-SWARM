@@ -301,15 +301,15 @@ def build_payload(inputs: ApprovedInputs, missing: list[str], plan: list[dict[st
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate GBP update checklist from approved inputs.")
-    parser.add_argument("--client-slug", required=True, help="Client slug under outputs/")
+    parser.add_argument("--client-slug", required=True, help="Client slug under data/outputs/")
     parser.add_argument(
         "--inputs",
         default=None,
-        help="Optional path to inputs.md (default: outputs/<client>/inputs.md)",
+        help="Optional path to inputs.md (default: data/outputs/<client>/inputs.md)",
     )
     args = parser.parse_args()
 
-    base_dir = Path("outputs") / args.client_slug
+    base_dir = Path("data") / "outputs" / args.client_slug
     inputs_path = Path(args.inputs) if args.inputs else base_dir / "inputs.md"
     if not inputs_path.exists():
         raise SystemExit(f"Inputs file not found: {inputs_path}")

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate service briefs from cached site HTML snapshots.
 
-Reads outputs/<client>/reports/site-cache/index.json and extracts
+Reads data/outputs/<client>/reports/site-cache/index.json and extracts
 service page information without additional live requests.
 """
 
@@ -420,16 +420,16 @@ def render_brief(brief: ServiceBrief) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate service briefs from cache.")
-    parser.add_argument("--client-slug", required=True, help="Client slug under outputs/")
+    parser.add_argument("--client-slug", required=True, help="Client slug under data/outputs/")
     args = parser.parse_args()
 
-    cache_dir = Path("outputs") / args.client_slug / "reports" / "site-cache"
+    cache_dir = Path("data") / "outputs" / args.client_slug / "reports" / "site-cache"
     index_path = cache_dir / "index.json"
     if not index_path.exists():
         raise SystemExit(f"Cache index not found: {index_path}")
 
     cache = load_cache(index_path)
-    out_dir = Path("outputs") / args.client_slug / "reports" / "service-briefs"
+    out_dir = Path("data") / "outputs" / args.client_slug / "reports" / "service-briefs"
     out_dir.mkdir(parents=True, exist_ok=True)
 
     for url, path in cache.items():

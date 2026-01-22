@@ -12,8 +12,8 @@ python scripts/technical_seo_audit_scaffold.py --client-slug <client>
 
 ## Outputs
 
-- `outputs/<client>/reports/technical-seo-audit.md`
-- `outputs/<client>/reports/technical-seo-audit.json`
+- `data/outputs/<client>/reports/technical-seo-audit.md`
+- `data/outputs/<client>/reports/technical-seo-audit.json`
 
 ## Notes
 

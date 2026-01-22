@@ -129,7 +129,7 @@ def load_service_pages(path: Path | None) -> dict[str, str] | None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Convert page plan CSV into metadata linkmap input JSON.")
-    parser.add_argument("--client-slug", required=True, help="Client slug under outputs/")
+    parser.add_argument("--client-slug", required=True, help="Client slug under data/outputs/")
     parser.add_argument("--input", required=True, help="Path to page plan CSV.")
     parser.add_argument("--client-name", required=True, help="Client name.")
     parser.add_argument("--client-phone", required=True, help="Client phone.")
@@ -145,7 +145,7 @@ def main() -> None:
     parser.add_argument(
         "--output",
         default=None,
-        help="Output JSON path (default: outputs/<client>/reports/metadata-linkmap-input.json).",
+        help="Output JSON path (default: data/outputs/<client>/reports/metadata-linkmap-input.json).",
     )
     parser.add_argument("--scaffold", action="store_true", help="Write a scaffold CSV to the input path.")
     args = parser.parse_args()
@@ -157,7 +157,7 @@ def main() -> None:
         print(f"wrote scaffold CSV to {input_path}")
         return
 
-    output_dir = Path("outputs") / args.client_slug / "reports"
+    output_dir = Path("data") / "outputs" / args.client_slug / "reports"
     output_dir.mkdir(parents=True, exist_ok=True)
     output_path = Path(args.output) if args.output else output_dir / "metadata-linkmap-input.json"
 

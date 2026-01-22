@@ -1,6 +1,6 @@
 # Schema approval workflow (schema.org strict)
 
-Use the schema.org snapshot in `@downloaded_files/schemaorg-current-https.jsonld`
+Use the schema.org snapshot in `@data/downloads/schemaorg-current-https.jsonld`
 as the canonical reference for allowed classes, properties, and ranges.
 
 ## Goal

@@ -2,7 +2,7 @@
 """Cache a site's HTML pages with rate limiting.
 
 - Crawls sitemap(s) if available; falls back to homepage link discovery.
-- Stores HTML snapshots under outputs/<client>/reports/site-cache/.
+- Stores HTML snapshots under data/outputs/<client>/reports/site-cache/.
 - Enforces per-URL minimum interval (default: 20s => 3 requests/min).
 """
 
@@ -154,7 +154,7 @@ def enforce_rate_limit(entry: CacheEntry | None, min_interval_seconds: int) -> N
 def main() -> None:
     parser = argparse.ArgumentParser(description="Cache site HTML with rate limiting.")
     parser.add_argument("--base", required=True, help="Base site URL, e.g. https://example.com")
-    parser.add_argument("--client-slug", required=True, help="Client slug under outputs/")
+    parser.add_argument("--client-slug", required=True, help="Client slug under data/outputs/")
     parser.add_argument("--timeout", type=int, default=25, help="Request timeout seconds")
     parser.add_argument("--max-age-hours", type=int, default=24, help="Re-fetch cache older than this")
     parser.add_argument("--min-interval-seconds", type=int, default=20, help="Per-URL minimum interval")
@@ -169,7 +169,7 @@ def main() -> None:
     args = parser.parse_args()
 
     base = args.base.rstrip("/")
-    cache_dir = Path("outputs") / args.client_slug / "reports" / "site-cache"
+    cache_dir = Path("data") / "outputs" / args.client_slug / "reports" / "site-cache"
     cache_dir.mkdir(parents=True, exist_ok=True)
 
     index_path = cache_dir / "index.json"

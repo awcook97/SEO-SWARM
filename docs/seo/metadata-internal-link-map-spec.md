@@ -4,7 +4,7 @@ This spec defines a tool-agnostic input and output format for generating metadat
 
 ## Input JSON
 
-Store the input file at: `outputs/<client>/reports/metadata-linkmap-input.json`.
+Store the input file at: `data/outputs/<client>/reports/metadata-linkmap-input.json`.
 
 ```json
 {
@@ -55,7 +55,7 @@ Optional fields:
 
 ## Output files
 
-The generator writes two files under `outputs/<client>/reports/`:
+The generator writes two files under `data/outputs/<client>/reports/`:
 
 - `metadata-internal-link-map.json`: structured output for downstream tools.
 - `metadata-internal-link-map.md`: human-readable summary.
@@ -66,7 +66,7 @@ The generator writes two files under `outputs/<client>/reports/`:
 python scripts/metadata_internal_link_map.py --client-slug <client>
 ```
 
-Optional: specify a different input filename under `outputs/<client>/reports/` via `--input`.
+Optional: specify a different input filename under `data/outputs/<client>/reports/` via `--input`.
 
 ## Output JSON fields
 

@@ -155,10 +155,10 @@ def render_markdown(
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Summarize service briefs.")
-    parser.add_argument("--client-slug", required=True, help="Client slug under outputs/")
+    parser.add_argument("--client-slug", required=True, help="Client slug under data/outputs/")
     args = parser.parse_args()
 
-    briefs_dir = Path("outputs") / args.client_slug / "reports" / "service-briefs"
+    briefs_dir = Path("data") / "outputs" / args.client_slug / "reports" / "service-briefs"
     if not briefs_dir.exists():
         raise SystemExit(f"Briefs folder not found: {briefs_dir}")
 
@@ -174,7 +174,7 @@ def main() -> None:
         cta_counts.update(summary.ctas)
         schema_counts.update(summary.schema_types)
 
-    report_dir = Path("outputs") / args.client_slug / "reports"
+    report_dir = Path("data") / "outputs" / args.client_slug / "reports"
     report_dir.mkdir(parents=True, exist_ok=True)
 
     json_path = report_dir / "service-briefs-summary.json"

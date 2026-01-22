@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Scaffold outputs/<client>/inputs.md from JSON-LD schema."""
+"""Scaffold data/outputs/<client>/inputs.md from JSON-LD schema."""
 
 from __future__ import annotations
 
@@ -371,13 +371,13 @@ def render_inputs(profile: SchemaProfile) -> str:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Scaffold inputs.md from JSON-LD schema.")
     parser.add_argument("--schema", required=True, help="Path to JSON-LD schema file")
-    parser.add_argument("--client-slug", required=True, help="Client slug under outputs/")
+    parser.add_argument("--client-slug", required=True, help="Client slug under data/outputs/")
     args = parser.parse_args()
 
     schema_data = load_schema(Path(args.schema))
     profile = parse_schema(schema_data)
 
-    out_dir = Path("outputs") / args.client_slug
+    out_dir = Path("data") / "outputs" / args.client_slug
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / "inputs.md"
     out_path.write_text(render_inputs(profile), encoding="utf-8")

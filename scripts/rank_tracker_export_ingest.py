@@ -81,21 +81,21 @@ def normalize_rows(rows: list[dict[str, str]], mapping: dict[str, str | None]) -
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Normalize rank tracker CSV exports.")
-    parser.add_argument("--client-slug", required=True, help="Client slug under outputs/")
+    parser.add_argument("--client-slug", required=True, help="Client slug under data/outputs/")
     parser.add_argument("--input", required=True, help="Path to rank tracker CSV export.")
     parser.add_argument(
         "--output-csv",
         default=None,
-        help="Output CSV path (default: outputs/<client>/reports/rank-tracker-export.csv).",
+        help="Output CSV path (default: data/outputs/<client>/reports/rank-tracker-export.csv).",
     )
     parser.add_argument(
         "--output-json",
         default=None,
-        help="Output JSON summary path (default: outputs/<client>/reports/rank-tracker-export.json).",
+        help="Output JSON summary path (default: data/outputs/<client>/reports/rank-tracker-export.json).",
     )
     args = parser.parse_args()
 
-    output_dir = Path("outputs") / args.client_slug / "reports"
+    output_dir = Path("data") / "outputs" / args.client_slug / "reports"
     output_dir.mkdir(parents=True, exist_ok=True)
     output_csv = Path(args.output_csv) if args.output_csv else output_dir / "rank-tracker-export.csv"
     output_json = Path(args.output_json) if args.output_json else output_dir / "rank-tracker-export.json"

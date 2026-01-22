@@ -113,11 +113,11 @@ def render_markdown(data: dict[str, Any]) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate measurement intake markdown.")
-    parser.add_argument("--client-slug", required=True, help="Client slug under outputs/")
+    parser.add_argument("--client-slug", required=True, help="Client slug under data/outputs/")
     parser.add_argument(
         "--input",
         default=None,
-        help="Input JSON path (default: outputs/<client>/reports/measurement-intake-input.json)",
+        help="Input JSON path (default: data/outputs/<client>/reports/measurement-intake-input.json)",
     )
     parser.add_argument(
         "--scaffold",
@@ -126,7 +126,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    base_dir = Path("outputs") / args.client_slug
+    base_dir = Path("data") / "outputs" / args.client_slug
     report_dir = base_dir / "reports"
     report_dir.mkdir(parents=True, exist_ok=True)
 

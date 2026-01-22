@@ -6,7 +6,7 @@ Scan draft markdown files for placeholders and risky claims before publishing.
 
 ## Inputs
 
-- Drafts under `outputs/<client>/pages/*.md` and `outputs/<client>/articles/*.md`.
+- Drafts under `data/outputs/<client>/pages/*.md` and `data/outputs/<client>/articles/*.md`.
 
 ## Command
 
@@ -22,8 +22,8 @@ python scripts/draft_compliance_lint.py --client-slug <client> --paths pages art
 
 ## Outputs
 
-- `outputs/<client>/reports/draft-compliance-lint.md`
-- `outputs/<client>/reports/draft-compliance-lint.json`
+- `data/outputs/<client>/reports/draft-compliance-lint.md`
+- `data/outputs/<client>/reports/draft-compliance-lint.json`
 
 ## Notes
 

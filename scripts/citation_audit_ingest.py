@@ -64,18 +64,18 @@ def build_citations(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Convert citation audit export CSV into input JSON.")
-    parser.add_argument("--client-slug", required=True, help="Client slug under outputs/")
+    parser.add_argument("--client-slug", required=True, help="Client slug under data/outputs/")
     parser.add_argument("--input", required=True, help="Path to citation audit CSV.")
     parser.add_argument("--client-name", default=None, help="Client display name override.")
     parser.add_argument("--client-website", default=None, help="Client website override.")
     parser.add_argument(
         "--output",
         default=None,
-        help="Output JSON path (default: outputs/<client>/reports/citation-log-input.json).",
+        help="Output JSON path (default: data/outputs/<client>/reports/citation-log-input.json).",
     )
     args = parser.parse_args()
 
-    output_dir = Path("outputs") / args.client_slug / "reports"
+    output_dir = Path("data") / "outputs" / args.client_slug / "reports"
     output_dir.mkdir(parents=True, exist_ok=True)
     output_path = Path(args.output) if args.output else output_dir / "citation-log-input.json"
 

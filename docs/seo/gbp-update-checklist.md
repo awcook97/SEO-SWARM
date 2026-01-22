@@ -8,7 +8,7 @@ approved NAP, services, and profile details.
 
 ## Inputs
 
-- `outputs/<client-slug>/inputs.md` with approved NAP, hours, service areas,
+- `data/outputs/<client-slug>/inputs.md` with approved NAP, hours, service areas,
   profile details, and service list.
 
 ## Command
@@ -19,8 +19,8 @@ python scripts/gbp_update_checklist.py --client-slug <client-slug>
 
 ## Outputs
 
-- `outputs/<client-slug>/reports/gbp-update-checklist.md`
-- `outputs/<client-slug>/reports/gbp-update-checklist.json`
+- `data/outputs/<client-slug>/reports/gbp-update-checklist.md`
+- `data/outputs/<client-slug>/reports/gbp-update-checklist.json`
 
 ## Notes
 

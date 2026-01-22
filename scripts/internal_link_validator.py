@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Validate internal links using metadata/internal link map output.
 
-Reads outputs/<client>/reports/metadata-internal-link-map.json and produces
-outputs/<client>/reports/internal-link-validation.json/.md.
+Reads data/outputs/<client>/reports/metadata-internal-link-map.json and produces
+data/outputs/<client>/reports/internal-link-validation.json/.md.
 """
 
 from __future__ import annotations
@@ -115,10 +115,10 @@ def summarize(results: list[dict[str, Any]]) -> dict[str, int]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Validate internal links from metadata link map.")
-    parser.add_argument("--client-slug", required=True, help="Client slug under outputs/")
+    parser.add_argument("--client-slug", required=True, help="Client slug under data/outputs/")
     args = parser.parse_args()
 
-    base_dir = Path("outputs") / args.client_slug / "reports"
+    base_dir = Path("data") / "outputs" / args.client_slug / "reports"
     input_path = base_dir / "metadata-internal-link-map.json"
     data = load_map(input_path)
 

@@ -89,13 +89,13 @@ def build_summary(rows: list[dict[str, Any]]) -> dict[str, Any]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Convert GBP export CSV into JSON.")
-    parser.add_argument("--client-slug", required=True, help="Client slug under outputs/")
+    parser.add_argument("--client-slug", required=True, help="Client slug under data/outputs/")
     parser.add_argument("--input", required=True, help="Path to GBP export CSV.")
     parser.add_argument("--location", default=None, help="Location name or ID.")
     parser.add_argument(
         "--output",
         default=None,
-        help="Output JSON path (default: outputs/<client>/reports/gbp-export.json).",
+        help="Output JSON path (default: data/outputs/<client>/reports/gbp-export.json).",
     )
     parser.add_argument(
         "--summary",
@@ -104,7 +104,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    output_dir = Path("outputs") / args.client_slug / "reports"
+    output_dir = Path("data") / "outputs" / args.client_slug / "reports"
     output_dir.mkdir(parents=True, exist_ok=True)
     output_path = Path(args.output) if args.output else output_dir / "gbp-export.json"
 

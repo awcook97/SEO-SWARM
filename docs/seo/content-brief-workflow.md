@@ -6,7 +6,7 @@ All business facts must come from approved inputs.
 ## 5-step brief workflow
 
 1) Collect inputs
-- Generate service briefs: `outputs/<client>/reports/service-briefs/*.md`.
+- Generate service briefs: `data/outputs/<client>/reports/service-briefs/*.md`.
 - Prepare a brief input file (JSON) for the target pages.
 
 2) Scaffold brief input (optional)
@@ -15,7 +15,7 @@ All business facts must come from approved inputs.
 python scripts/content_brief_generator.py --client-slug <client> --scaffold
 ```
 
-Fill in `outputs/<client>/reports/content-brief-input.json` with keywords, targets,
+Fill in `data/outputs/<client>/reports/content-brief-input.json` with keywords, targets,
 CTAs, and notes.
 
 3) Generate briefs
@@ -34,7 +34,7 @@ python scripts/content_brief_generator.py --client-slug <client>
 
 ## Input JSON format
 
-Store the input file at: `outputs/<client>/reports/content-brief-input.json`.
+Store the input file at: `data/outputs/<client>/reports/content-brief-input.json`.
 
 ```json
 {
@@ -65,8 +65,8 @@ Store the input file at: `outputs/<client>/reports/content-brief-input.json`.
 
 ## Outputs
 
-- `outputs/<client>/reports/content-briefs/<brief-id>.md`
-- `outputs/<client>/reports/content-briefs.json`
+- `data/outputs/<client>/reports/content-briefs/<brief-id>.md`
+- `data/outputs/<client>/reports/content-briefs.json`
 
 ## Notes
 

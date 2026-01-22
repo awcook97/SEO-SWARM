@@ -167,7 +167,7 @@ def validate_graph(
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Validate JSON-LD against schema.org.")
-    parser.add_argument("--schemaorg", default="downloaded_files/schemaorg-current-https.jsonld")
+    parser.add_argument("--schemaorg", default="data/downloads/schemaorg-current-https.jsonld")
     parser.add_argument("--input", required=True, help="Path to JSON-LD file or HTML file containing JSON-LD.")
     parser.add_argument("--no-strict-range", action="store_true", help="Disable rangeIncludes checks.")
     args = parser.parse_args()

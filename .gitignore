@@ -11,5 +11,7 @@ dmypy.json
 .venv
 .codex-swarm/worktrees
 .codex-swarm/tasks.json
+data/outputs/
+data/downloads/
 outputs/
 downloaded_files/

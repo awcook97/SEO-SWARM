@@ -99,11 +99,11 @@ def render_markdown(client: dict[str, Any], entries: list[CitationEntry]) -> str
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate citation update log reports.")
-    parser.add_argument("--client-slug", required=True, help="Client slug under outputs/")
+    parser.add_argument("--client-slug", required=True, help="Client slug under data/outputs/")
     parser.add_argument(
         "--input",
         default=None,
-        help="Path to citation input JSON (default: outputs/<client>/reports/citation-log-input.json)",
+        help="Path to citation input JSON (default: data/outputs/<client>/reports/citation-log-input.json)",
     )
     parser.add_argument(
         "--scaffold",
@@ -112,7 +112,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    base_dir = Path("outputs") / args.client_slug
+    base_dir = Path("data") / "outputs" / args.client_slug
     report_dir = base_dir / "reports"
     report_dir.mkdir(parents=True, exist_ok=True)
 

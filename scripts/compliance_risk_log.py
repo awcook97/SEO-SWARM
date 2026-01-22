@@ -107,16 +107,16 @@ def render_markdown(issues: list[Issue]) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate a compliance risk log for draft markdown files.")
-    parser.add_argument("--client-slug", required=True, help="Client slug under outputs/")
+    parser.add_argument("--client-slug", required=True, help="Client slug under data/outputs/")
     parser.add_argument(
         "--paths",
         nargs="*",
         default=None,
-        help="Optional relative paths under outputs/<client> to scan (default: pages and articles).",
+        help="Optional relative paths under data/outputs/<client> to scan (default: pages and articles).",
     )
     args = parser.parse_args()
 
-    base_dir = Path("outputs") / args.client_slug
+    base_dir = Path("data") / "outputs" / args.client_slug
     if not base_dir.exists():
         raise SystemExit(f"Client folder not found: {base_dir}")
 

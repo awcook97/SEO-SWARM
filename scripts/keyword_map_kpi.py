@@ -130,11 +130,11 @@ def render_markdown(client: dict[str, Any], keywords: list[KeywordEntry], kpis: 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate keyword map and KPI targets.")
-    parser.add_argument("--client-slug", required=True, help="Client slug under outputs/")
+    parser.add_argument("--client-slug", required=True, help="Client slug under data/outputs/")
     parser.add_argument(
         "--input",
         default=None,
-        help="Input JSON path (default: outputs/<client>/reports/keyword-map-input.json)",
+        help="Input JSON path (default: data/outputs/<client>/reports/keyword-map-input.json)",
     )
     parser.add_argument(
         "--scaffold",
@@ -143,7 +143,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    base_dir = Path("outputs") / args.client_slug
+    base_dir = Path("data") / "outputs" / args.client_slug
     report_dir = base_dir / "reports"
     report_dir.mkdir(parents=True, exist_ok=True)
 

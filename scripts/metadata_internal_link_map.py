@@ -2,7 +2,7 @@
 """Generate metadata drafts and internal link maps from approved inputs.
 
 Reads a page plan JSON file and outputs structured metadata/internal link maps
-under outputs/<client>/reports/.
+under data/outputs/<client>/reports/.
 """
 
 from __future__ import annotations
@@ -257,15 +257,15 @@ def render_markdown(pages: list[dict[str, Any]], client: ClientInfo) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate metadata + internal link map from a page plan.")
-    parser.add_argument("--client-slug", required=True, help="Client slug under outputs/")
+    parser.add_argument("--client-slug", required=True, help="Client slug under data/outputs/")
     parser.add_argument(
         "--input",
         default="metadata-linkmap-input.json",
-        help="Input JSON filename under outputs/<client>/reports/",
+        help="Input JSON filename under data/outputs/<client>/reports/",
     )
     args = parser.parse_args()
 
-    base_dir = Path("outputs") / args.client_slug / "reports"
+    base_dir = Path("data") / "outputs" / args.client_slug / "reports"
     input_path = base_dir / args.input
     data = load_input(input_path)
 

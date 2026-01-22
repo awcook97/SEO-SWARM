@@ -10,7 +10,7 @@ Use this checklist before publishing the repo.
 
 ## Repo hygiene
 
-- `outputs/` is ignored and contains no committed client data.
+- `data/outputs/` is ignored and contains no committed client data.
 - Root README is accurate and up to date.
 - Measurement specs and templates are linked from @docs/seo/README.md.
 

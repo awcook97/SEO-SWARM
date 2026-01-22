@@ -18,7 +18,7 @@ This repository contains a reusable swarm workflow, templates, and measurement a
 
 1) Review the swarm roles and guardrails: @docs/client-templates/swarm-roles.md.
 2) Use @scripts/swarm_workflow.py to scaffold a new client folder.
-3) Populate `outputs/<client>/inputs.md` with approved inputs.
+3) Populate `data/outputs/<client>/inputs.md` with approved inputs.
    - Template: @docs/seo/inputs-template.md
 4) Run the core automation scripts (see below) and draft content from the templates.
 
@@ -32,7 +32,7 @@ python scripts/swarm_workflow.py --client "Example HVAC" --slug example-hvac
 
 1) Create the client folder:
    - `python scripts/swarm_workflow.py --client "Client Name" --slug client-slug`
-2) Fill in `outputs/<client>/inputs.md` with approved facts (NAP, services, hours, proof points).
+2) Fill in `data/outputs/<client>/inputs.md` with approved facts (NAP, services, hours, proof points).
    - Template: @docs/seo/inputs-template.md
 3) Capture measurement inputs:
    - Use @docs/seo/measurement-intake-template.md
@@ -44,7 +44,7 @@ python scripts/swarm_workflow.py --client "Example HVAC" --slug example-hvac
 ## Swarm workflow (recommended order)
 
 1) **Intake + validation**
-   - Approved inputs in `outputs/<client>/inputs.md` (see @docs/seo/inputs-template.md)
+   - Approved inputs in `data/outputs/<client>/inputs.md` (see @docs/seo/inputs-template.md)
    - Measurement intake per @docs/seo/measurement-intake-template.md
 2) **Strategy + mapping**
    - Keyword map + KPI targets:
@@ -80,7 +80,7 @@ python scripts/swarm_workflow.py --client "Example HVAC" --slug example-hvac
 
 ## Automation scripts (outputs)
 
-All scripts write under `outputs/<client>/reports/` unless noted.
+All scripts write under `data/outputs/<client>/reports/` unless noted.
 
 - Service briefs: `service_brief_generator.py` -> `service-briefs/*.md`
 - Brief summary: `brief_summary_report.py` -> `service-briefs-summary.md/.json`
@@ -107,7 +107,7 @@ All scripts write under `outputs/<client>/reports/` unless noted.
 
 ## Notes
 
-- Client outputs are intentionally ignored from git (`outputs/` in `.gitignore`).
+- Client outputs are intentionally ignored from git (`data/outputs/` in `.gitignore`).
 - Replace all placeholders with approved inputs before publishing.
 
 ## Environment

@@ -36,8 +36,8 @@ def main() -> None:
     parser.add_argument("--slug", required=True, help="Output folder slug")
     parser.add_argument(
         "--base-dir",
-        default="outputs",
-        help="Base output directory (default: outputs)",
+        default="data/outputs",
+        help="Base output directory (default: data/outputs)",
     )
     args = parser.parse_args()
 

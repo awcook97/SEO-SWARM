@@ -94,7 +94,7 @@ def build_summary(rows: list[dict[str, Any]]) -> dict[str, Any]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Convert GSC export CSV into JSON.")
-    parser.add_argument("--client-slug", required=True, help="Client slug under outputs/")
+    parser.add_argument("--client-slug", required=True, help="Client slug under data/outputs/")
     parser.add_argument("--input", required=True, help="Path to GSC export CSV.")
     parser.add_argument("--site", default=None, help="GSC property or site URL.")
     parser.add_argument("--start-date", default=None, help="Report start date (YYYY-MM-DD).")
@@ -102,7 +102,7 @@ def main() -> None:
     parser.add_argument(
         "--output",
         default=None,
-        help="Output JSON path (default: outputs/<client>/reports/gsc-export.json).",
+        help="Output JSON path (default: data/outputs/<client>/reports/gsc-export.json).",
     )
     parser.add_argument(
         "--summary",
@@ -111,7 +111,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    output_dir = Path("outputs") / args.client_slug / "reports"
+    output_dir = Path("data") / "outputs" / args.client_slug / "reports"
     output_dir.mkdir(parents=True, exist_ok=True)
     output_path = Path(args.output) if args.output else output_dir / "gsc-export.json"
 

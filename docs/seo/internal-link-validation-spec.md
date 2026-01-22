@@ -4,7 +4,7 @@ This spec defines how to validate internal link targets using the metadata + int
 
 ## Inputs
 
-- `outputs/<client>/reports/metadata-internal-link-map.json`
+- `data/outputs/<client>/reports/metadata-internal-link-map.json`
 
 ## Generator usage
 
@@ -14,8 +14,8 @@ python scripts/internal_link_validator.py --client-slug <client>
 
 ## Output files
 
-- `outputs/<client>/reports/internal-link-validation.json`
-- `outputs/<client>/reports/internal-link-validation.md`
+- `data/outputs/<client>/reports/internal-link-validation.json`
+- `data/outputs/<client>/reports/internal-link-validation.md`
 
 ## Required link types by page type
 

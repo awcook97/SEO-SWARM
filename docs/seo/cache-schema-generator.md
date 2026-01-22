@@ -6,10 +6,10 @@ page, visible content parity, and required fields where available).
 
 ## Inputs
 
-- `outputs/<client>/reports/site-cache/index.json` created by @scripts/crawl_cache.py.
+- `data/outputs/<client>/reports/site-cache/index.json` created by @scripts/crawl_cache.py.
 - Cached HTML snapshots referenced by the index.
-- Approved inputs via `outputs/<client>/reports/gbp-update-checklist.json` (preferred)
-  or `outputs/<client>/inputs.md` (fallback) to hydrate Organization/LocalBusiness.
+- Approved inputs via `data/outputs/<client>/reports/gbp-update-checklist.json` (preferred)
+  or `data/outputs/<client>/inputs.md` (fallback) to hydrate Organization/LocalBusiness.
 - Optional: `Business type` (schema.org subtype) from inputs to extend LocalBusiness `@type`.
 
 ## Validation requirement
@@ -31,5 +31,5 @@ python scripts/cache_schema_generator.py --client-slug <client>
 
 ## Output
 
-- `outputs/<client>/gen-schema/website-tree/**/index.html` (or `.html` per page path)
+- `data/outputs/<client>/gen-schema/website-tree/**/index.html` (or `.html` per page path)
   containing a single JSON-LD `<script>` tag for each cached page.

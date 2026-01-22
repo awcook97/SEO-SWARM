@@ -166,21 +166,21 @@ def render_markdown(config: dict[str, Any], table_rows: list[dict[str, Any]], al
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate rank tracking report markdown from CSV export.")
-    parser.add_argument("--client-slug", required=True, help="Client slug under outputs/")
+    parser.add_argument("--client-slug", required=True, help="Client slug under data/outputs/")
     parser.add_argument(
         "--input",
         default=None,
-        help="Input CSV path (default: outputs/<client>/reports/rank-tracking.csv)",
+        help="Input CSV path (default: data/outputs/<client>/reports/rank-tracking.csv)",
     )
     parser.add_argument(
         "--config",
         default=None,
-        help="Config JSON path (default: outputs/<client>/reports/rank-tracking-config.json)",
+        help="Config JSON path (default: data/outputs/<client>/reports/rank-tracking-config.json)",
     )
     parser.add_argument("--scaffold-config", action="store_true", help="Create scaffold config file if missing.")
     args = parser.parse_args()
 
-    base_dir = Path("outputs") / args.client_slug
+    base_dir = Path("data") / "outputs" / args.client_slug
     report_dir = base_dir / "reports"
     report_dir.mkdir(parents=True, exist_ok=True)
 

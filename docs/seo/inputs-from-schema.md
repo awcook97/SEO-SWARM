@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Generate `outputs/<client>/inputs.md` from a JSON-LD schema snippet.
+Generate `data/outputs/<client>/inputs.md` from a JSON-LD schema snippet.
 This pulls business name, phone, URL, address, description, and geo when available.
 
 ## Command

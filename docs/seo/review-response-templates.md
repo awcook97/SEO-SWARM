@@ -6,7 +6,7 @@ Provide templated responses for reviews, covering both positive feedback and iss
 
 ## Inputs
 
-- `outputs/<client>/reports/review-templates-input.json`
+- `data/outputs/<client>/reports/review-templates-input.json`
 - Review export (CSV/JSON) via `scripts/review_export_ingest.py`
 
 ## Command
@@ -25,8 +25,8 @@ python scripts/review_export_ingest.py --client-slug <client> --input path/to/re
 
 ## Outputs
 
-- `outputs/<client>/reports/review-response-templates.md`
-- `outputs/<client>/reports/review-response-templates.json`
+- `data/outputs/<client>/reports/review-response-templates.md`
+- `data/outputs/<client>/reports/review-response-templates.json`
 
 ## Notes
 

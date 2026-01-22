@@ -6,7 +6,7 @@ Maintain a log of outreach targets for local partners, events, or publications, 
 
 ## Inputs
 
-- `outputs/<client>/reports/local-link-input.json`
+- `data/outputs/<client>/reports/local-link-input.json`
 - Required fields: `organization`, `contact`, `priority`, `target_url`, `status`.
 
 ## Command
@@ -19,8 +19,8 @@ Create a scaffold input with `--scaffold` and fill in approved partners before r
 
 ## Outputs
 
-- `outputs/<client>/reports/local-link-outreach.md`
-- `outputs/<client>/reports/local-link-outreach.json`
+- `data/outputs/<client>/reports/local-link-outreach.md`
+- `data/outputs/<client>/reports/local-link-outreach.json`
 
 ## Notes
 

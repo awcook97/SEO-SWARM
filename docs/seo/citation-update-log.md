@@ -6,7 +6,7 @@ Track citation updates with statuses, owners, and action dates for each listing.
 
 ## Inputs
 
-- `outputs/<client>/reports/citation-log-input.json`
+- `data/outputs/<client>/reports/citation-log-input.json`
 - Each entry requires `platform`, `listing_url`, and `status`.
 
 ## Command
@@ -19,8 +19,8 @@ Create a scaffold file via `--scaffold` and fill in approved listings before run
 
 ## Outputs
 
-- `outputs/<client>/reports/citation-update-log.md`
-- `outputs/<client>/reports/citation-update-log.json`
+- `data/outputs/<client>/reports/citation-update-log.md`
+- `data/outputs/<client>/reports/citation-update-log.json`
 
 ## Notes
 

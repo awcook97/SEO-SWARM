@@ -107,7 +107,7 @@ def build_summary(rows: list[dict[str, Any]]) -> dict[str, Any]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Convert GA4 export CSV into JSON.")
-    parser.add_argument("--client-slug", required=True, help="Client slug under outputs/")
+    parser.add_argument("--client-slug", required=True, help="Client slug under data/outputs/")
     parser.add_argument("--input", required=True, help="Path to GA4 export CSV.")
     parser.add_argument("--property", default=None, help="GA4 property ID or name.")
     parser.add_argument("--start-date", default=None, help="Report start date (YYYY-MM-DD).")
@@ -115,7 +115,7 @@ def main() -> None:
     parser.add_argument(
         "--output",
         default=None,
-        help="Output JSON path (default: outputs/<client>/reports/ga4-export.json).",
+        help="Output JSON path (default: data/outputs/<client>/reports/ga4-export.json).",
     )
     parser.add_argument(
         "--summary",
@@ -124,7 +124,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    output_dir = Path("outputs") / args.client_slug / "reports"
+    output_dir = Path("data") / "outputs" / args.client_slug / "reports"
     output_dir.mkdir(parents=True, exist_ok=True)
     output_path = Path(args.output) if args.output else output_dir / "ga4-export.json"
 
