@@ -1,11 +1,14 @@
 ---
 id: "202601221537-YKR81J"
 title: "Audit runner: SERP fetch env guard and skip"
-status: "TODO"
+status: "DONE"
 priority: "med"
 owner: "ORCHESTRATOR"
 depends_on: []
 tags: []
+commit: { hash: "201c44c3d121ad49e9ca74a39fc337d98b2a33fb", message: "🔧 YKR81J guard SERP fetch on DataForSEO env" }
+comments:
+  - { author: "ORCHESTRATOR", body: "verified: not run | details: SERP fetch now skips when env vars are missing." }
 doc_version: 2
 doc_updated_at: "2026-01-22T15:55:22+00:00"
 doc_updated_by: "agentctl"
