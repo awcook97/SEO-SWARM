@@ -97,6 +97,12 @@ def clean_value(value: str) -> str:
     return cleaned
 
 
+def normalize_area_value(value: str) -> str:
+    cleaned = " ".join(value.split())
+    cleaned = cleaned.replace("–", "-").replace("—", "-")
+    return cleaned.strip()
+
+
 def split_list(value: str) -> list[str]:
     return [item.strip() for item in value.split(",") if item.strip()]
 
@@ -219,7 +225,7 @@ def parse_inputs_md(inputs_path: Path) -> ApprovedInputs | None:
         elif line.startswith("  - ") and current_block in {"address", "hours", "service_areas", "social"}:
             entry = line[4:]
             if current_block == "service_areas":
-                value = clean_value(entry)
+                value = normalize_area_value(clean_value(entry))
                 if value:
                     inputs.service_areas.append(value)
             else:
@@ -260,7 +266,11 @@ def load_gbp_inputs(base_dir: Path) -> ApprovedInputs | None:
     inputs.email = clean_value(str(raw_inputs.get("email", "")))
     inputs.address = {k: clean_value(str(v)) for k, v in raw_inputs.get("address", {}).items() if clean_value(str(v))}
     inputs.hours = {k: clean_value(str(v)) for k, v in raw_inputs.get("hours", {}).items() if clean_value(str(v))}
-    inputs.service_areas = [clean_value(str(v)) for v in raw_inputs.get("service_areas", []) if clean_value(str(v))]
+    inputs.service_areas = [
+        normalize_area_value(clean_value(str(v)))
+        for v in raw_inputs.get("service_areas", [])
+        if clean_value(str(v))
+    ]
     inputs.short_description = clean_value(str(raw_inputs.get("short_description", "")))
     inputs.long_description = clean_value(str(raw_inputs.get("long_description", "")))
     inputs.keywords = [clean_value(str(v)) for v in raw_inputs.get("keywords", []) if clean_value(str(v))]
