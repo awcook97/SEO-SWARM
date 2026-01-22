@@ -10,7 +10,7 @@ import mimetypes
 import sys
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, unquote, urlparse
 
 
 def resolve_repo_root() -> Path:
@@ -208,7 +208,7 @@ class OutputsHandler(BaseHTTPRequestHandler):
             if len(parts) != 2:
                 self._send_text("Not found", status=404)
                 return
-            client, rel_path = parts[0], parts[1]
+            client, rel_path = unquote(parts[0]), unquote(parts[1])
             client_dir = outputs_dir / client
             target = safe_resolve(client_dir, rel_path)
             if not target or not target.exists() or not target.is_file():

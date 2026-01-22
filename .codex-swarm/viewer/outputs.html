@@ -20,6 +20,8 @@
         --mono: "SFMono-Regular", "Menlo", "Consolas", "Liberation Mono", monospace;
         --sans: "Avenir Next", "Avenir", "Gill Sans", "Trebuchet MS", sans-serif;
         --serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+        --ink-soft: #2c2a27;
+        --warm: #f5dfc6;
       }
 
       * {
@@ -35,23 +37,18 @@
       }
 
       header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 28px 32px;
+        padding: 36px 32px 28px;
         border-bottom: 1px solid var(--edge);
-        background: rgba(255, 255, 255, 0.6);
-        backdrop-filter: blur(10px);
-        position: sticky;
-        top: 0;
-        z-index: 10;
+        background:
+          radial-gradient(circle at 10% 10%, rgba(210, 75, 38, 0.12) 0%, rgba(210, 75, 38, 0) 55%),
+          linear-gradient(120deg, #fff8f1 0%, #f7efe6 45%, #f1e6d8 100%);
       }
 
       header h1 {
         margin: 0;
         font-family: var(--serif);
         font-weight: 600;
-        font-size: 28px;
+        font-size: 34px;
         letter-spacing: 0.4px;
       }
 
@@ -60,25 +57,58 @@
         font-size: 14px;
       }
 
+      header .title-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      header .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: #fff;
+        border: 1px solid var(--edge);
+        font-size: 12px;
+        color: var(--ink-soft);
+        width: fit-content;
+      }
+
       main {
         display: grid;
-        grid-template-columns: minmax(240px, 320px) 1fr;
-        gap: 24px;
-        padding: 28px 32px 36px;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 24px 32px 40px;
+        max-width: 1200px;
+        margin: 0 auto;
       }
 
       .panel {
-        background: var(--panel);
+        background: rgba(255, 255, 255, 0.85);
         border: 1px solid var(--edge);
         border-radius: 16px;
         box-shadow: var(--shadow);
-        padding: 18px;
+        padding: 22px 18px 18px;
+        position: relative;
+      }
+
+      .panel::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        border-radius: 16px 16px 0 0;
+        background: linear-gradient(90deg, var(--accent) 0%, #f4b084 50%, #f7e0c5 100%);
       }
 
       .client-list {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
       }
 
       .client-card {
@@ -116,7 +146,7 @@
 
       .browser {
         display: grid;
-        grid-template-columns: minmax(200px, 280px) 1fr;
+        grid-template-columns: 1fr;
         gap: 16px;
       }
 
@@ -159,7 +189,7 @@
       }
 
       .overview-card.ready {
-        background: #fff3ea;
+        background: linear-gradient(135deg, #fff8f2 0%, #ffe9d6 100%);
         border-color: #f1c5b3;
         cursor: pointer;
       }
@@ -180,6 +210,11 @@
         border-radius: 999px;
         background: var(--panel-strong);
         color: var(--muted);
+      }
+
+      .overview-card.ready .badge {
+        background: #f7d0bc;
+        color: var(--accent-dark);
       }
 
       .overview-card.ready:hover {
@@ -211,7 +246,7 @@
         border-radius: 12px;
         overflow: hidden;
         background: #fff;
-        max-height: 60vh;
+        max-height: 38vh;
         overflow-y: auto;
       }
 
@@ -253,7 +288,7 @@
         border-radius: 12px;
         background: #fff;
         padding: 14px;
-        min-height: 300px;
+        min-height: 260px;
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -285,7 +320,7 @@
       .preview iframe {
         border: 1px solid var(--edge);
         border-radius: 8px;
-        height: 50vh;
+        height: 55vh;
         width: 100%;
       }
 
@@ -323,11 +358,11 @@
   </head>
   <body>
     <header>
-      <div>
-        <h1>Outputs Viewer</h1>
-        <div class="meta">Browse generated client outputs with live file previews.</div>
+      <div class="title-wrap">
+        <h1>Client Outputs</h1>
+        <div class="meta">A live dashboard for everything your generators produce.</div>
+        <div class="status-pill" id="status">Connecting…</div>
       </div>
-      <div class="meta" id="status">Connecting…</div>
     </header>
     <main>
       <section class="panel">
@@ -421,9 +456,10 @@
 
         const actions = document.createElement("div");
         actions.className = "actions";
+        const fileUrl = `/files/${encodeURIComponent(client)}/${encodeURIComponent(path)}`;
         const openBtn = document.createElement("a");
         openBtn.className = "button";
-        openBtn.href = `/files/${client}/${path}`;
+        openBtn.href = fileUrl;
         openBtn.target = "_blank";
         openBtn.rel = "noreferrer";
         openBtn.textContent = "Open in new tab";
@@ -432,7 +468,7 @@
 
         if (extension === "html") {
           const iframe = document.createElement("iframe");
-          iframe.src = `/files/${client}/${path}`;
+          iframe.src = fileUrl;
           previewEl.appendChild(iframe);
           return;
         }
