@@ -27,7 +27,7 @@ Use it to:
 1) Read the roles and guardrails: @docs/client-templates/swarm-roles.md
 2) Scaffold a client workspace:
    - `python scripts/workflow/swarm_workflow.py --client "Client Name" --slug client-slug`
-   - Optional: add `--site-url https://example.com` to crawl and cache the site HTML.
+   - Optional: add `--site-url https://example.com` to crawl and cache the site HTML (also pre-fills `inputs.md`).
 3) Fill approved facts in `data/outputs/<client>/inputs.md`
    - Template: @docs/seo/inputs-template.md
 4) Run generators for briefs and reports (see below)
@@ -38,6 +38,7 @@ Use it to:
 ## Use the app to its full potential
 
 - Treat `data/outputs/<client>/inputs.md` as the single source of truth. All downstream scripts reference it or derived JSONs.
+- Use `--site-url` when scaffolding to seed `inputs.md` from cached HTML, then verify and edit as needed.
 - Run the workflow in order (intake -> mapping -> briefs -> metadata -> compliance). See @docs/seo/swarm-execution-workflow.md.
 - Use the outputs viewer to QA HTML and JSON outputs quickly without digging through folders.
 - Keep input exports (GSC, GBP, GA4, rank tracker, crawl data) in `data/outputs/<client>/reports/` and ingest them via @scripts/ingest/.

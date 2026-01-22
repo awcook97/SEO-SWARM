@@ -52,6 +52,26 @@ def run_crawl_cache(client_slug: str, site_url: str | None) -> None:
         print("crawl_cache.py failed. Ensure requests/bs4 are installed and the URL is reachable.")
 
 
+def run_inputs_from_site_cache(client_slug: str, client_name: str, base_dir: Path) -> None:
+    script = Path(__file__).resolve().parent.parent / "ingest" / "inputs_from_site_cache.py"
+    if not script.exists():
+        print("inputs_from_site_cache.py not found; skipping inputs.md population.")
+        return
+    cmd = [
+        sys.executable,
+        str(script),
+        "--client-slug",
+        client_slug,
+        "--client-name",
+        client_name,
+        "--base-dir",
+        str(base_dir),
+    ]
+    proc = subprocess.run(cmd, check=False)
+    if proc.returncode != 0:
+        print("inputs_from_site_cache.py failed. Verify the site cache exists.")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Scaffold SEO swarm output folders.")
     parser.add_argument("--client", required=True, help="Client name")
@@ -78,6 +98,8 @@ def main() -> None:
 
     print(f"Scaffolded outputs at {base}")
     run_crawl_cache(args.slug, args.site_url)
+    if args.site_url:
+        run_inputs_from_site_cache(args.slug, args.client, Path(args.base_dir))
 
 
 if __name__ == "__main__":
