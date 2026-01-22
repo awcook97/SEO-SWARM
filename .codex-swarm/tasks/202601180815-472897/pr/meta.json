@@ -5,8 +5,12 @@
   "base_branch": "main",
   "author": "ORCHESTRATOR",
   "created_at": "2026-01-22T00:47:49+00:00",
-  "updated_at": "2026-01-22T00:47:49+00:00",
+  "updated_at": "2026-01-22T00:48:06+00:00",
   "head_sha": "dfcffb4a9d4432ad7d3b023b5f46d12f3a331edc",
   "merge_strategy": "squash",
-  "status": "OPEN"
+  "status": "CLOSED",
+  "merged_at": "2026-01-22T00:48:06+00:00",
+  "merge_commit": "d05a9baa6d704abe8e4560c72241dcf10aa6195c",
+  "closed_at": "2026-01-22T00:48:06+00:00",
+  "close_commit": "d05a9baa6d704abe8e4560c72241dcf10aa6195c"
 }

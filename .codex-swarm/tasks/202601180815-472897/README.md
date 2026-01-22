@@ -1,11 +1,14 @@
 ---
 id: "202601180815-472897"
 title: "Add logo image + geocoding to schema entities"
-status: "TODO"
+status: "DONE"
 priority: "P1"
 owner: "ORCHESTRATOR"
 depends_on: []
 tags: ["schema", "seo", "automation"]
+commit: { hash: "d05a9baa6d704abe8e4560c72241dcf10aa6195c", message: "🧩 202601180815-472897 integrate task/202601180815-472897/logo-geocode" }
+comments:
+  - { author: "INTEGRATOR", body: "verified: Integrated via squash | details: verify=skipped(no commands); pr=.codex-swarm/tasks/202601180815-472897/pr." }
 doc_version: 2
 doc_updated_at: "2026-01-18T08:15:45+00:00"
 doc_updated_by: "agentctl"
@@ -35,3 +38,4 @@ Revert the `logo` property additions in `scripts/cache_schema_generator.py`.
 ## Notes
 
 Address and geo enrichment are already present; this change focuses on the `logo` field.
+
