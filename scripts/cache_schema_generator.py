@@ -33,6 +33,7 @@ TIME_RANGE_RE = re.compile(
     re.I,
 )
 HTML_EXTENSIONS = {".html", ".htm", ".php", ""}
+MAX_HTML_BYTES = 5_000_000
 
 
 @dataclass
@@ -104,13 +105,32 @@ def sanitize_html(markup: str) -> str:
     return INVALID_CHARREF_RE.sub("&amp;#", markup)
 
 
+def decode_html_bytes(raw: bytes, path: Path) -> str | None:
+    if not raw:
+        print(f"skip empty html: {path}", file=sys.stderr)
+        return None
+    if len(raw) > MAX_HTML_BYTES:
+        print(f"skip oversized html ({len(raw)} bytes): {path}", file=sys.stderr)
+        return None
+    text = raw.decode("utf-8", errors="replace")
+    if text.count("\ufffd") / max(len(text), 1) > 0.01:
+        try:
+            text = raw.decode("latin-1")
+        except UnicodeDecodeError:
+            pass
+    return sanitize_html(text)
+
+
 def read_html(path: Path, url: str) -> str | None:
-    raw = path.read_bytes()
+    try:
+        raw = path.read_bytes()
+    except OSError as exc:
+        print(f"skip unreadable html: {url} -> {path} ({exc})", file=sys.stderr)
+        return None
     if b"\x00" in raw:
         print(f"skip non-text content (null bytes): {url} -> {path}", file=sys.stderr)
         return None
-    text = raw.decode("utf-8", errors="replace")
-    return sanitize_html(text)
+    return decode_html_bytes(raw, path)
 
 
 def extract_logo_url(soup: BeautifulSoup, base_url: str, business_name: str) -> str:
@@ -610,7 +630,12 @@ def extract_faqs(soup: BeautifulSoup) -> list[tuple[str, str]]:
 
 
 def parse_page(html: str, url: str) -> PageSignals:
-    soup = BeautifulSoup(html, "html.parser")
+    if not html:
+        raise ValueError("empty html")
+    try:
+        soup = BeautifulSoup(html, "html.parser")
+    except Exception as exc:  # pragma: no cover - bs4 errors are environment-specific
+        raise ValueError(f"html parse failed: {exc}") from exc
     title = normalize_title(soup.title.get_text()) if soup.title else ""
     h1 = normalize_title(extract_h1(soup))
     meta_values = extract_meta_values(soup)
