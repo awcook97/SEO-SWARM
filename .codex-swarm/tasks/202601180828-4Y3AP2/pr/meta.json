@@ -1,0 +1,12 @@
+{
+  "task_id": "202601180828-4Y3AP2",
+  "task_title": "Improve geocode fallback + logging",
+  "branch": "task/202601180828-4Y3AP2/geocode-fallback",
+  "base_branch": "main",
+  "author": "ORCHESTRATOR",
+  "created_at": "2026-01-22T00:49:26+00:00",
+  "updated_at": "2026-01-22T00:49:26+00:00",
+  "head_sha": "55f93055096dcd0b534921049afabb7f899653c1",
+  "merge_strategy": "squash",
+  "status": "OPEN"
+}

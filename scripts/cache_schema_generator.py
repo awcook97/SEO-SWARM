@@ -414,12 +414,37 @@ def resolve_geo(
     )
     if city_state and city_state not in variants:
         variants.append(city_state)
+    city_region = ", ".join(
+        part
+        for part in [
+            address.get("City", ""),
+            address.get("State", ""),
+            address.get("Country", ""),
+        ]
+        if part
+    )
+    if city_region and city_region not in variants:
+        variants.append(city_region)
+    city_only = ", ".join(
+        part
+        for part in [
+            address.get("City", ""),
+            address.get("State", ""),
+        ]
+        if part
+    )
+    if city_only and city_only not in variants:
+        variants.append(city_only)
+
+    variants = dedupe([" ".join(value.split()).strip() for value in variants if value])
 
     cache = load_geo_cache(cache_path)
     for variant in variants:
         if variant in cache:
+            print(f"geo cache hit: {variant}", file=sys.stderr)
             return cache[variant]
     if not enable_geocode:
+        print(f"geocode disabled; no cached coordinates for: {address_text}", file=sys.stderr)
         return None
     for variant in variants:
         geo = geocode_address(variant)
