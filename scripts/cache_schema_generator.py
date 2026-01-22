@@ -479,6 +479,7 @@ def build_entity_registry(
             "description": (inputs.long_description if inputs and inputs.long_description else None),
             "sameAs": list(inputs.social.values()) if inputs and inputs.social else None,
             "address": postal_address,
+            "logo": logo_url or None,
             "image": logo_url or None,
         }
         areas = [area for area in inputs.service_areas if area] if inputs else []
@@ -508,6 +509,7 @@ def build_entity_registry(
             "sameAs": list(inputs.social.values()) if inputs and inputs.social else None,
             "description": (inputs.long_description if inputs and inputs.long_description else None),
             "parentOrganization": {"@id": org_id} if organization else None,
+            "logo": logo_url or None,
             "image": logo_url or None,
         }
 

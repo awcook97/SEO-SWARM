@@ -1,0 +1,12 @@
+{
+  "task_id": "202601180815-472897",
+  "task_title": "Add logo image + geocoding to schema entities",
+  "branch": "task/202601180815-472897/logo-geocode",
+  "base_branch": "main",
+  "author": "ORCHESTRATOR",
+  "created_at": "2026-01-22T00:47:49+00:00",
+  "updated_at": "2026-01-22T00:47:49+00:00",
+  "head_sha": "dfcffb4a9d4432ad7d3b023b5f46d12f3a331edc",
+  "merge_strategy": "squash",
+  "status": "OPEN"
+}
