@@ -68,6 +68,12 @@ python scripts/generators/metadata_internal_link_map.py --client-slug <client>
 
 Optional: specify a different input filename under `data/outputs/<client>/reports/` via `--input`.
 
+## Input builder (recommended)
+
+```bash
+python scripts/ingest/metadata_linkmap_builder.py --client-slug <client>
+```
+
 ## Output JSON fields
 
 ```json

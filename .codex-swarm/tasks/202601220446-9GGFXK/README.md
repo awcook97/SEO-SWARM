@@ -7,7 +7,7 @@ owner: "ORCHESTRATOR"
 depends_on: []
 tags: []
 doc_version: 2
-doc_updated_at: "2026-01-22T06:37:39+00:00"
+doc_updated_at: "2026-01-22T13:48:21+00:00"
 doc_updated_by: "agentctl"
 description: "Set workflow_mode back to direct, review repo layout, propose and apply folder moves to make project more manageable, update references/docs."
 ---
@@ -37,5 +37,5 @@ Revert the commit(s) and restore the previous folder locations; reset workflow_m
 
 ## Notes
 
-Fixed service_brief_generator to create nested output directories for slug paths (e.g., service-briefs/charlotte/carpet-cleaning.md).
+Added metadata_linkmap_builder script to rebuild metadata-linkmap-input.json from inputs + service-briefs summary; documented in spec.
 
