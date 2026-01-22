@@ -1,11 +1,14 @@
 ---
 id: "202601221537-7ZAE76"
 title: "Audit runner: handle missing inputs for export ingest steps"
-status: "TODO"
+status: "DONE"
 priority: "med"
 owner: "ORCHESTRATOR"
 depends_on: []
 tags: []
+commit: { hash: "a239e906ffd7cbb3867ef1f3bc5a067ffb90bd7d", message: "🔧 7ZAE76 skip ingest steps when exports missing" }
+comments:
+  - { author: "ORCHESTRATOR", body: "verified: not run | details: change only adds input-existence guards in the audit runner." }
 doc_version: 2
 doc_updated_at: "2026-01-22T15:52:37+00:00"
 doc_updated_by: "agentctl"
