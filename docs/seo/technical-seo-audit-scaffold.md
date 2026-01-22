@@ -1,8 +1,8 @@
-# Technical SEO audit scaffold
+# Technical SEO audit
 
 ## Purpose
 
-Generate a reusable audit template for technical SEO reviews.
+Generate a technical SEO audit report from cached HTML plus live checks when available.
 
 ## Command
 
@@ -17,5 +17,6 @@ python scripts/generators/technical_seo_audit_scaffold.py --client-slug <client>
 
 ## Notes
 
-- Fill in findings with approved crawl and performance data.
+- Uses cached HTML for titles, descriptions, canonicals, schema presence, and word-count checks.
+- Attempts live checks for robots.txt, sitemap, and homepage response time when network access is available.
 - Use the prioritized fixes section to assign owners and timelines.
