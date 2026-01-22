@@ -21,6 +21,9 @@ This repository contains a reusable swarm workflow, templates, and measurement a
 3) Populate `data/outputs/<client>/inputs.md` with approved inputs.
    - Template: @docs/seo/inputs-template.md
 4) Run the core automation scripts (see below) and draft content from the templates.
+5) Optional: launch the outputs viewer webserver to browse generated files:
+   - `python3 scripts/outputs_viewer.py`
+   - Or run `./outputs_viewer.sh`
 
 Example scaffold:
 

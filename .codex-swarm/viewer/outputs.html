@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Outputs Viewer</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #121216;
+        --muted: #5b5b66;
+        --accent: #d24b26;
+        --accent-dark: #9f2e10;
+        --edge: #e3e0db;
+        --panel: #f8f4ef;
+        --panel-strong: #f0e6d9;
+        --gradient-start: #f8f4ef;
+        --gradient-end: #f2eadf;
+        --shadow: 0 12px 30px rgba(25, 20, 16, 0.12);
+        --mono: "SFMono-Regular", "Menlo", "Consolas", "Liberation Mono", monospace;
+        --sans: "Avenir Next", "Avenir", "Gill Sans", "Trebuchet MS", sans-serif;
+        --serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--sans);
+        color: var(--ink);
+        background: radial-gradient(circle at top left, #fdf9f4 0%, var(--gradient-start) 45%, var(--gradient-end) 100%);
+        min-height: 100vh;
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 28px 32px;
+        border-bottom: 1px solid var(--edge);
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(10px);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      header h1 {
+        margin: 0;
+        font-family: var(--serif);
+        font-weight: 600;
+        font-size: 28px;
+        letter-spacing: 0.4px;
+      }
+
+      header .meta {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      main {
+        display: grid;
+        grid-template-columns: minmax(240px, 320px) 1fr;
+        gap: 24px;
+        padding: 28px 32px 36px;
+      }
+
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--edge);
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+        padding: 18px;
+      }
+
+      .client-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .client-card {
+        padding: 14px 14px 12px;
+        border-radius: 12px;
+        border: 1px solid transparent;
+        background: #fff;
+        cursor: pointer;
+        transition: transform 0.2s ease, border 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .client-card:hover {
+        transform: translateY(-2px);
+        border-color: var(--edge);
+        box-shadow: 0 8px 20px rgba(30, 24, 20, 0.12);
+      }
+
+      .client-card.active {
+        border-color: var(--accent);
+        box-shadow: 0 8px 20px rgba(210, 75, 38, 0.2);
+      }
+
+      .client-card h3 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .client-card span {
+        display: inline-block;
+        margin-top: 6px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .browser {
+        display: grid;
+        grid-template-columns: minmax(200px, 280px) 1fr;
+        gap: 16px;
+      }
+
+      .path {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 12px;
+      }
+
+      .path button {
+        border: none;
+        background: var(--panel-strong);
+        padding: 4px 8px;
+        border-radius: 999px;
+        cursor: pointer;
+        color: var(--ink);
+        font-size: 12px;
+      }
+
+      .entries {
+        border: 1px solid var(--edge);
+        border-radius: 12px;
+        overflow: hidden;
+        background: #fff;
+        max-height: 60vh;
+        overflow-y: auto;
+      }
+
+      .entry {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--edge);
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      .entry:last-child {
+        border-bottom: none;
+      }
+
+      .entry .name {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 500;
+      }
+
+      .entry .badge {
+        font-size: 11px;
+        padding: 2px 6px;
+        border-radius: 999px;
+        background: var(--panel-strong);
+        color: var(--muted);
+      }
+
+      .entry:hover {
+        background: #fdf6ef;
+      }
+
+      .preview {
+        border: 1px solid var(--edge);
+        border-radius: 12px;
+        background: #fff;
+        padding: 14px;
+        min-height: 300px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .preview h2 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .preview .meta {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .preview pre {
+        margin: 0;
+        font-family: var(--mono);
+        font-size: 12px;
+        background: #121216;
+        color: #f5f2ec;
+        padding: 12px;
+        border-radius: 8px;
+        overflow: auto;
+        max-height: 50vh;
+      }
+
+      .preview iframe {
+        border: 1px solid var(--edge);
+        border-radius: 8px;
+        height: 50vh;
+        width: 100%;
+      }
+
+      .preview .actions {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .button {
+        border: none;
+        border-radius: 999px;
+        padding: 8px 14px;
+        background: var(--accent);
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .button.secondary {
+        background: #f2e6d9;
+        color: var(--accent-dark);
+      }
+
+      @media (max-width: 900px) {
+        main {
+          grid-template-columns: 1fr;
+        }
+
+        .browser {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>Outputs Viewer</h1>
+        <div class="meta">Browse generated client outputs with live file previews.</div>
+      </div>
+      <div class="meta" id="status">Connecting…</div>
+    </header>
+    <main>
+      <section class="panel">
+        <h2 style="margin-top: 0; font-size: 15px;">Clients</h2>
+        <div class="client-list" id="clientList"></div>
+      </section>
+      <section class="panel">
+        <div class="browser">
+          <div>
+            <div class="path" id="path"></div>
+            <div class="entries" id="entries"></div>
+          </div>
+          <div class="preview" id="preview">
+            <h2>Preview</h2>
+            <div class="meta" id="previewMeta">Select a file to see details.</div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script>
+      const statusEl = document.getElementById("status");
+      const clientListEl = document.getElementById("clientList");
+      const entriesEl = document.getElementById("entries");
+      const pathEl = document.getElementById("path");
+      const previewEl = document.getElementById("preview");
+      const previewMetaEl = document.getElementById("previewMeta");
+
+      let activeClient = null;
+      let activePath = "";
+
+      function setStatus(text) {
+        statusEl.textContent = text;
+      }
+
+      function formatBytes(bytes) {
+        if (!bytes && bytes !== 0) return "";
+        if (bytes < 1024) return `${bytes} B`;
+        if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+        return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+      }
+
+      function buildPathButtons(path) {
+        const segments = path ? path.split("/") : [];
+        const buttons = [
+          { label: "root", path: "" },
+          ...segments.map((seg, idx) => ({
+            label: seg,
+            path: segments.slice(0, idx + 1).join("/"),
+          })),
+        ];
+        pathEl.innerHTML = "";
+        buttons.forEach((item) => {
+          const btn = document.createElement("button");
+          btn.textContent = item.label;
+          btn.addEventListener("click", () => loadEntries(item.path));
+          pathEl.appendChild(btn);
+        });
+      }
+
+      function setPreviewEmpty() {
+        previewEl.innerHTML = "<h2>Preview</h2>";
+        previewMetaEl.textContent = "Select a file to see details.";
+        previewEl.appendChild(previewMetaEl);
+      }
+
+      function renderPreview({ client, path, content, truncated, bytes }) {
+        const extension = path.split(".").pop().toLowerCase();
+        previewEl.innerHTML = "";
+        const header = document.createElement("h2");
+        header.textContent = path.split("/").pop();
+        previewEl.appendChild(header);
+
+        const meta = document.createElement("div");
+        meta.className = "meta";
+        meta.textContent = `${client}/${path} • ${formatBytes(bytes)}${truncated ? " (truncated)" : ""}`;
+        previewEl.appendChild(meta);
+
+        const actions = document.createElement("div");
+        actions.className = "actions";
+        const openBtn = document.createElement("a");
+        openBtn.className = "button";
+        openBtn.href = `/files/${client}/${path}`;
+        openBtn.target = "_blank";
+        openBtn.rel = "noreferrer";
+        openBtn.textContent = "Open in new tab";
+        actions.appendChild(openBtn);
+        previewEl.appendChild(actions);
+
+        if (extension === "html") {
+          const iframe = document.createElement("iframe");
+          iframe.src = `/files/${client}/${path}`;
+          previewEl.appendChild(iframe);
+          return;
+        }
+
+        const pre = document.createElement("pre");
+        pre.textContent = content;
+        previewEl.appendChild(pre);
+      }
+
+      async function loadClients() {
+        setStatus("Loading clients…");
+        const res = await fetch("/api/clients");
+        const data = await res.json();
+        if (!data.ok) {
+          setStatus("Failed to load clients.");
+          return;
+        }
+        clientListEl.innerHTML = "";
+        data.clients.forEach((client) => {
+          const card = document.createElement("div");
+          card.className = "client-card";
+          card.innerHTML = `<h3>${client.slug}</h3><span>${client.has_reports ? "reports ready" : "no reports"}</span>`;
+          card.addEventListener("click", () => selectClient(client.slug, card));
+          clientListEl.appendChild(card);
+        });
+        setStatus(`Loaded ${data.clients.length} clients`);
+        if (data.clients.length) {
+          selectClient(data.clients[0].slug, clientListEl.firstChild);
+        }
+      }
+
+      async function selectClient(slug, cardEl) {
+        activeClient = slug;
+        activePath = "";
+        Array.from(clientListEl.children).forEach((child) => child.classList.remove("active"));
+        cardEl.classList.add("active");
+        await loadEntries("");
+        setPreviewEmpty();
+      }
+
+      async function loadEntries(path) {
+        if (!activeClient) return;
+        activePath = path;
+        buildPathButtons(path);
+        entriesEl.innerHTML = "";
+        const res = await fetch(`/api/list?client=${encodeURIComponent(activeClient)}&path=${encodeURIComponent(path)}`);
+        const data = await res.json();
+        if (!data.ok) {
+          entriesEl.innerHTML = "<div style='padding:12px;'>No entries found.</div>";
+          return;
+        }
+        data.entries.forEach((entry) => {
+          const row = document.createElement("div");
+          row.className = "entry";
+          row.innerHTML = `
+            <div class="name">${entry.is_dir ? "📁" : "📄"} ${entry.name}</div>
+            <div class="badge">${entry.is_dir ? "dir" : formatBytes(entry.size)}</div>
+          `;
+          row.addEventListener("click", () => {
+            if (entry.is_dir) {
+              loadEntries(path ? `${path}/${entry.name}` : entry.name);
+            } else {
+              loadPreview(path ? `${path}/${entry.name}` : entry.name);
+            }
+          });
+          entriesEl.appendChild(row);
+        });
+      }
+
+      async function loadPreview(path) {
+        const res = await fetch(`/api/file?client=${encodeURIComponent(activeClient)}&path=${encodeURIComponent(path)}`);
+        const data = await res.json();
+        if (!data.ok) {
+          previewMetaEl.textContent = "Unable to load preview.";
+          return;
+        }
+        renderPreview(data);
+      }
+
+      loadClients();
+    </script>
+  </body>
+</html>
