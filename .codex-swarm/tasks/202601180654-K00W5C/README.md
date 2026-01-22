@@ -9,6 +9,7 @@ tags: ["seo", "schema", "data"]
 commit: { hash: "1d0647737963bca5585bf86b24a712632a5c84f7", message: "🧩 202601180654-K00W5C integrate task/202601180654-K00W5C/clearlyamazing" }
 comments:
   - { author: "INTEGRATOR", body: "verified: Integrated via squash | details: verify=skipped(no commands); pr=.codex-swarm/tasks/202601180654-K00W5C/pr." }
+  - { author: "INTEGRATOR", body: "verified: Integrated via squash | details: verify=skipped(no commands); pr=.codex-swarm/tasks/202601180654-K00W5C/pr." }
 doc_version: 2
 doc_updated_at: "2026-01-21T23:48:55+00:00"
 doc_updated_by: "agentctl"
