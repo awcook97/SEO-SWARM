@@ -10,6 +10,7 @@ verify: ["python3 -m pytest"]
 commit: { hash: "06488a177dd156323312ff7ce0bf91c2874fcb30", message: "🧩 202601180609-WGXYXP integrate task/202601180609-WGXYXP/search-appearance" }
 comments:
   - { author: "INTEGRATOR", body: "verified: Integrated via squash | details: verify=ran; pr=.codex-swarm/tasks/202601180609-WGXYXP/pr." }
+  - { author: "INTEGRATOR", body: "verified: Integrated via squash | details: verify=ran; pr=.codex-swarm/tasks/202601180609-WGXYXP/pr." }
 doc_version: 2
 doc_updated_at: "2026-01-21T23:42:58+00:00"
 doc_updated_by: "agentctl"
