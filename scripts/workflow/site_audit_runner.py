@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import subprocess
 import sys
+from typing import Iterable
 from pathlib import Path
 
 
@@ -27,6 +28,13 @@ def run_step(label: str, cmd: list[str], continue_on_error: bool) -> bool:
     if continue_on_error:
         return False
     raise SystemExit(proc.returncode)
+
+
+def first_existing(paths: Iterable[Path]) -> Path | None:
+    for path in paths:
+        if path.exists():
+            return path
+    return None
 
 
 def main() -> None:
@@ -311,62 +319,123 @@ def main() -> None:
                     "--scaffold",
                 ],
             ),
+        ]
+    )
+
+    crawl_export = first_existing(
+        [
+            reports_dir / "crawl-export.csv",
+            reports_dir / "crawl-export.xlsx",
+        ]
+    )
+    if crawl_export:
+        steps.append(
             (
-                "Crawl export ingest (requires input)",
+                "Crawl export ingest",
                 [
                     python,
                     str(REPO_ROOT / "scripts" / "ingest" / "crawl_export_ingest.py"),
                     "--client-slug",
                     args.slug,
+                    "--input",
+                    str(crawl_export),
+                    "--summary",
                 ],
-            ),
+            )
+        )
+    else:
+        print("[skip] Crawl export ingest: missing crawl-export.csv")
+
+    gsc_export = first_existing([reports_dir / "gsc-export.csv", reports_dir / "gsc-export.xlsx"])
+    if gsc_export:
+        steps.append(
             (
-                "GSC export ingest (requires input)",
+                "GSC export ingest",
                 [
                     python,
                     str(REPO_ROOT / "scripts" / "ingest" / "gsc_export_ingest.py"),
                     "--client-slug",
                     args.slug,
+                    "--input",
+                    str(gsc_export),
                 ],
-            ),
+            )
+        )
+    else:
+        print("[skip] GSC export ingest: missing gsc-export.csv")
+
+    ga4_export = first_existing([reports_dir / "ga4-export.csv", reports_dir / "ga4-export.xlsx"])
+    if ga4_export:
+        steps.append(
             (
-                "GA4 export ingest (requires input)",
+                "GA4 export ingest",
                 [
                     python,
                     str(REPO_ROOT / "scripts" / "ingest" / "ga4_export_ingest.py"),
                     "--client-slug",
                     args.slug,
+                    "--input",
+                    str(ga4_export),
                 ],
-            ),
+            )
+        )
+    else:
+        print("[skip] GA4 export ingest: missing ga4-export.csv")
+
+    gbp_export = first_existing([reports_dir / "gbp-export.csv", reports_dir / "gbp-export.xlsx"])
+    if gbp_export:
+        steps.append(
             (
-                "GBP export ingest (requires input)",
+                "GBP export ingest",
                 [
                     python,
                     str(REPO_ROOT / "scripts" / "ingest" / "gbp_export_ingest.py"),
                     "--client-slug",
                     args.slug,
+                    "--input",
+                    str(gbp_export),
+                    "--summary",
                 ],
-            ),
+            )
+        )
+    else:
+        print("[skip] GBP export ingest: missing gbp-export.csv")
+
+    citation_export = first_existing([reports_dir / "citation-audit.csv", reports_dir / "citation-audit.xlsx"])
+    if citation_export:
+        steps.append(
             (
-                "Citation audit ingest (requires input)",
+                "Citation audit ingest",
                 [
                     python,
                     str(REPO_ROOT / "scripts" / "ingest" / "citation_audit_ingest.py"),
                     "--client-slug",
                     args.slug,
+                    "--input",
+                    str(citation_export),
                 ],
-            ),
+            )
+        )
+    else:
+        print("[skip] Citation audit ingest: missing citation-audit.csv")
+
+    rank_export = first_existing([reports_dir / "rank-tracker.csv", reports_dir / "rank-tracker-export.csv"])
+    if rank_export:
+        steps.append(
             (
-                "Rank tracker export ingest (requires input)",
+                "Rank tracker export ingest",
                 [
                     python,
                     str(REPO_ROOT / "scripts" / "ingest" / "rank_tracker_export_ingest.py"),
                     "--client-slug",
                     args.slug,
+                    "--input",
+                    str(rank_export),
                 ],
-            ),
-        ]
-    )
+            )
+        )
+    else:
+        print("[skip] Rank tracker export ingest: missing rank-tracker-export.csv")
 
     for label, cmd in steps:
         run_step(label, cmd, not args.fail_fast)
