@@ -438,7 +438,10 @@ def main() -> None:
         html = path.read_text(encoding="utf-8")
         brief = parse_html(html, url)
         slug = urlparse(url).path.strip("/")
+        if not slug:
+            slug = "index"
         out_path = out_dir / f"{slug}.md"
+        out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(render_brief(brief), encoding="utf-8")
         print(f"wrote {out_path}")
 
