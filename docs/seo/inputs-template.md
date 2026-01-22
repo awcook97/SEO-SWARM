@@ -6,6 +6,7 @@ All content must be sourced from approved inputs.
 ## Approved business facts
 
 - Business name:
+- Business type (schema.org subtype, optional):
 - Website:
 - Phone:
 - Email:

@@ -61,6 +61,7 @@ class PageSignals:
 @dataclass
 class ApprovedInputs:
     business_name: str = ""
+    business_types: list[str] = field(default_factory=list)
     website: str = ""
     phone: str = ""
     email: str = ""
@@ -115,6 +116,17 @@ def normalize_area_list(values: list[Any]) -> list[str]:
         if text:
             areas.append(text)
     return dedupe(areas)
+
+
+def normalize_business_types(raw: Any) -> list[str]:
+    if not raw:
+        return []
+    if isinstance(raw, list):
+        items = raw
+    else:
+        items = split_list(str(raw))
+    cleaned = [clean_value(str(item)) for item in items if clean_value(str(item))]
+    return dedupe(cleaned)
 
 
 def split_list(value: str) -> list[str]:
@@ -218,6 +230,8 @@ def parse_inputs_md(inputs_path: Path) -> ApprovedInputs | None:
             continue
         if line.startswith("- Business name:"):
             inputs.business_name = clean_value(line.split(":", 1)[1])
+        elif line.startswith("- Business type:"):
+            inputs.business_types = normalize_business_types(line.split(":", 1)[1])
         elif line.startswith("- Website:"):
             inputs.website = clean_value(line.split(":", 1)[1])
         elif line.startswith("- Phone:"):
@@ -275,6 +289,9 @@ def load_gbp_inputs(base_dir: Path) -> ApprovedInputs | None:
     raw_inputs = data.get("inputs", {})
     inputs = ApprovedInputs()
     inputs.business_name = clean_value(str(raw_inputs.get("business_name", "")))
+    inputs.business_types = normalize_business_types(
+        raw_inputs.get("business_types", raw_inputs.get("business_type", ""))
+    )
     inputs.website = clean_value(str(raw_inputs.get("website", "")))
     inputs.phone = clean_value(str(raw_inputs.get("phone", "")))
     inputs.email = clean_value(str(raw_inputs.get("email", "")))
@@ -532,8 +549,14 @@ def build_entity_registry(
                         "description": svc.get("description") or "",
                     }
                 )
+        business_types = ["LocalBusiness"]
+        for item in inputs.business_types:
+            if item.lower() == "localbusiness":
+                continue
+            business_types.append(item)
+        business_types = dedupe(business_types)
         local_business = {
-            "@type": ["HVACBusiness"],
+            "@type": business_types,
             "@id": local_id,
             "name": org_name,
             "url": site_url or None,

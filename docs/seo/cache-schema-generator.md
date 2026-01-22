@@ -10,6 +10,7 @@ page, visible content parity, and required fields where available).
 - Cached HTML snapshots referenced by the index.
 - Approved inputs via `outputs/<client>/reports/gbp-update-checklist.json` (preferred)
   or `outputs/<client>/inputs.md` (fallback) to hydrate Organization/LocalBusiness.
+- Optional: `Business type` (schema.org subtype) from inputs to extend LocalBusiness `@type`.
 
 ## Validation requirement
 
