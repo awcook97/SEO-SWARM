@@ -8,6 +8,7 @@ Default behavior: run all steps. Use --crawl-only for cache + inputs.md only.
 from __future__ import annotations
 
 import argparse
+import os
 import subprocess
 import sys
 from typing import Iterable
@@ -280,16 +281,6 @@ def main() -> None:
                 ],
             ),
             (
-                "SERP fetch (scaffold input if missing)",
-                [
-                    python,
-                    str(REPO_ROOT / "scripts" / "ingest" / "serp_dataforseo_fetch.py"),
-                    "--client-slug",
-                    args.slug,
-                    "--scaffold",
-                ],
-            ),
-            (
                 "Review export ingest (scaffold CSV)",
                 [
                     python,
@@ -321,6 +312,22 @@ def main() -> None:
             ),
         ]
     )
+
+    if os.environ.get("DATAFORSEO_LOGIN") and os.environ.get("DATAFORSEO_PASSWORD"):
+        steps.append(
+            (
+                "SERP fetch (scaffold input if missing)",
+                [
+                    python,
+                    str(REPO_ROOT / "scripts" / "ingest" / "serp_dataforseo_fetch.py"),
+                    "--client-slug",
+                    args.slug,
+                    "--scaffold",
+                ],
+            )
+        )
+    else:
+        print("[skip] SERP fetch: DATAFORSEO_LOGIN/PASSWORD not set")
 
     crawl_export = first_existing(
         [
