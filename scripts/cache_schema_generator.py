@@ -8,6 +8,7 @@ Reads outputs/<client>/reports/site-cache/index.json and writes one JSON-LD
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
 import re
 import sys
@@ -933,6 +934,16 @@ def render_script(schema: dict[str, Any]) -> str:
     return f'<script type="application/ld+json">\n{payload}\n</script>\n'
 
 
+def load_schemaorg_validator() -> Any:
+    module_path = Path(__file__).with_name("schema_org_validator.py")
+    spec = importlib.util.spec_from_file_location("schema_org_validator", module_path)
+    if not spec or not spec.loader:
+        raise SystemExit(f"Unable to load schema_org_validator from {module_path}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 def should_skip_url(url: str) -> bool:
     parsed = urlparse(url)
     suffix = Path(parsed.path).suffix.lower()
@@ -952,6 +963,16 @@ def main() -> None:
         "--geocode",
         action="store_true",
         help="Enable geopy geocoding for LocalBusiness geo coordinates.",
+    )
+    parser.add_argument(
+        "--schemaorg",
+        default="downloaded_files/schemaorg-current-https.jsonld",
+        help="Schema.org snapshot path for validation.",
+    )
+    parser.add_argument(
+        "--validate-schemaorg",
+        action="store_true",
+        help="Validate generated JSON-LD against schema.org snapshot.",
     )
     args = parser.parse_args()
 
@@ -992,6 +1013,14 @@ def main() -> None:
         enable_geocode=bool(args.geocode),
     )
     registry = build_entity_registry(site_url, inputs, logo_url, geo)
+    validator = None
+    classes = properties = parents = ranges = domains = None
+    if args.validate_schemaorg:
+        schema_path = Path(args.schemaorg)
+        if not schema_path.exists():
+            raise SystemExit(f"schema.org file not found: {schema_path}")
+        validator = load_schemaorg_validator()
+        classes, properties, parents, ranges, domains = validator.load_schemaorg(schema_path)
     for url, path in cache.items():
         if should_skip_url(url):
             print(f"skip non-html url: {url}", file=sys.stderr)
@@ -1007,6 +1036,22 @@ def main() -> None:
             print(f"skip malformed html: {url} -> {path} ({exc})", file=sys.stderr)
             continue
         schema = generate_schema(signals, registry)
+        if validator:
+            errors = validator.validate_graph(
+                schema,
+                classes,
+                properties,
+                parents,
+                ranges,
+                domains,
+                strict_range=True,
+            )
+            if errors:
+                print(
+                    f"skip schema validation errors: {url} ({len(errors)} issue(s))",
+                    file=sys.stderr,
+                )
+                continue
         out_path = output_path_for(signals.canonical_url or url, out_dir)
         out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(render_script(schema), encoding="utf-8")
