@@ -7,7 +7,7 @@ owner: "ORCHESTRATOR"
 depends_on: []
 tags: []
 doc_version: 2
-doc_updated_at: "2026-01-22T14:54:09+00:00"
+doc_updated_at: "2026-01-22T14:55:35+00:00"
 doc_updated_by: "agentctl"
 description: "Set workflow_mode back to direct, review repo layout, propose and apply folder moves to make project more manageable, update references/docs."
 ---
@@ -37,5 +37,5 @@ Revert the commit(s) and restore the previous folder locations; reset workflow_m
 
 ## Notes
 
-Expanded technical_seo_audit_scaffold to analyze cached HTML (titles, canonicals, schema, viewport, thin pages) and attempt live robots/sitemap/perf checks; updated doc.
+Fixed missing re import in technical_seo_audit_scaffold.
 
