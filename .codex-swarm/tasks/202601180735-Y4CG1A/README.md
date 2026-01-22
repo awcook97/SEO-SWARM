@@ -9,6 +9,7 @@ tags: ["schema", "seo", "workflow"]
 commit: { hash: "73550639803691a1339f1efd5759dfb284ce78ce", message: "🧩 202601180735-Y4CG1A integrate task/202601180735-Y4CG1A/schemaorg-align" }
 comments:
   - { author: "INTEGRATOR", body: "verified: Integrated via squash | details: verify=skipped(no commands); pr=.codex-swarm/tasks/202601180735-Y4CG1A/pr." }
+  - { author: "INTEGRATOR", body: "verified: Integrated via squash | details: verify=skipped(no commands); pr=.codex-swarm/tasks/202601180735-Y4CG1A/pr." }
 doc_version: 2
 doc_updated_at: "2026-01-21T23:51:38+00:00"
 doc_updated_by: "agentctl"
