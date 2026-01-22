@@ -7,7 +7,7 @@ owner: "ORCHESTRATOR"
 depends_on: []
 tags: []
 doc_version: 2
-doc_updated_at: "2026-01-22T05:06:08+00:00"
+doc_updated_at: "2026-01-22T05:10:00+00:00"
 doc_updated_by: "agentctl"
 description: "Set workflow_mode back to direct, review repo layout, propose and apply folder moves to make project more manageable, update references/docs."
 ---
@@ -37,5 +37,5 @@ Revert the commit(s) and restore the previous folder locations; reset workflow_m
 
 ## Notes
 
-Moved outputs/ to data/outputs and downloaded_files/ to data/downloads; updated references. Added outputs_viewer webserver and UI under .codex-swarm/viewer/outputs.html with launcher script outputs_viewer.sh.
+Added client dashboard overview to outputs viewer via /api/overview and UI cards for key reports.
 

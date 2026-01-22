@@ -47,6 +47,38 @@ def list_dir_entries(base: Path) -> list[dict[str, object]]:
     return entries
 
 
+def build_client_overview(client_dir: Path) -> list[dict[str, object]]:
+    items = [
+        ("Inputs", "inputs.md", "file"),
+        ("Measurement Intake", "reports/measurement-intake.md", "file"),
+        ("Keyword Map + KPI", "reports/keyword-map-kpi.md", "file"),
+        ("Service Briefs Summary", "reports/service-briefs-summary.md", "file"),
+        ("Content Briefs Index", "reports/content-briefs.json", "file"),
+        ("Metadata + Link Map", "reports/metadata-internal-link-map.json", "file"),
+        ("Internal Link Validation", "reports/internal-link-validation.md", "file"),
+        ("Draft Compliance Lint", "reports/draft-compliance-lint.md", "file"),
+        ("GBP Update Checklist", "reports/gbp-update-checklist.md", "file"),
+        ("Technical SEO Audit", "reports/technical-seo-audit.md", "file"),
+        ("Schema HTML", "gen-schema/website-tree", "dir"),
+    ]
+    overview: list[dict[str, object]] = []
+    for label, rel_path, kind in items:
+        target = safe_resolve(client_dir, rel_path)
+        exists = bool(target and target.exists())
+        is_dir = bool(target and target.is_dir())
+        entry = {
+            "label": label,
+            "path": rel_path,
+            "kind": kind,
+            "exists": exists,
+            "is_dir": is_dir,
+            "bytes": target.stat().st_size if exists and target and target.is_file() else 0,
+            "modified": int(target.stat().st_mtime) if exists and target else 0,
+        }
+        overview.append(entry)
+    return overview
+
+
 class OutputsHandler(BaseHTTPRequestHandler):
     server_version = "OutputsViewer/0.1"
 
@@ -122,6 +154,19 @@ class OutputsHandler(BaseHTTPRequestHandler):
                     "entries": list_dir_entries(target),
                 }
             )
+            return
+        if parsed.path == "/api/overview":
+            params = parse_qs(parsed.query)
+            client = params.get("client", [""])[0].strip()
+            if not client:
+                self._send_json({"error": "Missing client"}, status=400)
+                return
+            outputs_dir = self.server.outputs_dir  # type: ignore[attr-defined]
+            client_dir = outputs_dir / client
+            if not client_dir.exists():
+                self._send_json({"error": "Client not found"}, status=404)
+                return
+            self._send_json({"ok": True, "client": client, "overview": build_client_overview(client_dir)})
             return
         if parsed.path == "/api/file":
             params = parse_qs(parsed.query)

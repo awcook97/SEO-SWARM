@@ -120,6 +120,73 @@
         gap: 16px;
       }
 
+      .dashboard {
+        margin-bottom: 20px;
+        border: 1px solid var(--edge);
+        border-radius: 14px;
+        background: #fff;
+        padding: 16px;
+      }
+
+      .dashboard-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .dashboard-header h2 {
+        margin: 0;
+        font-size: 17px;
+      }
+
+      .overview-grid {
+        margin-top: 14px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 12px;
+      }
+
+      .overview-card {
+        border: 1px solid var(--edge);
+        border-radius: 12px;
+        padding: 12px;
+        background: var(--panel);
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .overview-card.ready {
+        background: #fff3ea;
+        border-color: #f1c5b3;
+        cursor: pointer;
+      }
+
+      .overview-card.missing {
+        opacity: 0.6;
+      }
+
+      .overview-card h3 {
+        margin: 0;
+        font-size: 14px;
+      }
+
+      .overview-card .badge {
+        align-self: flex-start;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: var(--panel-strong);
+        color: var(--muted);
+      }
+
+      .overview-card.ready:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 18px rgba(210, 75, 38, 0.18);
+      }
+
       .path {
         display: flex;
         flex-wrap: wrap;
@@ -268,6 +335,13 @@
         <div class="client-list" id="clientList"></div>
       </section>
       <section class="panel">
+        <div class="dashboard" id="dashboard">
+          <div class="dashboard-header">
+            <h2>Client Overview</h2>
+            <span class="meta" id="overviewMeta">Select a client to load the dashboard.</span>
+          </div>
+          <div class="overview-grid" id="overviewGrid"></div>
+        </div>
         <div class="browser">
           <div>
             <div class="path" id="path"></div>
@@ -287,6 +361,8 @@
       const pathEl = document.getElementById("path");
       const previewEl = document.getElementById("preview");
       const previewMetaEl = document.getElementById("previewMeta");
+      const overviewGridEl = document.getElementById("overviewGrid");
+      const overviewMetaEl = document.getElementById("overviewMeta");
 
       let activeClient = null;
       let activePath = "";
@@ -324,6 +400,11 @@
         previewEl.innerHTML = "<h2>Preview</h2>";
         previewMetaEl.textContent = "Select a file to see details.";
         previewEl.appendChild(previewMetaEl);
+      }
+
+      function setOverviewEmpty() {
+        overviewGridEl.innerHTML = "";
+        overviewMetaEl.textContent = "Select a client to load the dashboard.";
       }
 
       function renderPreview({ client, path, content, truncated, bytes }) {
@@ -389,6 +470,7 @@
         Array.from(clientListEl.children).forEach((child) => child.classList.remove("active"));
         cardEl.classList.add("active");
         await loadEntries("");
+        await loadOverview();
         setPreviewEmpty();
       }
 
@@ -418,6 +500,38 @@
             }
           });
           entriesEl.appendChild(row);
+        });
+      }
+
+      async function loadOverview() {
+        if (!activeClient) return;
+        overviewGridEl.innerHTML = "";
+        overviewMetaEl.textContent = `Overview for ${activeClient}`;
+        const res = await fetch(`/api/overview?client=${encodeURIComponent(activeClient)}`);
+        const data = await res.json();
+        if (!data.ok) {
+          overviewMetaEl.textContent = "Unable to load overview.";
+          return;
+        }
+        data.overview.forEach((item) => {
+          const card = document.createElement("div");
+          card.className = `overview-card ${item.exists ? "ready" : "missing"}`;
+          const status = item.exists ? "ready" : "missing";
+          card.innerHTML = `
+            <h3>${item.label}</h3>
+            <div class="meta">${item.path}</div>
+            <div class="badge">${status}</div>
+          `;
+          if (item.exists) {
+            card.addEventListener("click", () => {
+              if (item.is_dir) {
+                loadEntries(item.path);
+              } else {
+                loadPreview(item.path);
+              }
+            });
+          }
+          overviewGridEl.appendChild(card);
         });
       }
 
