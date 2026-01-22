@@ -8,6 +8,8 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import subprocess
+import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -54,25 +56,7 @@ def load_index(index_path: Path) -> dict[str, dict[str, str]]:
 
 
 def pick_cache_paths(index: dict[str, dict[str, str]]) -> list[Path]:
-    urls = list(index.keys())
-    if not urls:
-        return []
-
-    def score_url(url: str) -> tuple[int, int]:
-        parsed = urlparse(url)
-        path = parsed.path or "/"
-        parts = [p for p in path.split("/") if p]
-        return (0 if path in {"/", ""} else 1, len(parts))
-
-    urls.sort(key=score_url)
-    picks = [urls[0]]
-
-    for url in urls:
-        if "contact" in url.lower():
-            picks.append(url)
-            break
-
-    return [Path(index[url]["path"]) for url in picks if url in index]
+    return [Path(meta["path"]) for meta in index.values() if meta.get("path")]
 
 
 def load_html(path: Path) -> str:
@@ -93,8 +77,9 @@ def iter_jsonld_objects(raw: Any) -> list[dict[str, Any]]:
     return objs
 
 
-def extract_jsonld(soup: Any) -> list[dict[str, Any]]:
+def extract_jsonld(soup: Any) -> tuple[list[dict[str, Any]], list[Any]]:
     objects: list[dict[str, Any]] = []
+    contexts: list[Any] = []
     for tag in soup.find_all("script"):
         if tag.get("type") != "application/ld+json":
             continue
@@ -102,12 +87,51 @@ def extract_jsonld(soup: Any) -> list[dict[str, Any]]:
             payload = json.loads(tag.string or "")
         except Exception:
             continue
+        if isinstance(payload, dict) and "@context" in payload:
+            contexts.append(payload["@context"])
+        elif isinstance(payload, list):
+            for item in payload:
+                if isinstance(item, dict) and "@context" in item:
+                    contexts.append(item["@context"])
         objects.extend(iter_jsonld_objects(payload))
-    return objects
+    return objects, contexts
 
 
 def normalize_phone(value: str) -> str:
     return value.replace("\n", " ").strip()
+
+def normalize_list(value: Any) -> list[str]:
+    if not value:
+        return []
+    if isinstance(value, list):
+        return [str(v).strip() for v in value if str(v).strip()]
+    if isinstance(value, str):
+        return [v.strip() for v in value.split(",") if v.strip()]
+    return [str(value).strip()]
+
+
+def add_unique(items: list[str], values: list[str]) -> None:
+    existing = {v.lower() for v in items}
+    for value in values:
+        key = value.lower()
+        if key and key not in existing:
+            items.append(value)
+            existing.add(key)
+
+
+def dedupe_schema_objects(objects: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    seen: set[str] = set()
+    unique: list[dict[str, Any]] = []
+    for obj in objects:
+        try:
+            key = json.dumps(obj, sort_keys=True, ensure_ascii=True)
+        except TypeError:
+            key = str(obj)
+        if key in seen:
+            continue
+        seen.add(key)
+        unique.append(obj)
+    return unique
 
 
 def normalize_hours(value: str) -> dict[str, str]:
@@ -164,11 +188,8 @@ def extract_from_jsonld(objects: list[dict[str, Any]], draft: InputsDraft) -> No
                 draft.country = draft.country or str(address.get("addressCountry", "")).strip()
 
             area = obj.get("areaServed")
-            if area and not draft.areas_served:
-                if isinstance(area, list):
-                    draft.areas_served = [str(a) for a in area if a]
-                else:
-                    draft.areas_served = [str(area)]
+            if area:
+                add_unique(draft.areas_served, normalize_list(area))
 
             hours = obj.get("openingHoursSpecification") or obj.get("openingHours")
             if hours and not draft.hours:
@@ -183,18 +204,61 @@ def extract_from_jsonld(objects: list[dict[str, Any]], draft: InputsDraft) -> No
                         if domain in link and label not in draft.social:
                             draft.social[label] = link
 
-        if "makesOffer" in obj and not draft.services:
-            offers = obj.get("makesOffer")
+        if "keywords" in obj:
+            add_unique(draft.keywords, normalize_list(obj.get("keywords")))
+
+        if "priceRange" in obj and not draft.price_range:
+            draft.price_range = str(obj.get("priceRange", "")).strip()
+
+        if "paymentAccepted" in obj:
+            add_unique(draft.payment_forms, normalize_list(obj.get("paymentAccepted")))
+
+        offers = obj.get("makesOffer") or obj.get("hasOfferCatalog")
+        if offers:
             names: list[str] = []
             if isinstance(offers, list):
-                for offer in offers:
-                    if isinstance(offer, dict):
-                        item = offer.get("itemOffered", offer)
-                        if isinstance(item, dict):
-                            name = item.get("name")
-                            if isinstance(name, str):
-                                names.append(name)
-            draft.services = names
+                offer_list = offers
+            else:
+                offer_list = [offers]
+            for offer in offer_list:
+                if isinstance(offer, dict):
+                    if "itemListElement" in offer:
+                        elements = offer.get("itemListElement") or []
+                        for element in elements:
+                            if isinstance(element, dict):
+                                item = element.get("itemOffered", element)
+                                if isinstance(item, dict):
+                                    name = item.get("name")
+                                    if isinstance(name, str):
+                                        names.append(name)
+                    item = offer.get("itemOffered", offer)
+                    if isinstance(item, dict):
+                        name = item.get("name")
+                        if isinstance(name, str):
+                            names.append(name)
+            add_unique(draft.services, [name for name in names if name])
+
+        if any(t == "Service" for t in type_list):
+            name = obj.get("name")
+            if isinstance(name, str):
+                add_unique(draft.services, [name.strip()])
+
+
+def run_inputs_from_schema(schema_path: Path, client_slug: str) -> bool:
+    script = Path(__file__).resolve().parent / "inputs_from_schema.py"
+    if not script.exists():
+        print("inputs_from_schema.py not found; skipping schema-based inputs.")
+        return False
+    cmd = [
+        sys.executable,
+        str(script),
+        "--schema",
+        str(schema_path),
+        "--client-slug",
+        client_slug,
+    ]
+    proc = subprocess.run(cmd, check=False)
+    return proc.returncode == 0
 
 
 def extract_from_html(soup: Any, draft: InputsDraft) -> None:
@@ -361,15 +425,30 @@ def main() -> None:
         raise SystemExit("BeautifulSoup is required. Install bs4 before running this script.")
 
     draft = InputsDraft()
+    schema_objects: list[dict[str, Any]] = []
+    schema_contexts: list[Any] = []
     paths = pick_cache_paths(index)
     for path in paths:
         html = load_html(path)
         soup = BeautifulSoup(html, "html.parser")
-        objects = extract_jsonld(soup)
+        objects, contexts = extract_jsonld(soup)
+        schema_objects.extend(objects)
+        schema_contexts.extend(contexts)
         page_draft = InputsDraft()
         extract_from_jsonld(objects, page_draft)
         extract_from_html(soup, page_draft)
         merge_missing(draft, page_draft)
+
+    schema_objects = dedupe_schema_objects(schema_objects)
+    if schema_objects:
+        schema_payload: dict[str, Any] = {"@graph": schema_objects}
+        if schema_contexts:
+            schema_payload["@context"] = schema_contexts[0]
+        schema_path = cache_dir / "schema-merged.json"
+        schema_path.write_text(json.dumps(schema_payload, indent=2), encoding="utf-8")
+        if run_inputs_from_schema(schema_path, args.client_slug):
+            print("inputs.md populated from merged schema.")
+            return
 
     if not draft.website and paths:
         for url in index.keys():
