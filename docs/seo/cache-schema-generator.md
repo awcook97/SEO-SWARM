@@ -16,6 +16,12 @@ page, visible content parity, and required fields where available).
 The generator output is a draft. Before approval, validate each JSON-LD script
 against schema.org using @docs/seo/schema-approval-workflow.md.
 
+## Search appearance guardrails
+
+- Emit a single JSON-LD `<script>` per page (use `@graph` for multiple entities).
+- Keep entity types aligned to the page content; avoid cross-page duplication.
+- Use approved inputs for business facts; do not infer unverified data.
+
 ## Command
 
 ```bash
