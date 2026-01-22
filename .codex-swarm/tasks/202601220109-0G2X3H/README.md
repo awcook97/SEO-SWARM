@@ -1,13 +1,15 @@
 ---
 id: "202601220109-0G2X3H"
 title: "Allow optional LocalBusiness subtype from inputs"
-status: "DOING"
+status: "DONE"
 priority: "P1"
 owner: "ORCHESTRATOR"
 depends_on: []
 tags: ["schema", "automation"]
+commit: { hash: "31d54a7fc7b5951dbf6abd9f7ad272404de3f83a", message: "🧩 202601220109-0G2X3H integrate task/202601220109-0G2X3H/business-type" }
 comments:
   - { author: "Codex", body: "Start: Implement optional business type input for LocalBusiness schema." }
+  - { author: "INTEGRATOR", body: "verified: Integrated via squash | details: verify=skipped(no commands); pr=.codex-swarm/tasks/202601220109-0G2X3H/pr." }
 doc_version: 2
 doc_updated_at: "2026-01-22T01:09:29+00:00"
 doc_updated_by: "agentctl"
@@ -38,3 +40,4 @@ Revert business type parsing and `@type` construction in `scripts/cache_schema_g
 ## Notes
 
 Comma-separated subtypes are supported in inputs.
+
