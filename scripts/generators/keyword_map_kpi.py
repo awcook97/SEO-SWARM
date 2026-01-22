@@ -175,7 +175,7 @@ def iter_ranked_phrases(phrases: Iterable[tuple[float, str]]) -> list[tuple[floa
 
 def generate_keywords_from_cache(
     cache_index: dict[str, str],
-    service_urls: dict[str, str],
+    page_urls: dict[str, str],
     max_per_page: int,
 ) -> list[KeywordEntry]:
     try:
@@ -195,7 +195,7 @@ def generate_keywords_from_cache(
     seen: set[str] = set()
     rake = Rake()
 
-    for service, url in service_urls.items():
+    for label, url in page_urls.items():
         cache_path = cache_index.get(url)
         if not cache_path:
             continue
@@ -227,15 +227,29 @@ def generate_keywords_from_cache(
                 KeywordEntry(
                     keyword=phrase,
                     target_url=slug,
-                    intent="service",
+                    intent="service" if label in page_urls and "/services/" in slug else "page",
                     priority=priority,
-                    service=service,
+                    service=label if "/services/" in slug else None,
                 )
             )
             picked += 1
             if picked >= max_per_page:
                 break
     return entries
+
+
+def build_page_map(cache_index: dict[str, str], service_urls: dict[str, str]) -> dict[str, str]:
+    page_urls = dict(service_urls)
+    for url in cache_index.keys():
+        if url in page_urls.values():
+            continue
+        slug = urlparse(url).path.rstrip("/")
+        if not slug:
+            label = "Home"
+        else:
+            label = slug.split("/")[-1].replace("-", " ").title()
+        page_urls[label] = url
+    return page_urls
 
 
 def render_markdown(client: dict[str, Any], keywords: list[KeywordEntry], kpis: dict[str, Any]) -> str:
@@ -329,7 +343,8 @@ def main() -> None:
         if not service_urls:
             service_urls = infer_service_pages(cache_index)
             services = list(service_urls.keys())
-        keywords = generate_keywords_from_cache(cache_index, service_urls, args.max_per_page)
+        page_urls = build_page_map(cache_index, service_urls)
+        keywords = generate_keywords_from_cache(cache_index, page_urls, args.max_per_page)
         if not keywords and isinstance(keyword_items, list):
             keywords = parse_keywords(keyword_items)
     else:
