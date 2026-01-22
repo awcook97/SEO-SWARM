@@ -1,35 +1,46 @@
 # SEO-SWARM
 
-This repository contains a reusable swarm workflow, templates, and measurement assets for local SEO content production.
+SEO-SWARM is a local SEO production workspace that turns structured inputs into reports, briefs, and draft-ready assets. It combines a step-by-step workflow, reusable templates, and automation scripts that write everything into `data/outputs/<client>/`.
 
-## What is included
+Use it to:
+- scaffold a client workspace
+- collect and validate inputs
+- generate briefs, audits, and compliance checks
+- preview outputs in a web UI
 
-- Swarm roles and guardrails: @docs/client-templates/swarm-roles.md
-- Webpage templates: @docs/client-templates/webpage-templates.md
-- Article templates: @docs/client-templates/article-templates.md
-- Measurement spec: @docs/seo/measurement-spec.md
-- Measurement intake + reporting templates:
+## What this repo contains
+
+- Workflow rules and roles: @docs/client-templates/swarm-roles.md
+- Content templates: @docs/client-templates/webpage-templates.md, @docs/client-templates/article-templates.md
+- Measurement system: @docs/seo/measurement-spec.md + intake/reporting templates
   - @docs/seo/measurement-intake-template.md
   - @docs/seo/measurement-reporting-template.md
-- Swarm execution workflow: @docs/seo/swarm-execution-workflow.md
-- Scaffold script: @scripts/workflow/swarm_workflow.py
+- End-to-end execution flow: @docs/seo/swarm-execution-workflow.md
+- Automation scripts grouped by category:
+  - @scripts/workflow/ (scaffolding and viewers)
+  - @scripts/generators/ (reports and briefs)
+  - @scripts/ingest/ (input ingestion and exports)
+  - @scripts/validation/ (linting and validation)
 
-## Quick start
+## Quick start (fast path)
 
-1) Review the swarm roles and guardrails: @docs/client-templates/swarm-roles.md.
-2) Use @scripts/workflow/swarm_workflow.py to scaffold a new client folder.
-3) Populate `data/outputs/<client>/inputs.md` with approved inputs.
+1) Read the roles and guardrails: @docs/client-templates/swarm-roles.md
+2) Scaffold a client workspace:
+   - `python scripts/workflow/swarm_workflow.py --client "Client Name" --slug client-slug`
+3) Fill approved facts in `data/outputs/<client>/inputs.md`
    - Template: @docs/seo/inputs-template.md
-4) Run the core automation scripts (see below) and draft content from the templates.
-5) Optional: launch the outputs viewer webserver to browse generated files:
+4) Run generators for briefs and reports (see below)
+5) Open the outputs viewer to browse and QA generated files:
    - `python3 scripts/workflow/outputs_viewer.py`
-   - Or run `./outputs_viewer.sh`
+   - or `./outputs_viewer.sh`
 
-Example scaffold:
+## Use the app to its full potential
 
-```bash
-python scripts/workflow/swarm_workflow.py --client "Example HVAC" --slug example-hvac
-```
+- Treat `data/outputs/<client>/inputs.md` as the single source of truth. All downstream scripts reference it or derived JSONs.
+- Run the workflow in order (intake -> mapping -> briefs -> metadata -> compliance). See @docs/seo/swarm-execution-workflow.md.
+- Use the outputs viewer to QA HTML and JSON outputs quickly without digging through folders.
+- Keep input exports (GSC, GBP, GA4, rank tracker, crawl data) in `data/outputs/<client>/reports/` and ingest them via @scripts/ingest/.
+- Validate schema HTML via @docs/seo/schema-approval-workflow.md before shipping.
 
 ## Onboard a new client (end-to-end)
 
@@ -83,7 +94,7 @@ python scripts/workflow/swarm_workflow.py --client "Example HVAC" --slug example
 
 ## Automation scripts (outputs)
 
-All scripts write under `data/outputs/<client>/reports/` unless noted.
+All scripts write under `data/outputs/<client>/reports/` unless noted. Use the outputs viewer to browse and QA results quickly.
 
 - Service briefs: `service_brief_generator.py` -> `service-briefs/*.md`
 - Brief summary: `brief_summary_report.py` -> `service-briefs-summary.md/.json`
