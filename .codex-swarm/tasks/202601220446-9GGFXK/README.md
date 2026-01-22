@@ -7,7 +7,7 @@ owner: "ORCHESTRATOR"
 depends_on: []
 tags: []
 doc_version: 2
-doc_updated_at: "2026-01-22T05:18:29+00:00"
+doc_updated_at: "2026-01-22T05:21:25+00:00"
 doc_updated_by: "agentctl"
 description: "Set workflow_mode back to direct, review repo layout, propose and apply folder moves to make project more manageable, update references/docs."
 ---
@@ -37,5 +37,5 @@ Revert the commit(s) and restore the previous folder locations; reset workflow_m
 
 ## Notes
 
-Improved outputs viewer layout/styling and fixed HTML preview links by decoding /files/ paths on the server.
+Prevented horizontal page scroll in outputs viewer by clamping body overflow-x and max-width.
 
