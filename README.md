@@ -28,6 +28,18 @@ Use it to:
 2) Scaffold a client workspace:
    - `python scripts/workflow/swarm_workflow.py --client "Client Name" --slug client-slug`
    - Optional: add `--site-url https://example.com` to crawl and cache the site HTML (also pre-fills `inputs.md`).
+
+Audit runner (all steps, end-to-end):
+
+```bash
+python scripts/workflow/site_audit_runner.py --client "Client Name" --slug client-slug --site-url https://example.com
+```
+
+Crawl-only mode (cache + inputs.md):
+
+```bash
+python scripts/workflow/site_audit_runner.py --client "Client Name" --slug client-slug --site-url https://example.com --crawl-only
+```
 3) Fill approved facts in `data/outputs/<client>/inputs.md`
    - Template: @docs/seo/inputs-template.md
 4) Run generators for briefs and reports (see below)
