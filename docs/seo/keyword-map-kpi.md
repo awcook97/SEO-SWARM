@@ -20,6 +20,14 @@ Scaffold an input file if needed:
 python scripts/generators/keyword_map_kpi.py --client-slug <client> --scaffold
 ```
 
+Auto-extract keywords from cached HTML (uses RAKE + textstat):
+
+```bash
+python scripts/generators/keyword_map_kpi.py --client-slug <client> --auto-from-cache
+```
+
+Dependencies for auto-extraction: `rake_nltk`, `textstat`, and `beautifulsoup4`.
+
 ## Outputs
 
 - `data/outputs/<client>/reports/keyword-map-kpi.md`

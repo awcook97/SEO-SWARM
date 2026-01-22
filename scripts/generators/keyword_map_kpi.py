@@ -5,10 +5,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterable
+from urllib.parse import urlparse
 
 
 @dataclass
@@ -90,6 +92,123 @@ def parse_keywords(items: list[dict[str, Any]]) -> list[KeywordEntry]:
     return entries
 
 
+def load_inputs_services(path: Path) -> tuple[list[str], dict[str, str]]:
+    if not path.exists():
+        return [], {}
+    lines = [line.rstrip("\n") for line in path.read_text(encoding="utf-8").splitlines()]
+    services: list[str] = []
+    service_urls: dict[str, str] = {}
+    in_services = False
+    for line in lines:
+        if line.startswith("## Approved service list"):
+            in_services = True
+            continue
+        if line.startswith("## ") and in_services:
+            in_services = False
+        if in_services and line.startswith("- "):
+            entry = line.replace("- ", "", 1).strip()
+            if not entry:
+                continue
+            name, _, rest = entry.partition(":")
+            name = name.strip()
+            url_match = re.search(r"\((https?://[^)]+)\)", rest)
+            url = url_match.group(1) if url_match else ""
+            if name:
+                services.append(name)
+            if url:
+                service_urls[name] = url
+    return services, service_urls
+
+
+def load_site_cache_index(path: Path) -> dict[str, str]:
+    if not path.exists():
+        return {}
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return {url: meta.get("path", "") for url, meta in data.items() if isinstance(meta, dict)}
+
+
+def normalize_phrase(value: str) -> str:
+    return re.sub(r"\s+", " ", value.strip())
+
+
+def iter_ranked_phrases(phrases: Iterable[tuple[float, str]]) -> list[tuple[float, str]]:
+    out: list[tuple[float, str]] = []
+    for score, phrase in phrases:
+        phrase = normalize_phrase(phrase)
+        if not phrase:
+            continue
+        words = phrase.split()
+        if len(words) < 2 or len(words) > 6:
+            continue
+        out.append((score, phrase))
+    return out
+
+
+def generate_keywords_from_cache(
+    cache_index: dict[str, str],
+    service_urls: dict[str, str],
+    max_per_page: int,
+) -> list[KeywordEntry]:
+    try:
+        from bs4 import BeautifulSoup  # type: ignore
+    except Exception as exc:
+        raise SystemExit("BeautifulSoup is required. Install beautifulsoup4 before running --auto-from-cache.") from exc
+    try:
+        from rake_nltk import Rake  # type: ignore
+    except Exception as exc:
+        raise SystemExit("rake_nltk is required. Install rake_nltk before running --auto-from-cache.") from exc
+    try:
+        import textstat  # type: ignore
+    except Exception as exc:
+        raise SystemExit("textstat is required. Install textstat before running --auto-from-cache.") from exc
+
+    entries: list[KeywordEntry] = []
+    seen: set[str] = set()
+    rake = Rake()
+
+    for service, url in service_urls.items():
+        cache_path = cache_index.get(url)
+        if not cache_path:
+            continue
+        html = Path(cache_path).read_text(encoding="utf-8", errors="ignore")
+        soup = BeautifulSoup(html, "html.parser")
+        for tag in soup(["script", "style", "noscript"]):
+            tag.decompose()
+        text = " ".join(soup.stripped_strings)
+        if not text:
+            continue
+        rake.extract_keywords_from_text(text)
+        ranked = iter_ranked_phrases(rake.get_ranked_phrases_with_scores())
+        scored: list[tuple[float, str]] = []
+        for score, phrase in ranked:
+            lexicon = textstat.lexicon_count(phrase) or 1
+            adjusted = score * (1.0 + min(0.5, lexicon / 10))
+            scored.append((adjusted, phrase))
+        scored.sort(key=lambda item: item[0], reverse=True)
+
+        slug = urlparse(url).path
+        picked = 0
+        for _, phrase in scored:
+            key = phrase.lower()
+            if key in seen:
+                continue
+            seen.add(key)
+            priority = "primary" if picked == 0 else "secondary"
+            entries.append(
+                KeywordEntry(
+                    keyword=phrase,
+                    target_url=slug,
+                    intent="service",
+                    priority=priority,
+                    service=service,
+                )
+            )
+            picked += 1
+            if picked >= max_per_page:
+                break
+    return entries
+
+
 def render_markdown(client: dict[str, Any], keywords: list[KeywordEntry], kpis: dict[str, Any]) -> str:
     lines: list[str] = []
     lines.append("# Keyword map + KPI targets")
@@ -141,6 +260,17 @@ def main() -> None:
         action="store_true",
         help="Create a scaffold input file if it does not exist.",
     )
+    parser.add_argument(
+        "--auto-from-cache",
+        action="store_true",
+        help="Extract keywords from cached HTML using RAKE + textstat.",
+    )
+    parser.add_argument(
+        "--max-per-page",
+        type=int,
+        default=6,
+        help="Max keywords per service page when auto-extracting (default: 6).",
+    )
     args = parser.parse_args()
 
     base_dir = Path("data") / "outputs" / args.client_slug
@@ -157,8 +287,19 @@ def main() -> None:
 
     data = load_input(input_path)
     client = data.get("client", {})
-    keywords = parse_keywords(data.get("keywords", []))
     kpis = data.get("kpi_targets", {})
+
+    keyword_items = data.get("keywords", [])
+    keywords: list[KeywordEntry]
+    if args.auto_from_cache:
+        inputs_path = base_dir / "inputs.md"
+        services, service_urls = load_inputs_services(inputs_path)
+        cache_index = load_site_cache_index(base_dir / "reports" / "site-cache" / "index.json")
+        keywords = generate_keywords_from_cache(cache_index, service_urls, args.max_per_page)
+        if not keywords and isinstance(keyword_items, list):
+            keywords = parse_keywords(keyword_items)
+    else:
+        keywords = parse_keywords(keyword_items or [])
 
     payload = {
         "generated_at": now_iso(),
