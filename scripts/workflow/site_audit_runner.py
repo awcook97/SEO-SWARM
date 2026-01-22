@@ -36,9 +36,9 @@ def main() -> None:
     parser.add_argument("--site-url", required=True, help="Base site URL to crawl")
     parser.add_argument("--crawl-only", action="store_true", help="Only crawl and build inputs.md")
     parser.add_argument(
-        "--continue-on-error",
+        "--fail-fast",
         action="store_true",
-        help="Continue running steps even if one fails",
+        help="Stop on the first failing step",
     )
     args = parser.parse_args()
 
@@ -63,9 +63,10 @@ def main() -> None:
 
     if args.crawl_only:
         for label, cmd in steps:
-            run_step(label, cmd, args.continue_on_error)
+            run_step(label, cmd, not args.fail_fast)
         return
 
+    reports_dir = REPO_ROOT / "data" / "outputs" / args.slug / "reports"
     steps.extend(
         [
             (
@@ -105,7 +106,47 @@ def main() -> None:
                 ],
             ),
             (
-                "Generate keyword map + KPI (auto from cache)",
+                "Generate content briefs (scaffold if missing)",
+                [
+                    python,
+                    str(REPO_ROOT / "scripts" / "generators" / "content_brief_generator.py"),
+                    "--client-slug",
+                    args.slug,
+                    "--scaffold",
+                ],
+            ),
+            (
+                "Measurement intake (scaffold if missing)",
+                [
+                    python,
+                    str(REPO_ROOT / "scripts" / "generators" / "measurement_intake_generator.py"),
+                    "--client-slug",
+                    args.slug,
+                    "--scaffold",
+                ],
+            ),
+            (
+                "Competitor snapshot (scaffold if missing)",
+                [
+                    python,
+                    str(REPO_ROOT / "scripts" / "generators" / "competitor_snapshot_builder.py"),
+                    "--client-slug",
+                    args.slug,
+                    "--scaffold",
+                ],
+            ),
+            (
+                "SERP insights (scaffold if missing)",
+                [
+                    python,
+                    str(REPO_ROOT / "scripts" / "generators" / "serp_insights_summary.py"),
+                    "--client-slug",
+                    args.slug,
+                    "--scaffold",
+                ],
+            ),
+            (
+                "Keyword map + KPI (auto from cache)",
                 [
                     python,
                     str(REPO_ROOT / "scripts" / "generators" / "keyword_map_kpi.py"),
@@ -115,20 +156,211 @@ def main() -> None:
                 ],
             ),
             (
-                "Generate cache schema (with validation)",
+                "GBP update checklist",
+                [
+                    python,
+                    str(REPO_ROOT / "scripts" / "generators" / "gbp_update_checklist.py"),
+                    "--client-slug",
+                    args.slug,
+                ],
+            ),
+            (
+                "Citation update log (scaffold if missing)",
+                [
+                    python,
+                    str(REPO_ROOT / "scripts" / "generators" / "citation_update_log.py"),
+                    "--client-slug",
+                    args.slug,
+                    "--scaffold",
+                ],
+            ),
+            (
+                "Local link outreach (scaffold if missing)",
+                [
+                    python,
+                    str(REPO_ROOT / "scripts" / "generators" / "local_link_outreach.py"),
+                    "--client-slug",
+                    args.slug,
+                    "--scaffold",
+                ],
+            ),
+            (
+                "Review response templates (scaffold if missing)",
+                [
+                    python,
+                    str(REPO_ROOT / "scripts" / "generators" / "review_response_templates.py"),
+                    "--client-slug",
+                    args.slug,
+                    "--scaffold",
+                ],
+            ),
+            (
+                "Compliance risk log",
+                [
+                    python,
+                    str(REPO_ROOT / "scripts" / "generators" / "compliance_risk_log.py"),
+                    "--client-slug",
+                    args.slug,
+                ],
+            ),
+            (
+                "Rank tracking report (scaffold config if missing)",
+                [
+                    python,
+                    str(REPO_ROOT / "scripts" / "generators" / "rank_tracking_report_builder.py"),
+                    "--client-slug",
+                    args.slug,
+                    "--scaffold-config",
+                ],
+            ),
+            (
+                "Technical SEO audit",
+                [
+                    python,
+                    str(REPO_ROOT / "scripts" / "generators" / "technical_seo_audit_scaffold.py"),
+                    "--client-slug",
+                    args.slug,
+                ],
+            ),
+            (
+                "Cache schema (geocode + validate)",
                 [
                     python,
                     str(REPO_ROOT / "scripts" / "generators" / "cache_schema_generator.py"),
                     "--client-slug",
                     args.slug,
+                    "--geocode",
                     "--validate-schemaorg",
                 ],
             ),
             (
-                "Run technical SEO audit",
+                "Technical SEO audit (after schema)",
                 [
                     python,
                     str(REPO_ROOT / "scripts" / "generators" / "technical_seo_audit_scaffold.py"),
+                    "--client-slug",
+                    args.slug,
+                ],
+            ),
+            (
+                "Internal link validation",
+                [
+                    python,
+                    str(REPO_ROOT / "scripts" / "validation" / "internal_link_validator.py"),
+                    "--client-slug",
+                    args.slug,
+                ],
+            ),
+            (
+                "Draft compliance lint",
+                [
+                    python,
+                    str(REPO_ROOT / "scripts" / "validation" / "draft_compliance_lint.py"),
+                    "--client-slug",
+                    args.slug,
+                ],
+            ),
+            (
+                "FAQ audit (live crawl)",
+                [
+                    python,
+                    str(REPO_ROOT / "scripts" / "validation" / "faq_audit.py"),
+                    "--base",
+                    args.site_url,
+                    "--output",
+                    str(reports_dir / "faq-audit.json"),
+                ],
+            ),
+            (
+                "SERP fetch (scaffold input if missing)",
+                [
+                    python,
+                    str(REPO_ROOT / "scripts" / "ingest" / "serp_dataforseo_fetch.py"),
+                    "--client-slug",
+                    args.slug,
+                    "--scaffold",
+                ],
+            ),
+            (
+                "Review export ingest (scaffold CSV)",
+                [
+                    python,
+                    str(REPO_ROOT / "scripts" / "ingest" / "review_export_ingest.py"),
+                    "--client-slug",
+                    args.slug,
+                    "--input",
+                    str(reports_dir / "reviews.csv"),
+                    "--scaffold-csv",
+                ],
+            ),
+            (
+                "Metadata linkmap ingest (scaffold CSV)",
+                [
+                    python,
+                    str(REPO_ROOT / "scripts" / "ingest" / "metadata_linkmap_ingest.py"),
+                    "--client-slug",
+                    args.slug,
+                    "--input",
+                    str(reports_dir / "metadata-linkmap-input.csv"),
+                    "--client-name",
+                    args.client,
+                    "--client-phone",
+                    "[add phone]",
+                    "--client-website",
+                    args.site_url,
+                    "--scaffold",
+                ],
+            ),
+            (
+                "Crawl export ingest (requires input)",
+                [
+                    python,
+                    str(REPO_ROOT / "scripts" / "ingest" / "crawl_export_ingest.py"),
+                    "--client-slug",
+                    args.slug,
+                ],
+            ),
+            (
+                "GSC export ingest (requires input)",
+                [
+                    python,
+                    str(REPO_ROOT / "scripts" / "ingest" / "gsc_export_ingest.py"),
+                    "--client-slug",
+                    args.slug,
+                ],
+            ),
+            (
+                "GA4 export ingest (requires input)",
+                [
+                    python,
+                    str(REPO_ROOT / "scripts" / "ingest" / "ga4_export_ingest.py"),
+                    "--client-slug",
+                    args.slug,
+                ],
+            ),
+            (
+                "GBP export ingest (requires input)",
+                [
+                    python,
+                    str(REPO_ROOT / "scripts" / "ingest" / "gbp_export_ingest.py"),
+                    "--client-slug",
+                    args.slug,
+                ],
+            ),
+            (
+                "Citation audit ingest (requires input)",
+                [
+                    python,
+                    str(REPO_ROOT / "scripts" / "ingest" / "citation_audit_ingest.py"),
+                    "--client-slug",
+                    args.slug,
+                ],
+            ),
+            (
+                "Rank tracker export ingest (requires input)",
+                [
+                    python,
+                    str(REPO_ROOT / "scripts" / "ingest" / "rank_tracker_export_ingest.py"),
                     "--client-slug",
                     args.slug,
                 ],
@@ -137,7 +369,7 @@ def main() -> None:
     )
 
     for label, cmd in steps:
-        run_step(label, cmd, args.continue_on_error)
+        run_step(label, cmd, not args.fail_fast)
 
 
 if __name__ == "__main__":

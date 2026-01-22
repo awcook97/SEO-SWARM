@@ -7,7 +7,7 @@ owner: "ORCHESTRATOR"
 depends_on: []
 tags: []
 doc_version: 2
-doc_updated_at: "2026-01-22T15:18:27+00:00"
+doc_updated_at: "2026-01-22T15:33:17+00:00"
 doc_updated_by: "agentctl"
 description: "Set workflow_mode back to direct, review repo layout, propose and apply folder moves to make project more manageable, update references/docs."
 ---
@@ -37,5 +37,5 @@ Revert the commit(s) and restore the previous folder locations; reset workflow_m
 
 ## Notes
 
-Allowed keyword_map_kpi --auto-from-cache to run without keyword-map-input.json; pulls client info from inputs.md when needed.
+Expanded site_audit_runner to run all generators/ingest/validation scripts with defaults, geocode+schema validation, auto keyword extraction, and fail-fast toggle.
 
