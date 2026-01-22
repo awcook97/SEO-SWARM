@@ -1,11 +1,14 @@
 ---
 id: "202601221537-TDGCTP"
 title: "Compliance risk log: fix import path after scripts restructure"
-status: "TODO"
+status: "DONE"
 priority: "med"
 owner: "ORCHESTRATOR"
 depends_on: []
 tags: []
+commit: { hash: "eabf1b12e561bf8d7778f8b4254126413877e4aa", message: "🐛 TDGCTP fix compliance risk import path" }
+comments:
+  - { author: "ORCHESTRATOR", body: "verified: not run | details: compliance risk log now resolves validation imports." }
 doc_version: 2
 doc_updated_at: "2026-01-22T15:58:46+00:00"
 doc_updated_by: "agentctl"
