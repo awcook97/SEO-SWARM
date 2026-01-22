@@ -7,7 +7,7 @@ Generate a reusable audit template for technical SEO reviews.
 ## Command
 
 ```bash
-python scripts/technical_seo_audit_scaffold.py --client-slug <client>
+python scripts/generators/technical_seo_audit_scaffold.py --client-slug <client>
 ```
 
 ## Outputs

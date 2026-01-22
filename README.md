@@ -12,35 +12,35 @@ This repository contains a reusable swarm workflow, templates, and measurement a
   - @docs/seo/measurement-intake-template.md
   - @docs/seo/measurement-reporting-template.md
 - Swarm execution workflow: @docs/seo/swarm-execution-workflow.md
-- Scaffold script: @scripts/swarm_workflow.py
+- Scaffold script: @scripts/workflow/swarm_workflow.py
 
 ## Quick start
 
 1) Review the swarm roles and guardrails: @docs/client-templates/swarm-roles.md.
-2) Use @scripts/swarm_workflow.py to scaffold a new client folder.
+2) Use @scripts/workflow/swarm_workflow.py to scaffold a new client folder.
 3) Populate `data/outputs/<client>/inputs.md` with approved inputs.
    - Template: @docs/seo/inputs-template.md
 4) Run the core automation scripts (see below) and draft content from the templates.
 5) Optional: launch the outputs viewer webserver to browse generated files:
-   - `python3 scripts/outputs_viewer.py`
+   - `python3 scripts/workflow/outputs_viewer.py`
    - Or run `./outputs_viewer.sh`
 
 Example scaffold:
 
 ```bash
-python scripts/swarm_workflow.py --client "Example HVAC" --slug example-hvac
+python scripts/workflow/swarm_workflow.py --client "Example HVAC" --slug example-hvac
 ```
 
 ## Onboard a new client (end-to-end)
 
 1) Create the client folder:
-   - `python scripts/swarm_workflow.py --client "Client Name" --slug client-slug`
+   - `python scripts/workflow/swarm_workflow.py --client "Client Name" --slug client-slug`
 2) Fill in `data/outputs/<client>/inputs.md` with approved facts (NAP, services, hours, proof points).
    - Template: @docs/seo/inputs-template.md
 3) Capture measurement inputs:
    - Use @docs/seo/measurement-intake-template.md
-   - Optional generator: `python scripts/measurement_intake_generator.py --client-slug client-slug --scaffold`
-4) Run a crawl cache if needed (see @scripts/service_brief_generator.py requirements).
+   - Optional generator: `python scripts/generators/measurement_intake_generator.py --client-slug client-slug --scaffold`
+4) Run a crawl cache if needed (see @scripts/generators/service_brief_generator.py requirements).
 5) Generate service briefs and supporting reports.
 6) Produce content briefs and draft pages/articles using templates.
 
@@ -51,35 +51,35 @@ python scripts/swarm_workflow.py --client "Example HVAC" --slug example-hvac
    - Measurement intake per @docs/seo/measurement-intake-template.md
 2) **Strategy + mapping**
    - Keyword map + KPI targets:
-     `python scripts/keyword_map_kpi.py --client-slug client-slug --scaffold`
+     `python scripts/generators/keyword_map_kpi.py --client-slug client-slug --scaffold`
 3) **Content production**
    - Generate service briefs:
-     `python scripts/service_brief_generator.py --client-slug client-slug`
+     `python scripts/generators/service_brief_generator.py --client-slug client-slug`
    - Summarize briefs:
-     `python scripts/brief_summary_report.py --client-slug client-slug`
+     `python scripts/generators/brief_summary_report.py --client-slug client-slug`
    - Generate content briefs:
-     `python scripts/content_brief_generator.py --client-slug client-slug --scaffold`
+     `python scripts/generators/content_brief_generator.py --client-slug client-slug --scaffold`
 4) **On-page + metadata**
    - Metadata + internal link map:
-     `python scripts/metadata_internal_link_map.py --client-slug client-slug`
+     `python scripts/generators/metadata_internal_link_map.py --client-slug client-slug`
    - Internal link validation:
-     `python scripts/internal_link_validator.py --client-slug client-slug`
+     `python scripts/validation/internal_link_validator.py --client-slug client-slug`
 5) **Compliance**
    - Draft compliance lint:
-     `python scripts/draft_compliance_lint.py --client-slug client-slug`
+     `python scripts/validation/draft_compliance_lint.py --client-slug client-slug`
 6) **Local asset updates**
    - GBP update checklist:
-     `python scripts/gbp_update_checklist.py --client-slug client-slug`
+     `python scripts/generators/gbp_update_checklist.py --client-slug client-slug`
    - Citation update log:
-     `python scripts/citation_update_log.py --client-slug client-slug --scaffold`
+     `python scripts/generators/citation_update_log.py --client-slug client-slug --scaffold`
    - Local link outreach log:
-     `python scripts/local_link_outreach.py --client-slug client-slug --scaffold`
+     `python scripts/generators/local_link_outreach.py --client-slug client-slug --scaffold`
    - Review response templates:
-     `python scripts/review_response_templates.py --client-slug client-slug --scaffold`
+     `python scripts/generators/review_response_templates.py --client-slug client-slug --scaffold`
    - Review export ingest:
-     `python scripts/review_export_ingest.py --client-slug client-slug --input path/to/reviews.csv`
+     `python scripts/ingest/review_export_ingest.py --client-slug client-slug --input path/to/reviews.csv`
 7) **Technical audit**
-   - `python scripts/technical_seo_audit_scaffold.py --client-slug client-slug`
+   - `python scripts/generators/technical_seo_audit_scaffold.py --client-slug client-slug`
 
 ## Automation scripts (outputs)
 

@@ -12,7 +12,7 @@ Maintain a log of outreach targets for local partners, events, or publications, 
 ## Command
 
 ```bash
-python scripts/local_link_outreach.py --client-slug <client>
+python scripts/generators/local_link_outreach.py --client-slug <client>
 ```
 
 Create a scaffold input with `--scaffold` and fill in approved partners before running.

@@ -8,7 +8,7 @@ This pulls business name, phone, URL, address, description, and geo when availab
 ## Command
 
 ```bash
-python scripts/inputs_from_schema.py --schema path/to/schema.json --client-slug <client>
+python scripts/ingest/inputs_from_schema.py --schema path/to/schema.json --client-slug <client>
 ```
 
 ## Notes

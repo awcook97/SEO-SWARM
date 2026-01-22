@@ -12,7 +12,7 @@ Track citation updates with statuses, owners, and action dates for each listing.
 ## Command
 
 ```bash
-python scripts/citation_update_log.py --client-slug <client>
+python scripts/generators/citation_update_log.py --client-slug <client>
 ```
 
 Create a scaffold file via `--scaffold` and fill in approved listings before running.

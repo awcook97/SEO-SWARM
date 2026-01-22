@@ -14,7 +14,7 @@ approved NAP, services, and profile details.
 ## Command
 
 ```bash
-python scripts/gbp_update_checklist.py --client-slug <client-slug>
+python scripts/generators/gbp_update_checklist.py --client-slug <client-slug>
 ```
 
 ## Outputs

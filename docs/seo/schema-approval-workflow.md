@@ -15,7 +15,7 @@ content. Avoid bulk generation without review.
 
 2) Validate against schema.org
 - Run:
-  - `python scripts/schema_org_validator.py --input <path-to-jsonld-or-html>`
+  - `python scripts/validation/schema_org_validator.py --input <path-to-jsonld-or-html>`
 - Fix any validation errors (unknown types/properties or invalid ranges).
 
 3) Spotcheck against the page

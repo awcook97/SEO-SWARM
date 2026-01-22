@@ -9,7 +9,7 @@ This spec defines how to validate internal link targets using the metadata + int
 ## Generator usage
 
 ```bash
-python scripts/internal_link_validator.py --client-slug <client>
+python scripts/validation/internal_link_validator.py --client-slug <client>
 ```
 
 ## Output files

@@ -11,13 +11,13 @@ Create a keyword-to-URL map and define KPI targets for reporting cadence.
 ## Command
 
 ```bash
-python scripts/keyword_map_kpi.py --client-slug <client>
+python scripts/generators/keyword_map_kpi.py --client-slug <client>
 ```
 
 Scaffold an input file if needed:
 
 ```bash
-python scripts/keyword_map_kpi.py --client-slug <client> --scaffold
+python scripts/generators/keyword_map_kpi.py --client-slug <client> --scaffold
 ```
 
 ## Outputs

@@ -6,7 +6,7 @@ page, visible content parity, and required fields where available).
 
 ## Inputs
 
-- `data/outputs/<client>/reports/site-cache/index.json` created by @scripts/crawl_cache.py.
+- `data/outputs/<client>/reports/site-cache/index.json` created by @scripts/ingest/crawl_cache.py.
 - Cached HTML snapshots referenced by the index.
 - Approved inputs via `data/outputs/<client>/reports/gbp-update-checklist.json` (preferred)
   or `data/outputs/<client>/inputs.md` (fallback) to hydrate Organization/LocalBusiness.
@@ -26,7 +26,7 @@ against schema.org using @docs/seo/schema-approval-workflow.md.
 ## Command
 
 ```bash
-python scripts/cache_schema_generator.py --client-slug <client>
+python scripts/generators/cache_schema_generator.py --client-slug <client>
 ```
 
 ## Output

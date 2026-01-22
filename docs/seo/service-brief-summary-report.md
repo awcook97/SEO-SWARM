@@ -14,7 +14,7 @@ common headings, CTAs, and schema types across pages.
 ## Command
 
 ```bash
-python scripts/brief_summary_report.py --client-slug <client-slug>
+python scripts/generators/brief_summary_report.py --client-slug <client-slug>
 ```
 
 ## Outputs

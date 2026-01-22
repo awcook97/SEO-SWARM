@@ -11,13 +11,13 @@ Scan draft markdown files for placeholders and risky claims before publishing.
 ## Command
 
 ```bash
-python scripts/draft_compliance_lint.py --client-slug <client>
+python scripts/validation/draft_compliance_lint.py --client-slug <client>
 ```
 
 Optional: limit to specific folders or files.
 
 ```bash
-python scripts/draft_compliance_lint.py --client-slug <client> --paths pages articles
+python scripts/validation/draft_compliance_lint.py --client-slug <client> --paths pages articles
 ```
 
 ## Outputs

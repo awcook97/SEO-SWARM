@@ -12,7 +12,7 @@ All business facts must come from approved inputs.
 2) Scaffold brief input (optional)
 
 ```bash
-python scripts/content_brief_generator.py --client-slug <client> --scaffold
+python scripts/generators/content_brief_generator.py --client-slug <client> --scaffold
 ```
 
 Fill in `data/outputs/<client>/reports/content-brief-input.json` with keywords, targets,
@@ -21,7 +21,7 @@ CTAs, and notes.
 3) Generate briefs
 
 ```bash
-python scripts/content_brief_generator.py --client-slug <client>
+python scripts/generators/content_brief_generator.py --client-slug <client>
 ```
 
 4) Review and edit

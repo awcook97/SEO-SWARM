@@ -11,4 +11,4 @@ if [[ -f ".env" ]]; then
   set +a
 fi
 
-python3 scripts/outputs_viewer.py
+python3 scripts/workflow/outputs_viewer.py

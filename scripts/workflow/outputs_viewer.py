@@ -15,9 +15,14 @@ from urllib.parse import parse_qs, unquote, urlparse
 
 def resolve_repo_root() -> Path:
     cwd = Path.cwd()
-    if (cwd / ".codex-swarm").exists():
-        return cwd
-    return Path(__file__).resolve().parent.parent
+    for candidate in (cwd, *cwd.parents):
+        if (candidate / ".codex-swarm").exists():
+            return candidate
+    source = Path(__file__).resolve()
+    for candidate in (source.parent, *source.parents):
+        if (candidate / ".codex-swarm").exists():
+            return candidate
+    return source.parent.parent
 
 
 REPO_ROOT = resolve_repo_root()

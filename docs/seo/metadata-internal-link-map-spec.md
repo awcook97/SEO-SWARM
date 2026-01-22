@@ -63,7 +63,7 @@ The generator writes two files under `data/outputs/<client>/reports/`:
 ## Generator usage
 
 ```bash
-python scripts/metadata_internal_link_map.py --client-slug <client>
+python scripts/generators/metadata_internal_link_map.py --client-slug <client>
 ```
 
 Optional: specify a different input filename under `data/outputs/<client>/reports/` via `--input`.

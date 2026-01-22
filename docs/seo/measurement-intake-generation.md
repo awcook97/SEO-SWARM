@@ -12,7 +12,7 @@ Turn structured measurement inputs into a markdown intake sheet for swarms.
 ## Command
 
 ```bash
-python scripts/measurement_intake_generator.py --client-slug <client>
+python scripts/generators/measurement_intake_generator.py --client-slug <client>
 ```
 
 Use `--scaffold` to generate an example input file you can edit.

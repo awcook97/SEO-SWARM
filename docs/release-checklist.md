@@ -16,7 +16,7 @@ Use this checklist before publishing the repo.
 
 ## Workflow sanity
 
-- `python scripts/swarm_workflow.py --help` runs without error.
+- `python scripts/workflow/swarm_workflow.py --help` runs without error.
 - Task list has no TODOs or missing deps.
 
 ## Optional release steps
