@@ -139,6 +139,23 @@ def load_site_cache_index(path: Path) -> dict[str, str]:
     return {url: meta.get("path", "") for url, meta in data.items() if isinstance(meta, dict)}
 
 
+def infer_service_pages(cache_index: dict[str, str]) -> dict[str, str]:
+    service_pages: dict[str, str] = {}
+    for url in cache_index.keys():
+        parsed = urlparse(url)
+        path = parsed.path.rstrip("/")
+        if not path:
+            continue
+        if "/services/" not in path and "/service/" not in path:
+            continue
+        slug = path.split("/")[-1]
+        if not slug or slug in {"services", "service"}:
+            continue
+        name = slug.replace("-", " ").title()
+        service_pages[name] = url
+    return service_pages
+
+
 def normalize_phrase(value: str) -> str:
     return re.sub(r"\s+", " ", value.strip())
 
@@ -309,6 +326,9 @@ def main() -> None:
         inputs_path = base_dir / "inputs.md"
         services, service_urls = load_inputs_services(inputs_path)
         cache_index = load_site_cache_index(base_dir / "reports" / "site-cache" / "index.json")
+        if not service_urls:
+            service_urls = infer_service_pages(cache_index)
+            services = list(service_urls.keys())
         keywords = generate_keywords_from_cache(cache_index, service_urls, args.max_per_page)
         if not keywords and isinstance(keyword_items, list):
             keywords = parse_keywords(keyword_items)

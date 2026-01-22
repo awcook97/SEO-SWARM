@@ -7,7 +7,7 @@ owner: "ORCHESTRATOR"
 depends_on: []
 tags: []
 doc_version: 2
-doc_updated_at: "2026-01-22T15:33:17+00:00"
+doc_updated_at: "2026-01-22T15:44:34+00:00"
 doc_updated_by: "agentctl"
 description: "Set workflow_mode back to direct, review repo layout, propose and apply folder moves to make project more manageable, update references/docs."
 ---
@@ -37,5 +37,5 @@ Revert the commit(s) and restore the previous folder locations; reset workflow_m
 
 ## Notes
 
-Expanded site_audit_runner to run all generators/ingest/validation scripts with defaults, geocode+schema validation, auto keyword extraction, and fail-fast toggle.
+keyword_map_kpi now infers service pages from cache URLs when inputs.md is missing service data, so auto-from-cache still works.
 
