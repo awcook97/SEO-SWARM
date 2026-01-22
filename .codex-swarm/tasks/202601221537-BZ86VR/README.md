@@ -1,11 +1,14 @@
 ---
 id: "202601221537-BZ86VR"
 title: "FAQ audit: fix regex escape warning"
-status: "TODO"
+status: "DONE"
 priority: "low"
 owner: "ORCHESTRATOR"
 depends_on: []
 tags: []
+commit: { hash: "5a9638937b49a9ebdee2c9a27b2b39babec5ae1d", message: "🧹 BZ86VR fix faq audit regex warning" }
+comments:
+  - { author: "ORCHESTRATOR", body: "verified: not run | details: FAQ audit regex now avoids escape warnings." }
 doc_version: 2
 doc_updated_at: "2026-01-22T16:00:30+00:00"
 doc_updated_by: "agentctl"
