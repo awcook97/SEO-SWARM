@@ -10,6 +10,7 @@ commit: { hash: "31d54a7fc7b5951dbf6abd9f7ad272404de3f83a", message: "🧩 20260
 comments:
   - { author: "Codex", body: "Start: Implement optional business type input for LocalBusiness schema." }
   - { author: "INTEGRATOR", body: "verified: Integrated via squash | details: verify=skipped(no commands); pr=.codex-swarm/tasks/202601220109-0G2X3H/pr." }
+  - { author: "INTEGRATOR", body: "verified: Integrated via squash | details: verify=skipped(no commands); pr=.codex-swarm/tasks/202601220109-0G2X3H/pr." }
 doc_version: 2
 doc_updated_at: "2026-01-22T01:09:29+00:00"
 doc_updated_by: "agentctl"
