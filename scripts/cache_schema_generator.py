@@ -104,6 +104,19 @@ def normalize_area_value(value: str) -> str:
     return cleaned.strip()
 
 
+def normalize_area_list(values: list[Any]) -> list[str]:
+    areas: list[str] = []
+    for value in values:
+        text = ""
+        if isinstance(value, str):
+            text = normalize_area_value(clean_value(value))
+        elif isinstance(value, dict):
+            text = normalize_area_value(clean_value(str(value.get("name", ""))))
+        if text:
+            areas.append(text)
+    return dedupe(areas)
+
+
 def split_list(value: str) -> list[str]:
     return [item.strip() for item in value.split(",") if item.strip()]
 
@@ -507,7 +520,7 @@ def build_entity_registry(
             "logo": logo_url or None,
             "image": logo_url or None,
         }
-        areas = [area for area in inputs.service_areas if area] if inputs else []
+        areas = normalize_area_list(inputs.service_areas) if inputs else []
         if inputs:
             for svc in inputs.services:
                 name = svc.get("name") or ""
