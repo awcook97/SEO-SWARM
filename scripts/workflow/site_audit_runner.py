@@ -213,16 +213,6 @@ def main() -> None:
                 ],
             ),
             (
-                "Rank tracking report (scaffold config if missing)",
-                [
-                    python,
-                    str(REPO_ROOT / "scripts" / "generators" / "rank_tracking_report_builder.py"),
-                    "--client-slug",
-                    args.slug,
-                    "--scaffold-config",
-                ],
-            ),
-            (
                 "Technical SEO audit",
                 [
                     python,
@@ -312,6 +302,22 @@ def main() -> None:
             ),
         ]
     )
+
+    rank_tracking_csv = reports_dir / "rank-tracking.csv"
+    if rank_tracking_csv.exists():
+        steps.append(
+            (
+                "Rank tracking report",
+                [
+                    python,
+                    str(REPO_ROOT / "scripts" / "generators" / "rank_tracking_report_builder.py"),
+                    "--client-slug",
+                    args.slug,
+                ],
+            )
+        )
+    else:
+        print("[skip] Rank tracking report: missing rank-tracking.csv")
 
     if os.environ.get("DATAFORSEO_LOGIN") and os.environ.get("DATAFORSEO_PASSWORD"):
         steps.append(
