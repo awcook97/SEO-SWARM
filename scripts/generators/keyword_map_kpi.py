@@ -37,6 +37,18 @@ def load_input(path: Path) -> dict[str, Any]:
         raise SystemExit(f"Invalid JSON in {path}: {exc}") from exc
 
 
+def load_client_from_inputs(path: Path, slug: str) -> dict[str, str]:
+    client = {"name": slug, "website": ""}
+    if not path.exists():
+        return client
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if line.startswith("- Business name:"):
+            client["name"] = line.split(":", 1)[1].strip() or client["name"]
+        elif line.startswith("- Website:"):
+            client["website"] = line.split(":", 1)[1].strip()
+    return client
+
+
 def scaffold_input(path: Path) -> None:
     payload = {
         "client": {
@@ -278,18 +290,20 @@ def main() -> None:
     report_dir.mkdir(parents=True, exist_ok=True)
 
     input_path = Path(args.input) if args.input else report_dir / "keyword-map-input.json"
-    if not input_path.exists():
-        if args.scaffold:
-            scaffold_input(input_path)
-            print(f"wrote scaffold input to {input_path}")
-            return
+    data: dict[str, Any] = {}
+    if input_path.exists():
+        data = load_input(input_path)
+    elif args.scaffold and not args.auto_from_cache:
+        scaffold_input(input_path)
+        print(f"wrote scaffold input to {input_path}")
+        return
+    elif not args.auto_from_cache:
         raise SystemExit(f"Input file not found: {input_path}. Use --scaffold to create one.")
 
-    data = load_input(input_path)
-    client = data.get("client", {})
-    kpis = data.get("kpi_targets", {})
+    client = data.get("client", {}) if data else load_client_from_inputs(base_dir / "inputs.md", args.client_slug)
+    kpis = data.get("kpi_targets", {}) if data else {}
 
-    keyword_items = data.get("keywords", [])
+    keyword_items = data.get("keywords", []) if data else []
     keywords: list[KeywordEntry]
     if args.auto_from_cache:
         inputs_path = base_dir / "inputs.md"
