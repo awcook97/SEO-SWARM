@@ -27,6 +27,7 @@ Use it to:
 1) Read the roles and guardrails: @docs/client-templates/swarm-roles.md
 2) Scaffold a client workspace:
    - `python scripts/workflow/swarm_workflow.py --client "Client Name" --slug client-slug`
+   - Optional: add `--site-url https://example.com` to crawl and cache the site HTML.
 3) Fill approved facts in `data/outputs/<client>/inputs.md`
    - Template: @docs/seo/inputs-template.md
 4) Run generators for briefs and reports (see below)
@@ -46,6 +47,7 @@ Use it to:
 
 1) Create the client folder:
    - `python scripts/workflow/swarm_workflow.py --client "Client Name" --slug client-slug`
+   - Optional: add `--site-url https://example.com` to crawl and cache the site HTML.
 2) Fill in `data/outputs/<client>/inputs.md` with approved facts (NAP, services, hours, proof points).
    - Template: @docs/seo/inputs-template.md
 3) Capture measurement inputs:

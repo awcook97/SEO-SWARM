@@ -7,7 +7,7 @@ owner: "ORCHESTRATOR"
 depends_on: []
 tags: []
 doc_version: 2
-doc_updated_at: "2026-01-22T05:42:06+00:00"
+doc_updated_at: "2026-01-22T05:52:40+00:00"
 doc_updated_by: "agentctl"
 description: "Set workflow_mode back to direct, review repo layout, propose and apply folder moves to make project more manageable, update references/docs."
 ---
@@ -37,5 +37,5 @@ Revert the commit(s) and restore the previous folder locations; reset workflow_m
 
 ## Notes
 
-Expanded root README and docs/seo/README with clearer descriptions, workflow context, and usage guidance.
+Added --site-url to swarm_workflow to auto-run crawl_cache for website snapshots; updated README guidance.
 
