@@ -1,11 +1,14 @@
 ---
 id: "202601221537-TYKQP3"
 title: "Rank tracking report: skip when CSV missing in audit runner"
-status: "TODO"
+status: "DONE"
 priority: "med"
 owner: "ORCHESTRATOR"
 depends_on: []
 tags: []
+commit: { hash: "373cbf7b8078beb3d4b84cb6b5c781a0f9e82dd0", message: "🔧 TYKQP3 skip rank tracking report when csv missing" }
+comments:
+  - { author: "ORCHESTRATOR", body: "verified: not run | details: rank tracking report now skips when csv is missing." }
 doc_version: 2
 doc_updated_at: "2026-01-22T15:57:10+00:00"
 doc_updated_by: "agentctl"
