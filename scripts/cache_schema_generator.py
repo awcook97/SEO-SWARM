@@ -1007,7 +1007,7 @@ def output_path_for(url: str, out_dir: Path) -> Path:
 
 def render_script(schema: dict[str, Any]) -> str:
     payload = json.dumps(schema, ensure_ascii=False, separators=(",", ":"))
-    return f'<script type="application/ld+json">\n{payload}\n</script>\n'
+    return f'<script type="application/ld+json">{payload}</script>\n'
 
 
 def load_schemaorg_validator() -> Any:
