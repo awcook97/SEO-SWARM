@@ -1034,7 +1034,9 @@ def render_script(schema: dict[str, Any]) -> str:
 
 
 def load_schemaorg_validator() -> Any:
-    module_path = Path(__file__).with_name("schema_org_validator.py")
+    module_path = Path(__file__).resolve().parent.parent / "validation" / "schema_org_validator.py"
+    if not module_path.exists():
+        module_path = Path(__file__).with_name("schema_org_validator.py")
     spec = importlib.util.spec_from_file_location("schema_org_validator", module_path)
     if not spec or not spec.loader:
         raise SystemExit(f"Unable to load schema_org_validator from {module_path}")

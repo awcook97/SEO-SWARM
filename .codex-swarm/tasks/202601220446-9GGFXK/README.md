@@ -7,7 +7,7 @@ owner: "ORCHESTRATOR"
 depends_on: []
 tags: []
 doc_version: 2
-doc_updated_at: "2026-01-22T15:00:31+00:00"
+doc_updated_at: "2026-01-22T15:09:34+00:00"
 doc_updated_by: "agentctl"
 description: "Set workflow_mode back to direct, review repo layout, propose and apply folder moves to make project more manageable, update references/docs."
 ---
@@ -37,5 +37,5 @@ Revert the commit(s) and restore the previous folder locations; reset workflow_m
 
 ## Notes
 
-crawl_cache now skips assets/non-HTML and records status_code, response_time_ms, and content_bytes for speed hints.
+Fixed cache_schema_generator validator loader to resolve schema_org_validator.py in scripts/validation after folder restructure.
 
