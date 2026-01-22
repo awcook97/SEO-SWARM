@@ -7,7 +7,7 @@ owner: "ORCHESTRATOR"
 depends_on: []
 tags: []
 doc_version: 2
-doc_updated_at: "2026-01-22T06:22:09+00:00"
+doc_updated_at: "2026-01-22T06:28:09+00:00"
 doc_updated_by: "agentctl"
 description: "Set workflow_mode back to direct, review repo layout, propose and apply folder moves to make project more manageable, update references/docs."
 ---
@@ -37,5 +37,5 @@ Revert the commit(s) and restore the previous folder locations; reset workflow_m
 
 ## Notes
 
-inputs_from_site_cache now merges JSON-LD across cached pages, de-dupes, writes schema-merged.json, and hands off to inputs_from_schema when schema is present.
+inputs_from_site_cache now merges schema-derived inputs with HTML-derived fields, preferring populated values and only using schema placeholders when necessary.
 

@@ -10,6 +10,7 @@ import json
 import re
 import subprocess
 import sys
+import shutil
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -261,6 +262,104 @@ def run_inputs_from_schema(schema_path: Path, client_slug: str) -> bool:
     return proc.returncode == 0
 
 
+def is_placeholder(value: str) -> bool:
+    lowered = value.strip().lower()
+    return lowered in {"", "[add]", "[add email]", "[add line 1]", "[add line 2]", "[add city]", "[add state]", "[add postal]"}
+
+
+def parse_inputs_md(path: Path) -> InputsDraft:
+    draft = InputsDraft()
+    if not path.exists():
+        return draft
+    lines = [line.rstrip("\n") for line in path.read_text(encoding="utf-8").splitlines()]
+    section = ""
+    for line in lines:
+        if line.startswith("## "):
+            section = line[3:].strip().lower()
+            continue
+        if line.startswith("- Business name:"):
+            draft.name = line.split(":", 1)[1].strip()
+        elif line.startswith("- Business type"):
+            draft.business_type = line.split(":", 1)[1].strip()
+        elif line.startswith("- Website:"):
+            draft.website = line.split(":", 1)[1].strip()
+        elif line.startswith("- Phone:"):
+            draft.phone = line.split(":", 1)[1].strip()
+        elif line.startswith("- Email:"):
+            draft.email = line.split(":", 1)[1].strip()
+        elif line.startswith("  - Line 1:"):
+            draft.address_line1 = line.split(":", 1)[1].strip()
+        elif line.startswith("  - Line 2:"):
+            draft.address_line2 = line.split(":", 1)[1].strip()
+        elif line.startswith("  - City:"):
+            draft.city = line.split(":", 1)[1].strip()
+        elif line.startswith("  - State:"):
+            draft.state = line.split(":", 1)[1].strip()
+        elif line.startswith("  - Postal code:"):
+            draft.postal_code = line.split(":", 1)[1].strip()
+        elif line.startswith("  - Country:"):
+            draft.country = line.split(":", 1)[1].strip()
+        elif line.startswith("  - Monday:"):
+            draft.hours["Monday"] = line.split(":", 1)[1].strip()
+        elif line.startswith("  - Tuesday:"):
+            draft.hours["Tuesday"] = line.split(":", 1)[1].strip()
+        elif line.startswith("  - Wednesday:"):
+            draft.hours["Wednesday"] = line.split(":", 1)[1].strip()
+        elif line.startswith("  - Thursday:"):
+            draft.hours["Thursday"] = line.split(":", 1)[1].strip()
+        elif line.startswith("  - Friday:"):
+            draft.hours["Friday"] = line.split(":", 1)[1].strip()
+        elif line.startswith("  - Saturday:"):
+            draft.hours["Saturday"] = line.split(":", 1)[1].strip()
+        elif line.startswith("  - Sunday:"):
+            draft.hours["Sunday"] = line.split(":", 1)[1].strip()
+        elif section.startswith("approved business facts") and line.startswith("  - "):
+            value = line.replace("  - ", "", 1).strip()
+            if value:
+                add_unique(draft.areas_served, [value])
+        elif line.startswith("- Short description:"):
+            draft.short_description = line.split(":", 1)[1].strip()
+        elif line.startswith("- Long description:"):
+            draft.long_description = line.split(":", 1)[1].strip()
+        elif line.startswith("- Keywords"):
+            value = line.split(":", 1)[1].strip()
+            add_unique(draft.keywords, normalize_list(value))
+        elif line.startswith("- Price range:"):
+            draft.price_range = line.split(":", 1)[1].strip()
+        elif line.startswith("- Payment forms:"):
+            value = line.split(":", 1)[1].strip()
+            add_unique(draft.payment_forms, normalize_list(value))
+        elif line.startswith("  - Facebook:"):
+            draft.social["Facebook"] = line.split(":", 1)[1].strip()
+        elif line.startswith("  - Instagram:"):
+            draft.social["Instagram"] = line.split(":", 1)[1].strip()
+        elif line.startswith("  - LinkedIn:"):
+            draft.social["LinkedIn"] = line.split(":", 1)[1].strip()
+        elif line.startswith("  - X:"):
+            draft.social["X"] = line.split(":", 1)[1].strip()
+        elif section.startswith("approved service") and line.startswith("- "):
+            value = line.replace("- ", "", 1).strip()
+            if value:
+                add_unique(draft.services, [value.replace("[Service]: [Description]", "").strip()])
+
+    return draft
+
+
+def merge_prioritized(primary: InputsDraft, secondary: InputsDraft) -> InputsDraft:
+    merged = InputsDraft()
+    for field_name in merged.__dataclass_fields__:
+        primary_value = getattr(primary, field_name)
+        secondary_value = getattr(secondary, field_name)
+        if isinstance(primary_value, dict):
+            merged_value = primary_value or secondary_value
+        elif isinstance(primary_value, list):
+            merged_value = primary_value or secondary_value
+        else:
+            merged_value = primary_value if not is_placeholder(str(primary_value)) else secondary_value
+        setattr(merged, field_name, merged_value)
+    return merged
+
+
 def extract_from_html(soup: Any, draft: InputsDraft) -> None:
     title = soup.title.string.strip() if soup.title and soup.title.string else ""
     draft.name = draft.name or title
@@ -446,9 +545,13 @@ def main() -> None:
             schema_payload["@context"] = schema_contexts[0]
         schema_path = cache_dir / "schema-merged.json"
         schema_path.write_text(json.dumps(schema_payload, indent=2), encoding="utf-8")
-        if run_inputs_from_schema(schema_path, args.client_slug):
-            print("inputs.md populated from merged schema.")
-            return
+        tmp_slug = f"__schema_tmp_{args.client_slug}"
+        tmp_dir = base_dir / tmp_slug
+        tmp_dir.mkdir(parents=True, exist_ok=True)
+        if run_inputs_from_schema(schema_path, tmp_slug):
+            schema_inputs = parse_inputs_md(tmp_dir / "inputs.md")
+            draft = merge_prioritized(schema_inputs, draft)
+        shutil.rmtree(tmp_dir, ignore_errors=True)
 
     if not draft.website and paths:
         for url in index.keys():
