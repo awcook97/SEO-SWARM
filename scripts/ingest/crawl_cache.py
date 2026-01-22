@@ -29,6 +29,9 @@ class CacheEntry:
     url: str
     fetched_at: str
     path: str
+    status_code: int
+    response_time_ms: int
+    content_bytes: int
 
 
 def normalize_url(url: str) -> str:
@@ -95,14 +98,27 @@ def load_index(path: Path) -> dict[str, CacheEntry]:
         return {}
     data = json.loads(path.read_text(encoding="utf-8"))
     return {
-        url: CacheEntry(url=url, fetched_at=meta["fetched_at"], path=meta["path"])
+        url: CacheEntry(
+            url=url,
+            fetched_at=meta["fetched_at"],
+            path=meta["path"],
+            status_code=meta.get("status_code", 0),
+            response_time_ms=meta.get("response_time_ms", 0),
+            content_bytes=meta.get("content_bytes", 0),
+        )
         for url, meta in data.items()
     }
 
 
 def save_index(path: Path, entries: dict[str, CacheEntry]) -> None:
     payload = {
-        url: {"fetched_at": entry.fetched_at, "path": entry.path}
+        url: {
+            "fetched_at": entry.fetched_at,
+            "path": entry.path,
+            "status_code": entry.status_code,
+            "response_time_ms": entry.response_time_ms,
+            "content_bytes": entry.content_bytes,
+        }
         for url, entry in entries.items()
     }
     path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
@@ -111,6 +127,18 @@ def save_index(path: Path, entries: dict[str, CacheEntry]) -> None:
 def cache_path_for(cache_dir: Path, url: str) -> Path:
     digest = hashlib.sha256(url.encode("utf-8")).hexdigest()[:16]
     return cache_dir / f"{digest}.html"
+
+
+def is_html_response(resp: requests.Response) -> bool:
+    content_type = resp.headers.get("Content-Type", "").lower()
+    if "text/html" in content_type or "application/xhtml" in content_type:
+        return True
+    return False
+
+
+def is_probable_asset(url: str) -> bool:
+    path = urlparse(url).path.lower()
+    return path.endswith((".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg", ".ico", ".pdf", ".zip"))
 
 def fetch_with_retries(
     session: requests.Session,
@@ -185,6 +213,8 @@ def main() -> None:
     urls = discover_urls(session, base, args.timeout, headers)
 
     for url in urls:
+        if is_probable_asset(url):
+            continue
         entry = index.get(url)
         if not should_fetch(entry, args.max_age_hours):
             continue
@@ -203,12 +233,18 @@ def main() -> None:
         if resp.status_code >= 400:
             print(f"skip {url} -> status {resp.status_code}")
             continue
+        if not is_html_response(resp):
+            print(f"skip {url} -> non-html content")
+            continue
         path = cache_path_for(cache_dir, url)
         path.write_text(resp.text, encoding="utf-8")
         index[url] = CacheEntry(
             url=url,
             fetched_at=datetime.now(timezone.utc).isoformat(),
             path=str(path),
+            status_code=resp.status_code,
+            response_time_ms=int(resp.elapsed.total_seconds() * 1000),
+            content_bytes=len(resp.content),
         )
         save_index(index_path, index)
         print(f"cached {url} -> {path}")
