@@ -9,6 +9,7 @@ tags: ["schema", "seo", "automation"]
 commit: { hash: "ec459f94bd6cfa244e2b036c0e585f73e35b704b", message: "🧩 202601180753-2MBGAS integrate task/202601180753-2MBGAS/schema-offers" }
 comments:
   - { author: "INTEGRATOR", body: "verified: Integrated via squash | details: verify=skipped(no commands); pr=.codex-swarm/tasks/202601180753-2MBGAS/pr." }
+  - { author: "INTEGRATOR", body: "verified: Integrated via squash | details: verify=skipped(no commands); pr=.codex-swarm/tasks/202601180753-2MBGAS/pr." }
 doc_version: 2
 doc_updated_at: "2026-01-18T07:53:48+00:00"
 doc_updated_by: "agentctl"
