@@ -1,11 +1,14 @@
 ---
 id: "202601180634-1CANR1"
 title: "Harden cache schema generator against bad HTML"
-status: "TODO"
+status: "DONE"
 priority: "P1"
 owner: "ORCHESTRATOR"
 depends_on: []
 tags: ["seo", "schema", "automation"]
+commit: { hash: "bd817c63f5fda1ba510251a031e6fce0084e268f", message: "🧩 202601180634-1CANR1 integrate task/202601180634-1CANR1/html-hardening" }
+comments:
+  - { author: "INTEGRATOR", body: "verified: Integrated via squash | details: verify=skipped(no commands); pr=.codex-swarm/tasks/202601180634-1CANR1/pr." }
 doc_version: 2
 doc_updated_at: "2026-01-21T23:44:52+00:00"
 doc_updated_by: "agentctl"
