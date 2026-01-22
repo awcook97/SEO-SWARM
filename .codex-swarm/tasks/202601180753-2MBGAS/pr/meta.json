@@ -1,0 +1,12 @@
+{
+  "task_id": "202601180753-2MBGAS",
+  "task_title": "Refine schema types + per-service offers",
+  "branch": "task/202601180753-2MBGAS/schema-offers",
+  "base_branch": "main",
+  "author": "ORCHESTRATOR",
+  "created_at": "2026-01-21T23:52:24+00:00",
+  "updated_at": "2026-01-22T00:45:58+00:00",
+  "head_sha": "279885cfb2fae9cf766be16015e6e096fe4c26a4",
+  "merge_strategy": "squash",
+  "status": "OPEN"
+}

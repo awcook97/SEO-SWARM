@@ -494,7 +494,7 @@ def build_entity_registry(
                     }
                 )
         local_business = {
-            "@type": ["HVACBusiness", "LocalBusiness"],
+            "@type": ["HVACBusiness"],
             "@id": local_id,
             "name": org_name,
             "url": site_url or None,
@@ -747,20 +747,36 @@ def match_service_for_url(page_url: str, services: list[dict[str, str]]) -> dict
     return best
 
 
-def build_offers(services: list[dict[str, str]]) -> list[dict[str, Any]]:
+def build_service_node(
+    service: dict[str, str],
+    *,
+    base_id: str,
+    provider_id: str | None,
+    areas: list[str],
+) -> dict[str, Any] | None:
+    name = service.get("name") or ""
+    if not name:
+        return None
+    return {
+        "@type": "Service",
+        "@id": f"{base_id}#service-{slugify(name)}",
+        "name": name,
+        "description": service.get("description") or None,
+        "provider": {"@id": provider_id} if provider_id else None,
+        "areaServed": areas if areas else None,
+    }
+
+
+def build_offers(services: list[dict[str, Any]]) -> list[dict[str, Any]]:
     offers: list[dict[str, Any]] = []
     for svc in services:
-        name = svc.get("name") or ""
-        if not name:
+        service_id = svc.get("@id")
+        if not service_id:
             continue
         offers.append(
             {
                 "@type": "Offer",
-                "itemOffered": {
-                    "@type": "Service",
-                    "name": name,
-                    "description": svc.get("description") or None,
-                },
+                "itemOffered": {"@id": service_id},
             }
         )
     return offers
@@ -824,6 +840,7 @@ def generate_schema(signals: PageSignals, registry: EntityRegistry) -> dict[str,
         organization["url"] = site_url
         graph.append(organization)
 
+    service_nodes: list[dict[str, Any]] = []
     if registry.local_business:
         local_business = dict(registry.local_business)
         local_business["@id"] = local_business_id
@@ -834,11 +851,30 @@ def generate_schema(signals: PageSignals, registry: EntityRegistry) -> dict[str,
                 path = path[:-5]
             is_home = path in {"", "index", "home", "home-new"}
             matched = match_service_for_url(page_url, registry.services)
+            areas = registry.local_business.get("areaServed") or []
             if matched:
-                local_business["makesOffer"] = build_offers([matched])
+                node = build_service_node(
+                    matched,
+                    base_id=site_url.rstrip("/"),
+                    provider_id=local_business_id,
+                    areas=areas,
+                )
+                service_nodes = [node] if node else []
+                local_business["makesOffer"] = build_offers(service_nodes)
             elif is_home:
-                local_business["makesOffer"] = build_offers(registry.services)
+                for svc in registry.services:
+                    node = build_service_node(
+                        svc,
+                        base_id=site_url.rstrip("/"),
+                        provider_id=local_business_id,
+                        areas=areas,
+                    )
+                    if node:
+                        service_nodes.append(node)
+                local_business["makesOffer"] = build_offers(service_nodes)
         graph.append(local_business)
+        if service_nodes:
+            graph.extend(service_nodes)
 
     if image_url:
         graph.append(
