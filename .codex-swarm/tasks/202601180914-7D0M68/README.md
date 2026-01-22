@@ -9,6 +9,7 @@ tags: ["schema", "seo", "automation"]
 commit: { hash: "6b8476cfec2b6f64e6a9d253820666fd3fc6d688", message: "🧩 202601180914-7D0M68 integrate task/202601180914-7D0M68/area-served" }
 comments:
   - { author: "INTEGRATOR", body: "verified: Integrated via squash | details: verify=skipped(no commands); pr=.codex-swarm/tasks/202601180914-7D0M68/pr." }
+  - { author: "INTEGRATOR", body: "verified: Integrated via squash | details: verify=skipped(no commands); pr=.codex-swarm/tasks/202601180914-7D0M68/pr." }
 doc_version: 2
 doc_updated_at: "2026-01-18T09:14:13+00:00"
 doc_updated_by: "agentctl"
