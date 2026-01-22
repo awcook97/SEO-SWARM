@@ -1,6 +1,11 @@
 {
-  "updated_at": "2026-01-22T00:25:47+00:00",
+  "updated_at": "2026-01-22T00:40:19+00:00",
   "head_sha": "f1b7a13809613e1abcebe7e35e6d1b4a71f4ccaf",
   "branch": "task/202601180609-WGXYXP/search-appearance",
-  "base_branch": "main"
+  "base_branch": "main",
+  "merged_at": "2026-01-22T00:40:19+00:00",
+  "merge_commit": "06488a177dd156323312ff7ce0bf91c2874fcb30",
+  "closed_at": "2026-01-22T00:40:19+00:00",
+  "close_commit": "06488a177dd156323312ff7ce0bf91c2874fcb30",
+  "status": "CLOSED"
 }
