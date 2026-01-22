@@ -82,7 +82,7 @@ def discover_from_home(base: str, timeout: int) -> list[str]:
 
 def extract_jsonld_faqs(soup: BeautifulSoup) -> list[str]:
     questions = []
-    for script in soup.find_all("script", type=re.compile("ld\+json", re.I)):
+    for script in soup.find_all("script", type=re.compile(r"ld\+json", re.I)):
         raw = script.string or script.get_text()
         if not raw:
             continue
