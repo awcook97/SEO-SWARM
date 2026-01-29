@@ -91,8 +91,6 @@ python scripts/workflow/site_audit_runner.py --client "Client Name" --slug clien
      `python scripts/generators/brief_summary_report.py --client-slug client-slug`
    - Generate content briefs:
      `python scripts/generators/content_brief_generator.py --client-slug client-slug --scaffold`
-   - Generate articles:
-     `python scripts/generators/article_generator.py --client-slug client-slug --scaffold`
 4) **On-page + metadata**
    - Metadata + internal link map:
      `python scripts/generators/metadata_internal_link_map.py --client-slug client-slug`
@@ -122,7 +120,7 @@ All scripts write under `data/outputs/<client>/reports/` unless noted. Use the o
 - Service briefs: `service_brief_generator.py` -> `service-briefs/*.md`
 - Brief summary: `brief_summary_report.py` -> `service-briefs-summary.md/.json`
 - Content briefs: `content_brief_generator.py` -> `content-briefs/*.md` + `content-briefs.json`
-- Articles: `article_generator.py` -> `articles/*.md` + `articles.json`
+- Article extraction: `article_cache_to_markdown.py` -> `articles/*.md` (extracts blog/article pages from cache)
 - Metadata + internal link map: `metadata_internal_link_map.py` -> `metadata-internal-link-map.md/.json`
 - Metadata linkmap ingest: `metadata_linkmap_ingest.py` -> `metadata-linkmap-input.json`
 - Internal link validation: `internal_link_validator.py` -> report in `reports/`
