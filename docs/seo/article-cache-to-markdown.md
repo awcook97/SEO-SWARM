@@ -45,15 +45,19 @@ For each article page, the tool extracts:
 
 - **Metadata**: Title, meta description, canonical URL, Open Graph data
 - **Author and dates**: Published date, modified date, author name
-- **Content structure**: Headings (H2, H3, H4)
-- **Content preview**: First 5 paragraphs with full text
-- **Images**: Up to 10 images from the article
-- **Internal links**: Up to 10 internal links from the article content
+- **Full article content**: Complete article text with proper heading hierarchy preserved
+- **Headings**: H2-H6 headings rendered with proper markdown levels
+- **Paragraphs**: All article paragraphs in order
+- **Lists**: Bulleted and numbered lists with all items
+- **Blockquotes**: Quoted text formatted as markdown quotes
+- **Code blocks**: Preformatted code sections
+- **Images**: All images from the article
+- **Internal links**: All internal links from the article content
 - **Schema types**: JSON-LD structured data types (BlogPosting, Article, etc.)
 
 ## Output format
 
-Each article is saved as a markdown file with:
+Each article is saved as a markdown file with the full content and proper structure:
 
 ```markdown
 # Article Title
@@ -63,16 +67,29 @@ Each article is saved as a markdown file with:
 **Published:** 2024-01-15T10:00:00Z
 **Modified:** 2024-01-20T14:30:00Z
 
+---
+
+Full article content with proper headings...
+
+## Section Heading
+
+Content paragraphs...
+
+### Subsection
+
+More content...
+
+- List items
+- Properly formatted
+
+> Blockquotes preserved
+
+---
+
 ## Metadata
 - Page title, meta description, canonical URL
 - Open Graph metadata
 - Schema types
-
-## Content Structure
-- List of headings (H2, H3, H4)
-
-## Content Preview
-First 5 paragraphs of content...
 
 ## Images
 - List of image URLs
@@ -96,7 +113,7 @@ If no articles are found, the tool will notify you and suggest checking URL patt
 
 - The cache stores service pages by default; blog pages may be excluded depending on crawl settings
 - Output markdown files use URL slugs as filenames (e.g., `blog-hvac-tips.md`)
-- Content preview is limited to first 5 paragraphs to keep files manageable
+- Complete article content is extracted with full text and proper structure
 - All timestamps are preserved from the original HTML metadata
 - Internal links are relative URLs as found in the source HTML
 

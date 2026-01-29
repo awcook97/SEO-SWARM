@@ -40,6 +40,7 @@ class Article:
     images: list[str]
     internal_links: list[str]
     schema_types: list[str]
+    full_content: list[tuple[str, str]]  # List of (type, content) tuples for structured content
 
 
 def is_article_page(url: str) -> bool:
@@ -147,6 +148,56 @@ def extract_content(soup: BeautifulSoup) -> list[str]:
                 paragraphs.append(text)
     
     return paragraphs[:20]  # Limit to first 20 paragraphs
+
+
+def extract_full_content(soup: BeautifulSoup) -> list[tuple[str, str]]:
+    """Extract full article content with structure preserved.
+    
+    Returns list of (element_type, content) tuples where element_type is:
+    - 'h2', 'h3', 'h4', 'h5', 'h6' for headings
+    - 'p' for paragraphs
+    - 'ul' or 'ol' for lists
+    - 'blockquote' for quotes
+    - 'pre' for code blocks
+    """
+    content = []
+    
+    # Try to find article/main content area
+    main = soup.find("article") or soup.find("main") or soup.find("div", class_=re.compile(r"content|post|article", re.I))
+    container = main if main else soup
+    
+    # Extract content elements in order
+    for element in container.find_all(['h2', 'h3', 'h4', 'h5', 'h6', 'p', 'ul', 'ol', 'blockquote', 'pre']):
+        # Skip if element is inside another element we're already capturing
+        if element.find_parent(['blockquote', 'ul', 'ol']) and element.name in ['p', 'li']:
+            continue
+            
+        text = " ".join(element.stripped_strings)
+        if not text or len(text) < 10:
+            continue
+        
+        if element.name in ['h2', 'h3', 'h4', 'h5', 'h6']:
+            content.append((element.name, text))
+        elif element.name == 'p':
+            content.append(('p', text))
+        elif element.name in ['ul', 'ol']:
+            # Extract list items
+            items = []
+            for li in element.find_all('li', recursive=False):
+                li_text = " ".join(li.stripped_strings)
+                if li_text:
+                    items.append(li_text)
+            if items:
+                content.append((element.name, items))
+        elif element.name == 'blockquote':
+            content.append(('blockquote', text))
+        elif element.name == 'pre':
+            # Try to preserve code formatting
+            code = element.get_text()
+            if code.strip():
+                content.append(('pre', code))
+    
+    return content
 
 
 def extract_headings(soup: BeautifulSoup) -> list[str]:
@@ -269,6 +320,7 @@ def parse_html(html: str, url: str) -> Article:
         images=extract_images(soup, url),
         internal_links=extract_internal_links(soup, url),
         schema_types=extract_schema_types(soup),
+        full_content=extract_full_content(soup),
     )
 
 
@@ -296,7 +348,54 @@ def render_markdown(article: Article) -> str:
     if article.author or article.published_date or article.modified_date:
         lines.append("")
     
-    # Metadata section
+    lines.append("---")
+    lines.append("")
+    
+    # Full article content with proper headings
+    if article.full_content:
+        for element_type, content in article.full_content:
+            if element_type == 'h2':
+                lines.append(f"## {content}")
+                lines.append("")
+            elif element_type == 'h3':
+                lines.append(f"### {content}")
+                lines.append("")
+            elif element_type == 'h4':
+                lines.append(f"#### {content}")
+                lines.append("")
+            elif element_type == 'h5':
+                lines.append(f"##### {content}")
+                lines.append("")
+            elif element_type == 'h6':
+                lines.append(f"###### {content}")
+                lines.append("")
+            elif element_type == 'p':
+                lines.append(content)
+                lines.append("")
+            elif element_type in ['ul', 'ol']:
+                # Render list items
+                for item in content:
+                    lines.append(f"- {item}")
+                lines.append("")
+            elif element_type == 'blockquote':
+                # Render blockquote
+                for line in content.split('\n'):
+                    lines.append(f"> {line}")
+                lines.append("")
+            elif element_type == 'pre':
+                # Render code block
+                lines.append("```")
+                lines.append(content)
+                lines.append("```")
+                lines.append("")
+    else:
+        # Fallback if full_content is empty
+        lines.append("*No content extracted*")
+        lines.append("")
+    
+    # Metadata section (at the end)
+    lines.append("---")
+    lines.append("")
     lines.append("## Metadata")
     lines.append("")
     if article.title:
@@ -316,26 +415,6 @@ def render_markdown(article: Article) -> str:
     if article.schema_types:
         lines.append(f"- **Schema types:** {', '.join(article.schema_types)}")
     lines.append("")
-    
-    # Headings structure
-    if article.headings:
-        lines.append("## Content Structure")
-        lines.append("")
-        for heading in article.headings:
-            lines.append(f"- {heading}")
-        lines.append("")
-    
-    # Content preview
-    lines.append("## Content Preview")
-    lines.append("")
-    for i, paragraph in enumerate(article.content_paragraphs[:5], 1):
-        lines.append(f"{paragraph}")
-        lines.append("")
-        if i >= 5:
-            if len(article.content_paragraphs) > 5:
-                lines.append(f"*...and {len(article.content_paragraphs) - 5} more paragraphs*")
-                lines.append("")
-            break
     
     # Images
     if article.images:

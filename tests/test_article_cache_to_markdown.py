@@ -81,6 +81,7 @@ class ArticleCacheToMarkdownTests(unittest.TestCase):
         self.assertIn("Why Winter Maintenance Matters", article.headings)
         self.assertGreater(len(article.images), 0)
         self.assertGreater(len(article.internal_links), 0)
+        self.assertGreater(len(article.full_content), 0)
 
     def test_render_markdown(self):
         article = article_cache_to_markdown.parse_html(
@@ -93,8 +94,8 @@ class ArticleCacheToMarkdownTests(unittest.TestCase):
         self.assertIn("**Author:** John Smith", markdown)
         self.assertIn("**Published:** 2024-01-15T10:00:00Z", markdown)
         self.assertIn("## Metadata", markdown)
-        self.assertIn("## Content Structure", markdown)
-        self.assertIn("## Content Preview", markdown)
+        self.assertIn("## Why Winter Maintenance Matters", markdown)
+        self.assertIn("### Change Your Air Filter", markdown)
         self.assertIn("Winter is coming", markdown)
 
     def test_load_cache(self):
