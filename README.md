@@ -120,6 +120,7 @@ All scripts write under `data/outputs/<client>/reports/` unless noted. Use the o
 - Service briefs: `service_brief_generator.py` -> `service-briefs/*.md`
 - Brief summary: `brief_summary_report.py` -> `service-briefs-summary.md/.json`
 - Content briefs: `content_brief_generator.py` -> `content-briefs/*.md` + `content-briefs.json`
+- Article extraction: `article_cache_to_markdown.py` -> `articles/*.md` (extracts blog/article pages from cache)
 - Metadata + internal link map: `metadata_internal_link_map.py` -> `metadata-internal-link-map.md/.json`
 - Metadata linkmap ingest: `metadata_linkmap_ingest.py` -> `metadata-linkmap-input.json`
 - Internal link validation: `internal_link_validator.py` -> report in `reports/`
