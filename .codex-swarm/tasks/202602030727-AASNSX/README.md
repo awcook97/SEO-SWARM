@@ -1,12 +1,13 @@
 ---
 id: "202602030727-AASNSX"
 title: "Phase 4 keyword strategy program"
-status: "DOING"
+status: "DONE"
 priority: "P1"
 owner: "CODER"
 depends_on: []
 tags: ["code"]
 verify: ["python scripts/workflow/runners/phase4_keyword_strategy.py --help"]
+commit: { hash: "51857d96a5e3776ea1d6e7541b3ed7dde13c72e6", message: "✨ AASNSX Phase 4: add keyword strategy program" }
 comments:
   - { author: "CODER", body: "Start: Building Phase 4 keyword strategy classes (importer, clustering, calendar, KPI planning) and report output." }
 doc_version: 2

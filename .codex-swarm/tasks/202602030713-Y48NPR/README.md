@@ -1,12 +1,13 @@
 ---
 id: "202602030713-Y48NPR"
 title: "Phase 1 monthly performance program"
-status: "DOING"
+status: "DONE"
 priority: "P1"
 owner: "CODER"
 depends_on: []
 tags: ["code"]
 verify: ["python scripts/workflow/runners/phase1_monthly_performance.py --help"]
+commit: { hash: "9b3900e2e1b31653a3022fc8ef6f5cad7f3fa775", message: "✨ Y48NPR Phase 1: add monthly performance program" }
 comments:
   - { author: "CODER", body: "Start: Building Phase 1 classes (GA4/GBP/Rank/KPI/Opportunities) and report output with <=20 line functions." }
 doc_version: 2

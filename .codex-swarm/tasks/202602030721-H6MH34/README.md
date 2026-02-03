@@ -1,12 +1,13 @@
 ---
 id: "202602030721-H6MH34"
 title: "Phase 2 service brief program"
-status: "DOING"
+status: "DONE"
 priority: "P1"
 owner: "CODER"
 depends_on: []
 tags: ["code"]
 verify: ["python scripts/workflow/runners/phase2_service_brief.py --help"]
+commit: { hash: "381ea8268e50d1708c304f17af03b13438fa97ba", message: "✨ H6MH34 Phase 2: add service brief program" }
 comments:
   - { author: "CODER", body: "Start: Building Phase 2 service brief classes with gap analysis, outline, schema checklist, and report output." }
 doc_version: 2

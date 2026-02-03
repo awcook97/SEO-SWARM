@@ -1,12 +1,13 @@
 ---
 id: "202602030333-B914JH"
 title: "Fix Python 3.13 wheel build"
-status: "TODO"
+status: "DONE"
 priority: "P1"
 owner: "CODER"
 depends_on: []
 tags: ["bug", "frontend"]
 verify: ["curl -s http://localhost:8000/api/health"]
+commit: { hash: "37ed741d0eb21495d0aefd1380c954806ccdeff3", message: "🔧 B914JH Fix Python 3.13 compatibility: upgrade Pydantic 2.11.1, FastAPI 0.115.6" }
 doc_version: 2
 doc_updated_at: "2026-02-03T03:39:02+00:00"
 doc_updated_by: "agentctl"

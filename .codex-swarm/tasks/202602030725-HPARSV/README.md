@@ -1,12 +1,13 @@
 ---
 id: "202602030725-HPARSV"
 title: "Phase 3 compliance risk program"
-status: "DOING"
+status: "DONE"
 priority: "P1"
 owner: "CODER"
 depends_on: []
 tags: ["code"]
 verify: ["python scripts/workflow/runners/phase3_compliance_risk.py --help"]
+commit: { hash: "cc222d9db3afa1e49f2c4026a14e37be5ec18258", message: "✨ HPARSV Phase 3: add compliance risk program" }
 comments:
   - { author: "CODER", body: "Start: Building Phase 3 compliance scanner, risk scoring, remediation planner, and report output." }
 doc_version: 2
