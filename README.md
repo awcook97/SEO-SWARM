@@ -7,6 +7,33 @@ Use it to:
 - collect and validate inputs
 - generate briefs, audits, and compliance checks
 - preview outputs in a web UI
+- **NEW: Manage agent workflows via modern web dashboard**
+
+## 🎉 Web Dashboard (NEW)
+
+A modern React frontend for streamlined client onboarding and agent workflow management:
+
+```bash
+cd frontend
+./start.sh  # Mac/Linux
+# or
+start.bat   # Windows
+```
+
+**Features:**
+- 🚀 **Client Onboarding Wizard** - Step-by-step setup with auto-scaffolding
+- 📋 **Task Management** - Create, track, and manage tasks across agents
+- 👥 **Agent Registry** - View all 20+ available agents by category
+- 📊 **Real-time Updates** - WebSocket integration for live progress
+- 📁 **Output Browser** - Explore generated reports and content
+- ⚙️ **Configuration** - Edit workflow settings via UI
+
+**Quick Start:**
+- Frontend UI: http://localhost:5173
+- Backend API: http://localhost:8000
+- API Docs: http://localhost:8000/docs
+
+See [frontend/QUICKSTART.md](frontend/QUICKSTART.md) for detailed setup.
 
 ## What this repo contains
 

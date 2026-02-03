@@ -1,0 +1,167 @@
+┌─────────────────────────────────────────────────────────────────────────┐
+│                     SEO-SWARM FRONTEND ARCHITECTURE                     │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────── USER INTERFACE (Browser) ───────────────────────┐
+│                                                                         │
+│  ┌─────────────────────────────────────────────────────────────────┐  │
+│  │                    React Application (Port 5173)                 │  │
+│  │  ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌───────────┐ │  │
+│  │  │ Dashboard  │  │ Onboarding │  │   Tasks    │  │  Agents   │ │  │
+│  │  └────────────┘  └────────────┘  └────────────┘  └───────────┘ │  │
+│  │  ┌────────────┐  ┌────────────┐                                 │  │
+│  │  │  Outputs   │  │   Config   │     [Pages/Routes]              │  │
+│  │  └────────────┘  └────────────┘                                 │  │
+│  │                                                                   │  │
+│  │  ┌─────────────────────────────────────────────────────────┐    │  │
+│  │  │              Layout (Sidebar + Content)                  │    │  │
+│  │  │  • Navigation                                            │    │  │
+│  │  │  • Live status indicator                                 │    │  │
+│  │  │  • Responsive design                                     │    │  │
+│  │  └─────────────────────────────────────────────────────────┘    │  │
+│  │                                                                   │  │
+│  │  ┌─────────────┐  ┌──────────────┐  ┌────────────────────┐     │  │
+│  │  │ Components  │  │  State Mgmt  │  │    WebSocket       │     │  │
+│  │  │ • Button    │  │ • React Query│  │ • Auto-reconnect   │     │  │
+│  │  │ • Input     │  │ • Zustand    │  │ • Toast notify     │     │  │
+│  │  │ • Card      │  │ • Caching    │  │ • Real-time sync   │     │  │
+│  │  └─────────────┘  └──────────────┘  └────────────────────┘     │  │
+│  └───────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│                          ↕ HTTP REST + WebSocket                       │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────── BACKEND API (Port 8000) ────────────────────────┐
+│                                                                         │
+│  ┌─────────────────────────────────────────────────────────────────┐  │
+│  │                   FastAPI Server (Python)                        │  │
+│  │                                                                   │  │
+│  │  ┌──────────────────────────────────────────────────────────┐   │  │
+│  │  │                    REST API Endpoints                     │   │  │
+│  │  │  • GET  /api/health          • GET  /api/agents          │   │  │
+│  │  │  • GET  /api/config          • GET  /api/tasks           │   │  │
+│  │  │  • POST /api/config          • POST /api/tasks           │   │  │
+│  │  │  • GET  /api/clients         • POST /api/clients/onboard │   │  │
+│  │  │  • POST /api/tasks/{id}/start                            │   │  │
+│  │  └──────────────────────────────────────────────────────────┘   │  │
+│  │                                                                   │  │
+│  │  ┌──────────────────────────────────────────────────────────┐   │  │
+│  │  │              WebSocket Connection Manager                 │   │  │
+│  │  │  • Maintains active connections                          │   │  │
+│  │  │  • Broadcasts updates to all clients                     │   │  │
+│  │  │  • Event types: task_created, client_onboarded, etc.     │   │  │
+│  │  └──────────────────────────────────────────────────────────┘   │  │
+│  │                                                                   │  │
+│  │  ┌──────────────────────────────────────────────────────────┐   │  │
+│  │  │                   Pydantic Models                         │   │  │
+│  │  │  • ClientOnboard  • TaskCreate  • ConfigUpdate           │   │  │
+│  │  │  • Data validation and serialization                     │   │  │
+│  │  └──────────────────────────────────────────────────────────┘   │  │
+│  └───────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│                          ↕ subprocess.run()                             │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────── EXISTING SWARM SYSTEM ─────────────────────────────┐
+│                                                                         │
+│  ┌─────────────────────────────────────────────────────────────────┐  │
+│  │                    agentctl.py (CLI Tool)                        │  │
+│  │  • task list/new/update/start/finish                            │  │
+│  │  • config show/set                                              │  │
+│  │  • pr open/update/check                                         │  │
+│  │  • work start/verify/integrate                                  │  │
+│  └─────────────────────────────────────────────────────────────────┘  │
+│                                     ↕                                   │
+│  ┌─────────────────────────────────────────────────────────────────┐  │
+│  │                 File System / Git Repository                     │  │
+│  │  • .codex-swarm/                                                │  │
+│  │    ├── config.json        (workflow configuration)             │  │
+│  │    ├── tasks.json         (task database)                      │  │
+│  │    ├── agents/            (agent definitions)                  │  │
+│  │    └── tasks/             (task artifacts)                     │  │
+│  │  • data/outputs/          (client workspaces)                  │  │
+│  │  • scripts/               (generators, ingest, validation)     │  │
+│  └─────────────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────── DATA FLOW ─────────────────────────────────────┐
+│                                                                         │
+│  1. User Action (Browser)                                              │
+│     → Click "Onboard Client" button                                    │
+│                                                                         │
+│  2. API Request (Frontend → Backend)                                   │
+│     → POST /api/clients/onboard                                        │
+│     → Body: { name, slug, website, crawl_site }                        │
+│                                                                         │
+│  3. Command Execution (Backend → CLI)                                  │
+│     → subprocess.run([python, agentctl.py, ...])                       │
+│     → Creates directories, scaffolds files                             │
+│                                                                         │
+│  4. WebSocket Broadcast (Backend → All Clients)                        │
+│     → { type: "client_onboarded", slug: "demo-hvac" }                  │
+│                                                                         │
+│  5. UI Update (Frontend)                                               │
+│     → Toast notification appears                                       │
+│     → React Query refetches client list                                │
+│     → Dashboard updates with new stats                                 │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────── TECHNOLOGY LAYERS ─────────────────────────────┐
+│                                                                         │
+│  ┌─────────────────────┐  ┌─────────────────────┐                     │
+│  │      Frontend       │  │      Backend        │                     │
+│  ├─────────────────────┤  ├─────────────────────┤                     │
+│  │ React 18            │  │ FastAPI 0.109       │                     │
+│  │ TypeScript 5.3      │  │ Python 3.10+        │                     │
+│  │ Vite 5              │  │ Uvicorn 0.27        │                     │
+│  │ TailwindCSS 3.4     │  │ Pydantic 2.5        │                     │
+│  │ React Query 5       │  │ WebSockets 12       │                     │
+│  │ Zustand 4           │  │ subprocess          │                     │
+│  │ React Router 6      │  │                     │                     │
+│  │ Axios               │  │                     │                     │
+│  │ Lucide Icons        │  │                     │                     │
+│  └─────────────────────┘  └─────────────────────┘                     │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────── KEY FEATURES ──────────────────────────────────┐
+│                                                                         │
+│  ✅ Client Onboarding      → Wizard with auto-scaffolding              │
+│  ✅ Task Management         → Create, track, filter, search            │
+│  ✅ Agent Registry          → Browse 20+ agents by category            │
+│  ✅ Real-time Updates       → WebSocket sync across all clients        │
+│  ✅ Output Browser          → View generated files by category         │
+│  ✅ Configuration           → Edit settings via UI                     │
+│  ✅ Responsive Design       → Works on desktop, tablet, mobile         │
+│  ✅ Toast Notifications     → User feedback for all actions            │
+│  ✅ Type Safety             → Full TypeScript coverage                 │
+│  ✅ Production Ready        → Build scripts, Docker, optimization      │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────── FILE STRUCTURE ────────────────────────────────┐
+│                                                                         │
+│  frontend/                                                              │
+│  ├── backend/                     (Python API)                         │
+│  │   ├── main.py                  461 lines - FastAPI server           │
+│  │   └── requirements.txt         5 dependencies                       │
+│  ├── src/                         (React app)                          │
+│  │   ├── components/              5 reusable UI components             │
+│  │   ├── pages/                   6 full-featured pages                │
+│  │   ├── lib/                     API, state, utils, websocket         │
+│  │   ├── App.tsx                  Root component & routing             │
+│  │   ├── main.tsx                 Entry point                          │
+│  │   └── index.css                Global styles                        │
+│  ├── start.sh / start.bat         Cross-platform startup              │
+│  ├── README.md                    Technical documentation              │
+│  ├── QUICKSTART.md                User getting started guide           │
+│  ├── IMPLEMENTATION.md            This summary document                │
+│  ├── package.json                 NPM config & dependencies            │
+│  ├── tsconfig.json                TypeScript config                    │
+│  ├── vite.config.ts               Build configuration                  │
+│  └── tailwind.config.js           Styling configuration                │
+│                                                                         │
+│  Total: ~40 files, ~2500 lines of code                                 │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
