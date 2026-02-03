@@ -258,9 +258,15 @@ docker run -p 8000:8000 -v $(pwd)/../..:/workspace seo-swarm-ui
 ## Troubleshooting
 
 ### Backend won't start
-- Ensure Python 3.10+ is installed
+- Ensure Python 3.10+ is installed (Python 3.13 requires Pydantic 2.11+)
 - Check that port 8000 is available
 - Verify all dependencies are installed: `pip list`
+
+### Python 3.13 wheel build failures
+If you see errors like "Building wheel for pydantic-core... did not run successfully":
+- This happens with older Pydantic versions (< 2.11) on Python 3.13
+- Solution: Use the updated `requirements.txt` with Pydantic 2.11.1+ and FastAPI 0.115.6+
+- These versions include pre-built wheels for Python 3.13 (no Rust compilation needed)
 
 ### Frontend won't start
 - Ensure Node.js 18+ is installed
