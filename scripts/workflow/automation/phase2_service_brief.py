@@ -41,7 +41,7 @@ class CrawlSnapshot:
         return [
             row
             for row in self.rows
-            if self.service in pick_value(row, ("url", "page")).lower()
+            if self.service in (pick_value(row, ("url", "page")) or "").lower()
         ]
 
     def get_titles(self) -> list[str]:
@@ -49,6 +49,32 @@ class CrawlSnapshot:
 
     def get_meta_descriptions(self) -> list[str]:
         return [pick_value(row, ("meta_description", "description")) for row in self.get_pages_by_service()]
+
+    def get_urls(self) -> list[str]:
+        return [pick_value(row, ("url", "page")) for row in self.get_pages_by_service()]
+
+    def get_status_codes(self) -> list[str]:
+        return [pick_value(row, ("status_code", "status")) for row in self.get_pages_by_service()]
+
+    def get_word_counts(self) -> list[int]:
+        return [self._word_count(row) for row in self.get_pages_by_service()]
+
+    def get_missing_titles(self) -> list[str]:
+        return [url for url, title in self._zip_urls(self.get_titles()) if not title]
+
+    def get_missing_meta(self) -> list[str]:
+        return [url for url, meta in self._zip_urls(self.get_meta_descriptions()) if not meta]
+
+    def get_average_word_count(self) -> float:
+        counts = self.get_word_counts()
+        return sum(counts) / len(counts) if counts else 0.0
+
+    def _zip_urls(self, values: list[str]) -> list[tuple[str, str]]:
+        return list(zip(self.get_urls(), values))
+
+    def _word_count(self, row: dict[str, str]) -> int:
+        body = pick_value(row, ("text", "body", "content"))
+        return len(body.split()) if body else 0
 
 
 class ContentGapAnalyzer:
@@ -74,10 +100,34 @@ class ContentGapAnalyzer:
             gaps.append("expand thin pages")
         return gaps
 
+    def get_duplicate_titles(self) -> list[str]:
+        titles = [
+            (pick_value(row, ("title", "page_title")) or "").lower()
+            for row in self.pages
+        ]
+        return [title for title in set(titles) if title and titles.count(title) > 1]
+
+    def get_missing_meta(self) -> list[str]:
+        return [
+            pick_value(row, ("url", "page"))
+            for row in self.pages
+            if not pick_value(row, ("meta_description", "description"))
+        ]
+
+    def get_average_word_count(self) -> float:
+        counts = [self._word_count(row) for row in self.pages]
+        return sum(counts) / len(counts) if counts else 0.0
+
+    def get_gap_summary(self) -> list[str]:
+        summary = [f"Missing sections: {', '.join(self.get_missing_sections()) or 'None'}"]
+        summary.append(f"Duplicate titles: {len(self.get_duplicate_titles())}")
+        summary.append(f"Missing meta descriptions: {len(self.get_missing_meta())}")
+        return summary
+
     def _section_present(self, section: str) -> bool:
         for row in self.pages:
-            body = pick_value(row, ("text", "body", "content"))
-            if section in body.lower():
+            body = (pick_value(row, ("text", "body", "content")) or "").lower()
+            if section in body:
                 return True
         return False
 
@@ -114,6 +164,12 @@ class OutlineBuilder:
     def get_cta_notes(self) -> list[str]:
         return ["Add prominent phone CTA", "Include booking form above the fold"]
 
+    def get_section_notes(self) -> list[str]:
+        return ["Include trust badges", "Add proof points near pricing section"]
+
+    def get_priority_sections(self) -> list[str]:
+        return [section for section in self.get_required_sections() if section in self.gaps]
+
 
 class SchemaChecklist:
     def __init__(self) -> None:
@@ -130,6 +186,9 @@ class SchemaChecklist:
 
     def get_localbusiness_types(self) -> list[str]:
         return ["LocalBusiness", "HomeAndConstructionBusiness", "ProfessionalService"]
+
+    def get_validation_steps(self) -> list[str]:
+        return ["Validate JSON-LD with schema.org validator", "Ensure required fields present"]
 
 
 class ServiceBriefProgram(ProgramRunner):
@@ -170,16 +229,55 @@ class ServiceBriefProgram(ProgramRunner):
         outline: OutlineBuilder,
         schema: SchemaChecklist,
     ) -> dict[str, Any]:
+        pages = snapshot.get_pages_by_service()
+        page_stats = self._build_page_stats(snapshot, gaps, pages)
+        return self._build_report_payload(
+            service,
+            pages,
+            gaps,
+            outline,
+            schema,
+            page_stats,
+        )
+
+    def _build_page_stats(
+        self,
+        snapshot: CrawlSnapshot,
+        gaps: ContentGapAnalyzer,
+        pages: list[dict[str, str]],
+    ) -> dict[str, Any]:
+        return {
+            "total_pages": len(pages),
+            "avg_words": round(gaps.get_average_word_count(), 1),
+            "missing_titles": snapshot.get_missing_titles(),
+            "missing_meta": snapshot.get_missing_meta(),
+        }
+
+    def _build_report_payload(
+        self,
+        service: str,
+        pages: list[dict[str, str]],
+        gaps: ContentGapAnalyzer,
+        outline: OutlineBuilder,
+        schema: SchemaChecklist,
+        page_stats: dict[str, Any],
+    ) -> dict[str, Any]:
         return {
             "service": service,
-            "pages": snapshot.get_pages_by_service(),
+            "pages": pages,
             "missing_sections": gaps.get_missing_sections(),
             "priority_gaps": gaps.get_priority_gaps(),
+            "gap_summary": gaps.get_gap_summary(),
+            "duplicate_titles": gaps.get_duplicate_titles(),
+            "page_stats": page_stats,
             "outline": outline.get_outline(),
             "required_sections": outline.get_required_sections(),
             "cta_notes": outline.get_cta_notes(),
+            "section_notes": outline.get_section_notes(),
+            "priority_sections": outline.get_priority_sections(),
             "schema": schema.get_required_schema(),
             "schema_notes": schema.get_schema_notes(),
+            "schema_validation": schema.get_validation_steps(),
         }
 
     def render_report(self, data: dict[str, Any]) -> str:
@@ -193,10 +291,14 @@ class ServiceBriefProgram(ProgramRunner):
     def _build_sections(self, data: dict[str, Any]) -> list[str]:
         return [
             self._build_overview(data),
+            self._build_page_health(data),
             self._build_gaps(data),
+            self._build_gap_summary(data),
             self._build_outline(data),
+            self._build_priority_sections(data),
             self._build_required_sections(data),
             self._build_schema(data),
+            self._build_schema_validation(data),
             self._build_cta(data),
         ]
 
@@ -210,13 +312,29 @@ class ServiceBriefProgram(ProgramRunner):
         )
         return render_section("Service Overview", body)
 
+    def _build_page_health(self, data: dict[str, Any]) -> str:
+        stats = data["page_stats"]
+        rows = [
+            ["Avg words", str(stats["avg_words"])],
+            ["Missing titles", str(len(stats["missing_titles"]))],
+            ["Missing meta", str(len(stats["missing_meta"]))],
+        ]
+        return render_section("Page Health", render_table(["Metric", "Value"], rows))
+
     def _build_gaps(self, data: dict[str, Any]) -> str:
         body = render_list(data["priority_gaps"])
         return render_section("Content Gaps", body)
 
+    def _build_gap_summary(self, data: dict[str, Any]) -> str:
+        return render_section("Gap Summary", render_list(data["gap_summary"]))
+
     def _build_outline(self, data: dict[str, Any]) -> str:
         body = render_list(data["outline"])
         return render_section("Proposed Outline", body)
+
+    def _build_priority_sections(self, data: dict[str, Any]) -> str:
+        body = render_list(data["priority_sections"])
+        return render_section("Priority Sections", body)
 
     def _build_required_sections(self, data: dict[str, Any]) -> str:
         body = render_list(data["required_sections"])
@@ -226,5 +344,9 @@ class ServiceBriefProgram(ProgramRunner):
         body = render_list(data["schema"] + data["schema_notes"])
         return render_section("Schema Requirements", body)
 
+    def _build_schema_validation(self, data: dict[str, Any]) -> str:
+        return render_section("Schema Validation", render_list(data["schema_validation"]))
+
     def _build_cta(self, data: dict[str, Any]) -> str:
-        return render_section("CTA Guidance", render_list(data["cta_notes"]))
+        body = render_list(data["cta_notes"] + data["section_notes"])
+        return render_section("CTA Guidance", body)
